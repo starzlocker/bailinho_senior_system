@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/participantes.h"
 
 void menu_participantes() {
   int opcao;
@@ -23,27 +24,19 @@ void menu_participantes() {
 
     switch (opcao) {
       case 1:
-        printf("Criar Participante selecionado.\n\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        participantes_create();
         break;
 
       case 2:
-        printf("Listar Participantes selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        participantes_list();
         break;
 
       case 3:
-        printf("Atualizar Participante selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        participantes_update();
         break;
 
       case 4:
-        printf("Deletar Participante selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        participantes_delete();
         break;
 
       case 5:
