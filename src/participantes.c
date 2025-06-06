@@ -93,6 +93,12 @@ int participantes_create() {
     scanf("%d", &participante.idade);
     flush_in();
 
+    while (!participante.idade || participante.idade <= 0) {
+        printf("Digite um valor válido para a idade: ");
+        scanf("%d", &participante.idade);
+        flush_in();
+    }
+
     fprintf(fp, "%s %s %s %s %d |\n", participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
     
     fclose(fp);
@@ -186,6 +192,57 @@ int participantes_update() {
             scanf("%d", &new_participante.idade);
             fprintf(fp_temp, "%s %s %s %s %d |\n", new_participante.nome, new_participante.sobrenome, new_participante.cpf, new_participante.celular, new_participante.idade);
             getchar();
+
+                        
+            printf("Digite o nome do participante (atual: %s): ", participante.nome);
+            scanf("%49s", new_participante.nome);
+            flush_in();
+
+            while (strlen(participante.nome) < 3) {
+                printf("\nO nome deve ter 3 ou mais letras! \nDigite o nome do participante: ");
+                scanf("%49s", new_participante.nome);
+                flush_in();
+            }
+            
+            printf("Digite o sobrenome do participante (atual: %s): ", participante.sobrenome);
+            scanf("%49s", new_participante.sobrenome);
+            flush_in();
+
+            while (strlen(new_participante.sobrenome) < 3) {
+                printf("\nO nome deve ter 3 ou mais letras! \nDigite o sobrenome do participante: ");
+                scanf("%49s", new_participante.sobrenome);
+                flush_in();
+            }
+
+            printf("Digite o CPF do participante (atual: %s): ", participante.cpf);
+            scanf("%11s", new_participante.cpf);
+            flush_in();
+
+            while (strlen(new_participante.cpf) != 11 || !numero_is_valido(new_participante.cpf, strlen(participante.cpf))) {
+                printf("\nO CPF deve ser composto por 11 números! \nDigite o CPF do participante: ");
+                scanf("%11s", new_participante.cpf);
+                flush_in();
+            }
+            
+            printf("Digite o celular do participante (atual: %s): ", participante.celular);
+            scanf("%14s", new_participante.celular);
+            flush_in();
+
+            while (strlen(new_participante.celular) < 10 || !numero_is_valido(new_participante.celular, strlen(new_participante.celular))) {
+                printf("\nO celular deve ser composto por 10 ou mais números! \nDigite o celular do participante: ");
+                scanf("%14s", new_participante.celular);
+                flush_in();
+            }
+
+            printf("Digite a idade do participante (atual: %d): ", participante.idade);
+            scanf("%d", &new_participante.idade);
+            flush_in();
+
+            while (!new_participante.idade || new_participante.idade <= 0) {
+                printf("Digite um valor válido para a idade: ");
+                scanf("%d", &new_participante.idade);
+                flush_in();
+            }
         }
     }
     fclose(fp_original);
