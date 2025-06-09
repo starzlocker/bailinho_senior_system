@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/eventos.h"
 
 void menu_eventos() {
   int opcao;
@@ -24,15 +25,11 @@ void menu_eventos() {
 
     switch (opcao) {
       case 1:
-        printf("Criar Evento selecionado.\n\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        eventos_create();
         break;
 
       case 2:
-        printf("Listar Eventos selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        eventos_list();
         break;
 
       case 3:
