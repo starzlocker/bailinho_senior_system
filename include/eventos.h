@@ -32,25 +32,36 @@ int eventos_create();
  */
 int eventos_list();
 
-// /**
-//  * @brief Atualiza os dados de um participante específico
-//  * 
-//  * Solicita o CPF do participante a ser atualizado e, se encontrado,
-//  * permite a edição de todos os seus dados. Utiliza um arquivo temporário
-//  * para fazer a atualização.
-//  * 
-//  * @return int 0 em caso de sucesso, 1 em caso de erro ou participante não encontrado
-//  */
-// int participantes_update();
+/**
+ * @brief Atualiza os status de um evento
+ * 
+ * Solicita o nome do evento a ser atualizado e, se encontrado,
+ * permite a alteração do seu status. Utiliza um arquivo temporário
+ * para fazer a atualização.
+ * 
+ * @return int 0 em caso de sucesso, 1 em caso de erro ou participante não encontrado
+ */
+int eventos_update();
 
-// /**
-//  * @brief Apaga um participante específico pelo CPF
-//  * 
-//  * Solicita o CPF do participante a ser removido e o exclui do arquivo.
-//  * Utiliza um arquivo temporário para a operação de exclusão.
-//  * 
-//  * @return int 0 em caso de sucesso, 1 em caso de erro
-//  */
-// int participantes_delete();
+/**
+ * @brief Lista os status dos eventos disponíveis
+ * 
+ * Exibe uma tabela com os status possíveis para os eventos,
+ * incluindo "Concluido", "Cancelado" e "Agendado".
+ * 
+ * @return void
+ */
+void listar_status_evento();
+
+/**
+ * @brief Converte o status numérico de um evento para uma string
+ * 
+ * Recebe um inteiro representando o status do evento e retorna uma string
+ * 
+ * @param status O status do evento (1: concluido, 2: cancelado, 3: agendado)
+ * 
+ * @return const char* A string correspondente ao status do evento
+ */
+const char* status_evento(int status);
 
 #endif /* EVENTOS_H */

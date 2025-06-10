@@ -1,3 +1,5 @@
-evento 30/05/2025 18:00 13.000000 concluido |
-evento 15/06/2025 18:00 100.000000 agendado |
-evento3 29/05/2026 23:00 100000.000000 concluido |
+evento 30/05/2025 18:00 13.000000 cancelado |
+evento 15/06/2025 18:00 100.000000 cancelado |
+evento3 29/05/2026 23:00 100000.000000 cancelado |
+fabricio 30/05/2003 21:00 20.500000 cancelado |
+jonny 30/05/2027 18:00 100.000000 cancelado |

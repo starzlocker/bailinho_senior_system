@@ -14,7 +14,6 @@ void menu_eventos() {
     printf("[1] ➤ Criar Evento\n");
     printf("[2] ➤ Listar Eventos\n");
     printf("[3] ➤ Atualizar Evento\n");
-    printf("[4] ➤ Deletar Evento\n");
     printf("[5] ⇦ Voltar ao menu principal\n");
     printf("[6] ✖ Encerrar o programa\n");
     printf("------------------------------\n");
@@ -33,15 +32,7 @@ void menu_eventos() {
         break;
 
       case 3:
-        printf("Atualizar Evento selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
-        break;
-
-      case 4:
-        printf("Deletar Evento selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        eventos_update();
         break;
 
       case 5:
