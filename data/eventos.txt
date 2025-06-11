@@ -3,3 +3,7 @@ evento 15/06/2025 18:00 100.000000 cancelado |
 evento3 29/05/2026 23:00 100000.000000 cancelado |
 fabricio 30/05/2003 21:00 20.500000 cancelado |
 jonny 30/05/2027 18:00 100.000000 cancelado |
+aaa 30/05/2003 15:45 1300.000000 concluido |
+teste_do_jonny 30/05/2027 00:00 0.000000 invalido |
+evento_do_jonny 30/05/2027 18:00 100.000000 cancelado |
+evento_do_jonny 30/05/2027 18:00 100.000000 concluido |
