@@ -26,4 +26,6 @@ clean:
 run: $(TARGET)
 	./$(TARGET)
 
+buildRun: clean all run
+
 .PHONY: all clean run
