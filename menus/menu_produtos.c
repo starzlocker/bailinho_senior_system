@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/produtos.h"
 
 void menu_produtos() {
   int opcao;
@@ -23,27 +24,19 @@ void menu_produtos() {
 
     switch (opcao) {
       case 1:
-        printf("Criar Produto selecionado.\n\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        produtos_create();
         break;
 
       case 2:
-        printf("Listar Produtos selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        produtos_list();
         break;
 
       case 3:
-        printf("Atualizar Produto selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        produtos_update();
         break;
 
       case 4:
-        printf("Deletar Produto selecionado.\n");
-        printf("Pressione ENTER para continuar...");
-        getchar();
+        produtos_delete();
         break;
 
       case 5:
