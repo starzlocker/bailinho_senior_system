@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <regex.h>
 
 /**
  * @brief Pausa a execução do programa até que o usuário pressione Enter
@@ -55,6 +54,19 @@ int validar_string(char *str, int min, int max) {
     return 0; // String válida
 }
 
+
+
+#if defined(_WIN32) || defined(_WIN64)
+
+int validar_com_regex(const char *str, const char *pattern) {
+    // Não disponivel no windows, apenas retorne válido
+    return 0;
+}
+
+#else
+
+#include <regex.h>
+
 /**
  * @brief Valida uma string com expressão regular
  * 
@@ -81,6 +93,7 @@ int validar_com_regex(const char *str, const char *pattern) {
     // Se bater, retorna 0, senão 1
     return (resultado != 0);
 }
+#endif
 
 /**
  * @brief Verifica se uma string contém espaços

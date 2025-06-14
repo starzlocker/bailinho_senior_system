@@ -20,8 +20,17 @@ $(TARGET): $(SRC) $(HEADERS)
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) -o $@ $^
 
+# Detecta o sistema operacional
+ifeq ($(OS),Windows_NT)
+    RM = del /Q /F
+    EXE = .exe
+else
+    RM = rm -f
+    EXE =
+endif
+
 clean:
-	rm -f $(TARGET)
+	$(RM) $(TARGET)$(EXE)
 
 run: $(TARGET)
 	./$(TARGET)
