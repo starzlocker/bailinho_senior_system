@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../include/participantes.h"
+#include <stddef.h>
 
 /**
  * @brief Pausa a execução do programa até que o usuário pressione Enter

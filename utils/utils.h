@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-
+#include <stddef.h>
 /**
  * @brief Pausa a execução do programa até que o usuário pressione Enter
  * 
