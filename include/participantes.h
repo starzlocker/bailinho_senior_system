@@ -8,6 +8,7 @@
  */
 typedef struct {
     char nome[50];
+    char sobrenome[50];
     char cpf[12];
     char celular[15];
     int idade;
