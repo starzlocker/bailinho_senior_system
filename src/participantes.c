@@ -5,32 +5,6 @@
 #include "../include/participantes.h"
 #include "../utils/utils.h"
 
-void flush_in() {
-    int ch;
-    do {
-        ch = fgetc(stdin);
-    } while (ch != EOF && ch != '\n');
-}
-
-int numero_is_valido(char str[], size_t length) {
-    int valido = 1;
-    for(int i = 0; i < length; i++) {
-        if (str[i] < 48 || str[i] > 57) {
-            valido = 0;
-            break;
-        }
-    }
-    return valido;
-}
-
-void normalize_str(char str[], size_t length) {
-    char output[length];
-    output[0] = toupper(str[0]);
-    for (int i = 1; i < length; i++) {
-        output[i] = tolower(str[i]);
-    }
-}
-
 /**
  * @brief Cadastra um novo participante no sistema
  * 
@@ -42,6 +16,11 @@ void normalize_str(char str[], size_t length) {
 int participantes_create() {
     Participante participante;
     FILE *fp;
+    char cpf[12];
+    char nome[50];
+    char sobrenome[50];
+    char is_cpf_valido = 0;
+    
 
     fp = fopen("data/participantes.txt", "a+");
     if (fp == NULL) {
@@ -50,40 +29,55 @@ int participantes_create() {
     }
 
     printf("Digite o nome do participante: ");
-    scanf("%49s", participante.nome);
+    scanf("%49s", nome);
     flush_in();
 
-    while (strlen(participante.nome) < 3) {
+    while (strlen(nome) < 3) {
         printf("\nO nome deve ter 3 ou mais letras! \nDigite o nome do participante: ");
-        scanf("%49s", participante.nome);
+        scanf("%49s", nome);
         flush_in();
     }
+
+    pretty_format_name(nome, strlen(nome));
+    strcpy(participante.nome, nome);
     
     printf("Digite o sobrenome do participante: ");
-    scanf("%49s", participante.sobrenome);
+    scanf("%49s", sobrenome);
     flush_in();
 
-    while (strlen(participante.sobrenome) < 3) {
+    while (strlen(sobrenome) < 3) {
         printf("\nO nome deve ter 3 ou mais letras! \nDigite o sobrenome do participante: ");
-        scanf("%49s", participante.sobrenome);
+        scanf("%49s", sobrenome);
         flush_in();
     }
+
+    pretty_format_name(sobrenome, strlen(sobrenome));
+    strcpy(participante.sobrenome, sobrenome);
 
     printf("Digite o CPF do participante: ");
-    scanf("%11s", participante.cpf);
+    scanf("%11s", cpf);
     flush_in();
 
-    while (strlen(participante.cpf) != 11 || !numero_is_valido(participante.cpf, strlen(participante.cpf))) {
-        printf("\nO CPF deve ser composto por 11 números! \nDigite o CPF do participante: ");
-        scanf("%11s", participante.cpf);
+    is_cpf_valido = validate_cpf(cpf, strlen(cpf));
+
+    while (is_cpf_valido != 1) {
+        if (is_cpf_valido == 0) {
+            printf("\nO CPF já está cadastrado!\nDigite o CPF do participante: ");
+        } else if (is_cpf_valido == -1) {
+            printf("\nO CPF deve ser composto por 11 números! \nDigite o CPF do participante: ");
+        }
+        scanf("%11s", cpf);
+        is_cpf_valido = validate_cpf(cpf, strlen(cpf));
         flush_in();
     }
+
+    strcpy(participante.cpf, cpf);
     
     printf("Digite o celular do participante: ");
     scanf("%14s", participante.celular);
     flush_in();
 
-    while (strlen(participante.celular) < 10 || !numero_is_valido(participante.celular, strlen(participante.celular))) {
+    while (strlen(participante.celular) < 10 || !is_valid_number(participante.celular, strlen(participante.celular))) {
         printf("\nO celular deve ser composto por 10 ou mais números! \nDigite o celular do participante: ");
         scanf("%14s", participante.celular);
         flush_in();
@@ -92,6 +86,12 @@ int participantes_create() {
     printf("Digite a idade do participante: ");
     scanf("%d", &participante.idade);
     flush_in();
+
+    while (participante.idade < 0 || participante.idade > 120) {
+        printf("\nA idade deve ser um número entre 0 e 120! \nDigite a idade do participante: ");
+        scanf("%d", &participante.idade);
+        flush_in();
+    }
 
     fprintf(fp, "%s %s %s %s %d |\n", participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
     
@@ -134,6 +134,7 @@ int participantes_list() {
 }
 
 
+
 /**
  * @brief Atualiza os dados de um participante específico
  * 
@@ -147,11 +148,19 @@ int participantes_update() {
     FILE *fp_original, *fp_temp;
     Participante participante, new_participante;
     char cpf_alvo[12];
+    char nome[50];
+    char sobrenome[50];
     int encontrado = 0;
 
     printf("Digite o CPF do participante que deseja atualizar: ");
     scanf("%11s", cpf_alvo);
-    getchar();
+    flush_in();
+    while(strlen(cpf_alvo) != 11 || !is_valid_number(cpf_alvo, strlen(cpf_alvo))) {
+        printf("\nO CPF deve ser composto por 11 números! \nDigite o CPF do participante: ");
+        scanf("%11s", cpf_alvo);
+        flush_in();
+    }
+
 
     fp_original = fopen("data/participantes.txt", "r");
     if (fp_original == NULL) {
@@ -167,25 +176,74 @@ int participantes_update() {
     }
 
     // Lê cada participante do arquivo original
-     // Lê cada participante do arquivo original
     while (fscanf(fp_original, "%49s %49s %11s %14s %d |", participante.nome, participante.sobrenome, participante.cpf, participante.celular, &participante.idade) == 5) {
         if (strcmp(cpf_alvo, participante.cpf) != 0) {
-            // ERRO: Está faltando o participante.sobrenome aqui
             fprintf(fp_temp, "%s %s %s %s %d |\n", participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
         } else {
             encontrado = 1;
+
             printf("Digite o nome do participante (atual: %s): ", participante.nome);
-            scanf("%49s", new_participante.nome);
+            scanf("%49s", nome);
+            flush_in();
+
+            while (strlen(nome) < 3) {
+                printf("\nO nome deve ter 3 ou mais letras! \nDigite o nome do participante: ");
+                scanf("%49s", nome);
+                flush_in();
+            }
+            pretty_format_name(nome, strlen(nome));
+            strcpy(new_participante.nome, nome);
+    
             printf("Digite o sobrenome do participante (atual: %s): ", participante.sobrenome);
-            scanf("%49s", new_participante.sobrenome);
+            scanf("%49s", sobrenome);
+            flush_in();
+
+            while (strlen(sobrenome) < 3) {
+                printf("\nO nome deve ter 3 ou mais letras! \nDigite o sobrenome do participante: ");
+                scanf("%49s", sobrenome);
+                flush_in();
+            }
+            pretty_format_name(sobrenome, strlen(sobrenome));
+            strcpy(new_participante.sobrenome, sobrenome);
+            
             printf("Digite o CPF do participante (atual: %s): ", participante.cpf);
             scanf("%11s", new_participante.cpf);
+            flush_in();
+            
+            if (strcmp(new_participante.cpf, participante.cpf) != 0) {
+                char cpf_valido = validate_cpf(new_participante.cpf, strlen(new_participante.cpf));
+                while (cpf_valido != 1) {
+                    if (cpf_valido == 0) {
+                        printf("CPF já cadastrado! Digite outro CPF: ");
+                    } else {
+                        printf("CPF inválido! Digite um CPF com 11 números: ");
+                    }
+                    scanf("%11s", new_participante.cpf);
+                    flush_in();
+                    cpf_valido = validate_cpf(new_participante.cpf, strlen(new_participante.cpf));
+                }
+            }
+            
             printf("Digite o celular do participante (atual: %s): ", participante.celular);
             scanf("%14s", new_participante.celular);
+            flush_in();
+            
+            while (strlen(new_participante.celular) < 10 || !is_valid_number(new_participante.celular, strlen(new_participante.celular))) {
+                printf("\nO celular deve ser composto por 10 ou mais números! \nDigite o celular do participante: ");
+                scanf("%14s", new_participante.celular);
+                flush_in();
+            }
             printf("Digite a idade do participante (atual: %d): ", participante.idade);
             scanf("%d", &new_participante.idade);
+            flush_in();
+
+            while (new_participante.idade < 0 || new_participante.idade > 120) {
+                printf("\nA idade deve ser um número entre 0 e 120! \nDigite a idade do participante: ");
+                scanf("%d", &new_participante.idade);
+                flush_in();
+            }
+
             fprintf(fp_temp, "%s %s %s %s %d |\n", new_participante.nome, new_participante.sobrenome, new_participante.cpf, new_participante.celular, new_participante.idade);
-            getchar();
         }
     }
     fclose(fp_original);
@@ -201,7 +259,7 @@ int participantes_update() {
         return 1;
     }
 
-    printf("Dados atualizados com sucesso!");
+    printf("Dados atualizados com sucesso!\n");
     //mpar_tela();
     return 0;
 }
@@ -224,7 +282,12 @@ int participantes_delete() {
 
     printf("Digite o CPF do participante que deseja apagar: ");
     scanf("%11s", cpf_alvo);
-    getchar();
+    flush_in();
+    while(strlen(cpf_alvo) != 11 || !is_valid_number(cpf_alvo, strlen(cpf_alvo))) {
+        printf("\nO CPF deve ser composto por 11 números! \nDigite o CPF do participante: ");
+        scanf("%11s", cpf_alvo);
+        flush_in();
+    }
 
     fp_original = fopen("data/participantes.txt", "r");
     if (fp_original == NULL) {
@@ -244,7 +307,6 @@ int participantes_delete() {
     while (fscanf(fp_original, "%49s %49s %11s %14s %d |", participante.nome, participante.sobrenome, participante.cpf, participante.celular, &participante.idade) == 5) {
         // Se o CPF não for o que estamos procurando, escreve no arquivo temporário
         if (strcmp(participante.cpf, cpf_alvo) != 0) {
-            // ERRO: Está faltando o participante.sobrenome aqui
             fprintf(fp_temp, "%s %s %s %s %d |\n", participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
         } else {
             encontrado = 1;
