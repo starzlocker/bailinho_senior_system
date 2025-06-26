@@ -10,7 +10,7 @@ void menu_participantes() {
     printf("\n==============================\n");
     printf("      MENU DE PARTICIPANTES (CRUD)\n");
     printf("==============================\n");
-    printf("[1] ➤ Criar Participante\n");
+    printf("[1] ➤ Cadastrar Participante\n");
     printf("[2] ➤ Listar Participantes\n");
     printf("[3] ➤ Atualizar Participante\n");
     printf("[4] ➤ Deletar Participante\n");
@@ -24,19 +24,31 @@ void menu_participantes() {
 
     switch (opcao) {
       case 1:
+        printf("Cadastrar Participante selecionado.\n\n");
         participantes_create();
+        printf("Pressione ENTER para continuar...");
+        getchar();
         break;
 
       case 2:
+        printf("Listar Participantes selecionado.\n");
         participantes_list();
+        printf("Pressione ENTER para continuar...");
+        getchar();
         break;
 
       case 3:
+        printf("Atualizar Participante selecionado.\n");
         participantes_update();
+        printf("Pressione ENTER para continuar...");
+        getchar();
         break;
 
       case 4:
+        printf("Deletar Participante selecionado.\n");
         participantes_delete();
+        printf("Pressione ENTER para continuar...");
+        getchar();
         break;
 
       case 5:
