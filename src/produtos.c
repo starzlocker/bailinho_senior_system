@@ -260,7 +260,6 @@ int produtos_delete() {
 
     if (encontrado) {
         printf("Produto %s removido com sucesso!\n", nome_alvo);
-
     } else {
         printf("\n⚠️ Produto %s não encontrado! ⚠️\n", nome_alvo);
     }
@@ -269,4 +268,98 @@ int produtos_delete() {
     limpar_tela();
     
     return 0;
+}
+
+int produto_existe(const char *nome) {
+    Produto produto;
+    char linha[256]; // Buffer para armazenar cada linha do arquivo
+    FILE *fp = fopen("data/produtos.txt", "r");
+    if (fp == NULL) {
+        printf("Erro: Não foi possível abrir o arquivo de produtos.\n");
+        return 0;
+    }
+
+    while (fgets(linha, sizeof(linha), fp)) {
+
+        // Substitui vírgulas por pontos na linha lida
+        for (char *p = linha; *p; p++) {
+            if (*p == ',') {
+                *p = '.';
+            }
+        }
+
+        int result = sscanf(linha, "%49s %f %d |", produto.nome, &produto.valor, &produto.quantidade);
+        if (result == 3) {
+            if (strcmp(produto.nome, nome) == 0) {
+                fclose(fp);
+                return 1;
+            }
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
+
+int produto_estoque_disponivel(const char *nome) {
+    Produto produto;
+    FILE *fp = fopen("data/produtos.txt", "r");
+    if (fp == NULL) {
+        printf("Erro ao abrir o arquivo de produtos.\n");
+        return 0;
+    }
+
+    while (fscanf(fp, "%49s %f %d |", produto.nome, &produto.valor, &produto.quantidade) == 3) {
+        if (strcmp(produto.nome, nome) == 0) {
+            fclose(fp);
+            printf("\nEstoque disponível para %s: %d\n", produto.nome, produto.quantidade); // Log do estoque
+            return produto.quantidade > 0;
+        }
+    }
+
+    fclose(fp);
+    printf("Produto %s não encontrado no arquivo.\n", nome); // Log de falha
+    return 0;
+}
+
+int produto_quantidade_disponivel(const char *nome, int quantidade) {
+    Produto produto;
+    FILE *fp = fopen("data/produtos.txt", "r");
+    if (fp == NULL) {
+        return 0;
+    }
+
+    while (fscanf(fp, "%49s %f %d |", produto.nome, &produto.valor, &produto.quantidade) == 3) {
+        if (strcmp(produto.nome, nome) == 0) {
+            fclose(fp);
+            return produto.quantidade >= quantidade;
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
+
+void abater_estoque(const char *nome, int quantidade) {
+    Produto produto;
+    FILE *fp_original = fopen("data/produtos.txt", "r");
+    FILE *fp_temp = fopen("data/temp.txt", "w");
+
+    if (fp_original == NULL || fp_temp == NULL) {
+        printf("Erro ao abrir os arquivos para atualização do estoque.\n");
+        return;
+    }
+
+    while (fscanf(fp_original, "%49s %f %d |", produto.nome, &produto.valor, &produto.quantidade) == 3) {
+        if (strcmp(produto.nome, nome) == 0) {
+            produto.quantidade -= quantidade; // Abate a quantidade vendida
+        }
+        fprintf(fp_temp, "%s %.2f %d |\n", produto.nome, produto.valor, produto.quantidade);
+    }
+
+    fclose(fp_original);
+    fclose(fp_temp);
+
+    remove("data/produtos.txt");
+    rename("data/temp.txt", "data/produtos.txt");
 }

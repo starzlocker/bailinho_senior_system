@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../include/eventos.h"
 #include "../utils/utils.h"
 
@@ -249,4 +250,49 @@ const char* status_evento(int status) {
         default:
             return "invalido";
     }
+}
+
+int evento_existe(const char *nome) {
+    Evento evento;
+    FILE *fp = fopen("data/eventos.txt", "r");
+    if (fp == NULL) {
+        return 0;
+    }
+
+    while (fscanf(fp, "%49s %10s %5s %f %9s |", evento.nome, evento.data, evento.horario, &evento.valorEntrada, evento.status) == 5) {
+        if (strcmp(evento.nome, nome) == 0) {
+            fclose(fp);
+            return 1;
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
+
+int evento_passado(const char *nome) {
+    Evento evento;
+    FILE *fp = fopen("data/eventos.txt", "r");
+    if (fp == NULL) {
+        return 0;
+    }
+
+    while (fscanf(fp, "%49s %10s %5s %f %9s |", evento.nome, evento.data, evento.horario, &evento.valorEntrada, evento.status) == 5) {
+        if (strcmp(evento.nome, nome) == 0) {
+            fclose(fp);
+
+            // Converte a data do evento para um formato comparável
+            struct tm data_evento = {0};
+            strptime(evento.data, "%d/%m/%Y", &data_evento);
+            time_t tempo_evento = mktime(&data_evento);
+
+            // Obtém a data atual
+            time_t tempo_atual = time(NULL);
+
+            return difftime(tempo_evento, tempo_atual) < 0; // Retorna 1 se o evento já passou
+        }
+    }
+
+    fclose(fp);
+    return 0;
 }

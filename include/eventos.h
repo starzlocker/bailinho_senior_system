@@ -64,4 +64,20 @@ void listar_status_evento();
  */
 const char* status_evento(int status);
 
+/**
+ * @brief Verifica se um evento com o nome fornecido existe
+ * 
+ * @param nome O nome do evento
+ * @return int 1 se o evento existir, 0 caso contrário
+ */
+int evento_existe(const char *nome);
+
+/**
+ * @brief Verifica se um evento já aconteceu
+ * 
+ * @param nome O nome do evento
+ * @return int 1 se o evento já aconteceu, 0 caso contrário
+ */
+int evento_passado(const char *nome);
+
 #endif /* EVENTOS_H */

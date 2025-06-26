@@ -52,4 +52,12 @@ int participantes_update();
  */
 int participantes_delete();
 
+/**
+ * @brief Verifica se um participante com o CPF fornecido existe
+ * 
+ * @param cpf O CPF do participante
+ * @return int 1 se o participante existir, 0 caso contrário
+ */
+int participante_existe(const char *cpf);
+
 #endif /* PARTICIPANTES_H */

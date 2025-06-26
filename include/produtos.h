@@ -51,4 +51,37 @@ int produtos_update();
  */
 int produtos_delete();
 
+/**
+ * @brief Verifica se um produto com o nome fornecido existe
+ * 
+ * @param nome O nome do produto
+ * @return int 1 se o produto existir, 0 caso contrário
+ */
+int produto_existe(const char *nome);
+
+/**
+ * @brief Verifica se o produto tem estoque disponível
+ * 
+ * @param nome O nome do produto
+ * @return int 1 se o produto tem estoque, 0 caso contrário
+ */
+int produto_estoque_disponivel(const char *nome);
+
+/**
+ * @brief Verifica se a quantidade solicitada está disponível no estoque
+ * 
+ * @param nome O nome do produto
+ * @param quantidade A quantidade solicitada
+ * @return int 1 se a quantidade está disponível, 0 caso contrário
+ */
+int produto_quantidade_disponivel(const char *nome, int quantidade);
+
+/**
+ * @brief Abate a quantidade de produtos vendidos do estoque
+ * 
+ * @param nome O nome do produto
+ * @param quantidade A quantidade a ser abatida
+ */
+void abater_estoque(const char *nome, int quantidade);
+
 #endif /* PRODUTOS_H */

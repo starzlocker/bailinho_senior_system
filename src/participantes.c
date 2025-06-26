@@ -206,3 +206,28 @@ int participantes_delete() {
     
     return 0;
 }
+
+
+/**
+ * @brief Verifica se um participante existe pelo CPF
+ * 
+ * @param cpf O CPF do participante a ser verificado
+ * @return int 1 se o participante existir, 0 caso contrário
+ */
+int participante_existe(const char *cpf) {
+    Participante participante;
+    FILE *fp = fopen("data/participantes.txt", "r");
+    if (fp == NULL) {
+        return 0;
+    }
+
+    while (fscanf(fp, "%49s %11s %14s %d |", participante.nome, participante.cpf, participante.celular, &participante.idade) == 4) {
+        if (strcmp(participante.cpf, cpf) == 0) {
+            fclose(fp);
+            return 1;
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
