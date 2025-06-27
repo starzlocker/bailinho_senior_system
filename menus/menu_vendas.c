@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/vendas.h"
 
 void menu_vendas() {
     int opcao;
@@ -10,10 +11,9 @@ void menu_vendas() {
         printf("==============================\n");
         printf("[1] ➤ Criar Venda\n");
         printf("[2] ➤ Listar Vendas\n");
-        printf("[3] ➤ Atualizar Venda\n");
-        printf("[4] ➤ Deletar Venda\n");
-        printf("[5] ⇦ Voltar ao menu principal\n");
-        printf("[6] ✖ Encerrar o programa\n");
+        printf("[3] ➤ Deletar Venda\n");
+        printf("[4] ⇦ Voltar ao menu principal\n");
+        printf("[5] ✖ Encerrar o programa\n");
         printf("------------------------------\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);    
@@ -21,29 +21,18 @@ void menu_vendas() {
         printf("------------------------------\n");
         switch (opcao) {
             case 1:
-                printf("Criar Venda selecionado.\n");
-                printf("Pressione ENTER para continuar...");
-                getchar();
+                vendas_create();
                 break;
             case 2:
-                printf("Listar Vendas selecionado.\n");
-                printf("Pressione ENTER para continuar...");
-                getchar();
+                vendas_list();
                 break;
             case 3:
-                printf("Atualizar Venda selecionado.\n");
-                printf("Pressione ENTER para continuar...");
-                getchar();
+                vendas_delete();
                 break;
             case 4:
-                printf("Deletar Venda selecionado.\n");
-                printf("Pressione ENTER para continuar...");
-                getchar();
-                break;
-            case 5:
                 printf("Voltando ao menu principal...\n");
                 break;
-            case 6:
+            case 5:
                 printf("\nObrigado por usar o sistema!\n");
                 printf("Pressione ENTER para finalizar...");
                 getchar();
@@ -53,5 +42,5 @@ void menu_vendas() {
                 printf("Pressione ENTER para continuar...");
                 getchar();
         }
-    } while (opcao != 5);
+    } while (opcao != 4);
 }

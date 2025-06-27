@@ -1,9 +1,7 @@
-evento 30/05/2025 18:00 13.000000 cancelado |
-evento 15/06/2025 18:00 100.000000 cancelado |
-evento3 29/05/2026 23:00 100000.000000 cancelado |
-fabricio 30/05/2003 21:00 20.500000 cancelado |
-jonny 30/05/2027 18:00 100.000000 cancelado |
-aaa 30/05/2003 15:45 1300.000000 concluido |
-teste_do_jonny 30/05/2027 00:00 0.000000 invalido |
-evento_do_jonny 30/05/2027 18:00 100.000000 cancelado |
-evento_do_jonny 30/05/2027 18:00 100.000000 concluido |
+festa_junina 10/06/2025 18:00 50.00 agendado |
+show_rock 15/07/2025 20:00 100.00 agendado |
+feira_livros 01/08/2024 09:00 20.00 cancelado |
+corrida_5k 20/09/2025 07:00 30.00 agendado |
+carnaval_2023 20/02/2023 16:00 80.00 concluido |
+black_friday 25/11/2023 00:00 0.00 concluido |
+festival_verao 15/01/2024 14:00 120.00 cancelado |
