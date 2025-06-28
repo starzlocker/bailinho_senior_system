@@ -1,23 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/participantes.h"
+#include "../include/menu_participantes.h"
 
 void menu_participantes() {
   int opcao;
   do {
-    printf("\033[2J\033[H"); // Limpa a tela
+    system("cls");
 
     printf("\n==============================\n");
     printf("      MENU DE PARTICIPANTES (CRUD)\n");
     printf("==============================\n");
-    printf("[1] ➤ Cadastrar Participante\n");
-    printf("[2] ➤ Listar Participantes\n");
-    printf("[3] ➤ Atualizar Participante\n");
-    printf("[4] ➤ Deletar Participante\n");
-    printf("[5] ⇦ Voltar ao menu principal\n");
-    printf("[6] ✖ Encerrar o programa\n");
+    printf("[1] Cadastrar Participante\n");
+    printf("[2] Listar Participantes\n");
+    printf("[3] Atualizar Participante\n");
+    printf("[4] Deletar Participante\n");
+    printf("[5] Voltar ao menu principal\n");
+    printf("[6] Encerrar o programa\n");
     printf("------------------------------\n");
-    printf("Escolha uma opção: ");
+    printf("Escolha uma funcionalidade: ");
     scanf("%d", &opcao);
     getchar();
     printf("------------------------------\n");
@@ -60,7 +61,7 @@ void menu_participantes() {
         printf("Pressione ENTER para finalizar...");
         getchar();
         exit(0);
-        
+
       default:
         printf("\nOpção inválida. Tente novamente.\n");
         printf("Pressione ENTER para continuar...");

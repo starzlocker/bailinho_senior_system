@@ -7,10 +7,10 @@
 
 /**
  * @brief Cadastra um novo participante no sistema
- * 
+ *
  * Solicita ao usuário informações sobre o novo participante e
  * as armazena em um arquivo de texto (participantes.txt).
- * 
+ *
  * @return int 0 em caso de sucesso, 1 em caso de erro
  */
 int participantes_create() {
@@ -20,9 +20,9 @@ int participantes_create() {
     char nome[50];
     char sobrenome[50];
     char is_cpf_valido = 0;
-    
 
-    fp = fopen("data/participantes.txt", "a+");
+
+    fp = fopen("../../data/participantes.txt", "a+");
     if (fp == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return 1;
@@ -40,7 +40,7 @@ int participantes_create() {
 
     pretty_format_name(nome, strlen(nome));
     strcpy(participante.nome, nome);
-    
+
     printf("Digite o sobrenome do participante: ");
     scanf("%49s", sobrenome);
     flush_in();
@@ -72,7 +72,7 @@ int participantes_create() {
     }
 
     strcpy(participante.cpf, cpf);
-    
+
     printf("Digite o celular do participante: ");
     scanf("%14s", participante.celular);
     flush_in();
@@ -94,24 +94,24 @@ int participantes_create() {
     }
 
     fprintf(fp, "%s %s %s %s %d |\n", participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
-    
+
     fclose(fp);
     //limpar_tela();
-    
+
     return 0;
 }
 
 
 /**
  * @brief Lista todos os participantes cadastrados
- * 
+ *
  * @return int 0 em caso de sucesso, 1 em caso de erro
  */
 int participantes_list() {
     Participante participante;
     FILE *fp;
 
-    fp = fopen("data/participantes.txt", "r");
+    fp = fopen("../../data/participantes.txt", "r");
     if (fp == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return 1;
@@ -123,7 +123,7 @@ int participantes_list() {
     printf("--------------------------------------------------------------------------------------\n");
 
     while (fscanf(fp, "%49s %49s %11s %14s %d |", participante.nome, participante.sobrenome, participante.cpf, participante.celular, &participante.idade) == 5) {
-        printf("| %-20s | %-20s | %-11s | %-14s | %-5d |\n", 
+        printf("| %-20s | %-20s | %-11s | %-14s | %-5d |\n",
                participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
     }
 
@@ -137,11 +137,11 @@ int participantes_list() {
 
 /**
  * @brief Atualiza os dados de um participante específico
- * 
+ *
  * Solicita o CPF do participante a ser atualizado e, se encontrado,
  * permite a edição de todos os seus dados. Utiliza um arquivo temporário
  * para fazer a atualização.
- * 
+ *
  * @return int 0 em caso de sucesso, 1 em caso de erro ou participante não encontrado
  */
 int participantes_update() {
@@ -168,7 +168,7 @@ int participantes_update() {
         return 1;
     }
 
-    fp_temp = fopen("data/temp.txt", "w");
+    fp_temp = fopen("../../data/temp.txt", "w");
     if (fp_temp == NULL) {
         printf("Erro ao criar arquivo temporário.\n");
         fclose(fp_original);
@@ -193,7 +193,7 @@ int participantes_update() {
             }
             pretty_format_name(nome, strlen(nome));
             strcpy(new_participante.nome, nome);
-    
+
             printf("Digite o sobrenome do participante (atual: %s): ", participante.sobrenome);
             scanf("%49s", sobrenome);
             flush_in();
@@ -205,11 +205,11 @@ int participantes_update() {
             }
             pretty_format_name(sobrenome, strlen(sobrenome));
             strcpy(new_participante.sobrenome, sobrenome);
-            
+
             printf("Digite o CPF do participante (atual: %s): ", participante.cpf);
             scanf("%11s", new_participante.cpf);
             flush_in();
-            
+
             if (strcmp(new_participante.cpf, participante.cpf) != 0) {
                 char cpf_valido = validate_cpf(new_participante.cpf, strlen(new_participante.cpf));
                 while (cpf_valido != 1) {
@@ -223,11 +223,11 @@ int participantes_update() {
                     cpf_valido = validate_cpf(new_participante.cpf, strlen(new_participante.cpf));
                 }
             }
-            
+
             printf("Digite o celular do participante (atual: %s): ", participante.celular);
             scanf("%14s", new_participante.celular);
             flush_in();
-            
+
             while (strlen(new_participante.celular) < 10 || !is_valid_number(new_participante.celular, strlen(new_participante.celular))) {
                 printf("\nO celular deve ser composto por 10 ou mais números! \nDigite o celular do participante: ");
                 scanf("%14s", new_participante.celular);
@@ -249,8 +249,8 @@ int participantes_update() {
     fclose(fp_original);
     fclose(fp_temp);
 
-    remove("data/participantes.txt");
-    rename("data/temp.txt", "data/participantes.txt");
+    remove("../../data/participantes.txt");
+    rename("../../data/temp.txt", "data/participantes.txt");
 
     if (encontrado == 0) {
         printf("\nParticipante com CPF %s não encontrado!\n", cpf_alvo);
@@ -267,10 +267,10 @@ int participantes_update() {
 
 /**
  * @brief Apaga um participante específico pelo CPF
- * 
+ *
  * Solicita o CPF do participante a ser removido e o exclui do arquivo.
  * Utiliza um arquivo temporário para a operação de exclusão.
- * 
+ *
  * @return int 0 em caso de sucesso, 1 em caso de erro
  */
 int participantes_delete() {
@@ -289,13 +289,13 @@ int participantes_delete() {
         flush_in();
     }
 
-    fp_original = fopen("data/participantes.txt", "r");
+    fp_original = fopen("../../data/participantes.txt", "r");
     if (fp_original == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return 1;
     }
 
-    fp_temp = fopen("data/temp.txt", "w");
+    fp_temp = fopen("../../data/temp.txt", "w");
     if (fp_temp == NULL) {
         printf("Erro ao criar arquivo temporário.\n");
         fclose(fp_original);
@@ -318,9 +318,9 @@ int participantes_delete() {
     fclose(fp_temp);
 
     // Exclui o arquivo original
-    remove("data/participantes.txt");
+    remove("../../data/participantes.txt");
     // Renomeia o arquivo temporário para o nome do arquivo original
-    rename("data/temp.txt", "data/participantes.txt");
+    rename("../../data/temp.txt", "../../data/participantes.txt");
 
     if (encontrado) {
         printf("Participante %s com CPF %s removido com sucesso!\n", nome_alvo, cpf_alvo);
@@ -331,20 +331,20 @@ int participantes_delete() {
 
     //pausar();
     //limpar_tela();
-    
+
     return 0;
 }
 
 
 /**
  * @brief Verifica se um participante existe pelo CPF
- * 
+ *
  * @param cpf O CPF do participante a ser verificado
  * @return int 1 se o participante existir, 0 caso contrário
  */
 int participante_existe(const char *cpf) {
     Participante participante;
-    FILE *fp = fopen("data/participantes.txt", "r");
+    FILE *fp = fopen("../../data/participantes.txt", "r");
     if (fp == NULL) {
         return 0;
     }

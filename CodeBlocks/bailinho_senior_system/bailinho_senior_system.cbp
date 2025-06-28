@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="bailinho_senior_system" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/bailinho_senior_system" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="D:/Repositorios_GIT/bailinho_senior_system/CodeBlocks/bailinho_senior_system/Headers/include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/bailinho_senior_system" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="../../data/eventos.txt" />
+		<Unit filename="../../data/participantes.txt" />
+		<Unit filename="../../data/produtos.txt" />
+		<Unit filename="../../data/vendas.txt" />
+		<Unit filename="../../include/eventos.h" />
+		<Unit filename="../../include/menu_eventos.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../../include/menu_participantes.h" />
+		<Unit filename="../../include/menu_produtos.h" />
+		<Unit filename="../../include/menu_vendas.h" />
+		<Unit filename="../../include/participantes.h" />
+		<Unit filename="../../include/produtos.h" />
+		<Unit filename="../../include/vendas.h" />
+		<Unit filename="../../menus/menu_eventos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../menus/menu_participantes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../menus/menu_produtos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../menus/menu_vendas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../src/eventos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../src/participantes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../src/produtos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../src/vendas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../utils/utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../utils/utils.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
