@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1751209563 source:d:\repositorios_git\bailinho_senior_system\menus\menu_eventos.c
+1751215143 source:d:\repositorios_git\bailinho_senior_system\menus\menu_eventos.c
 	<stdio.h>
 	<stdlib.h>
 	<locale.h>
@@ -32,17 +32,19 @@
 
 1751137315 d:\repositorios_git\bailinho_senior_system\include\vendas.h
 
-1751209916 source:d:\repositorios_git\bailinho_senior_system\src\eventos.c
+1751218503 source:d:\repositorios_git\bailinho_senior_system\src\eventos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<time.h>
 	<locale.h>
+	<stdbool.h>
 	"../include/eventos.h"
 	"../utils/utils.h"
 
-1751137315 d:\repositorios_git\bailinho_senior_system\utils\utils.h
+1751218635 d:\repositorios_git\bailinho_senior_system\utils\utils.h
 	<stddef.h>
+	<stdbool.h>
 
 1751208451 source:d:\repositorios_git\bailinho_senior_system\src\participantes.c
 	<stdio.h>
@@ -52,7 +54,7 @@
 	"../include/participantes.h"
 	"../utils/utils.h"
 
-1751137315 source:d:\repositorios_git\bailinho_senior_system\src\produtos.c
+1751215143 source:d:\repositorios_git\bailinho_senior_system\src\produtos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -71,12 +73,15 @@
 	"../include/produtos.h"
 	"../utils/utils.h"
 
-1751137315 source:d:\repositorios_git\bailinho_senior_system\utils\utils.c
+1751218635 source:d:\repositorios_git\bailinho_senior_system\utils\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
-	"../include/participantes.h"
 	<stddef.h>
+	<time.h>
+	<stdbool.h>
+	"../include/participantes.h"
+	"../utils/utils.h"
 	<regex.h>
 
 1751208451 source:d:\repositorios_git\bailinho_senior_system\codeblocks\bailinho_senior_system\main.c
