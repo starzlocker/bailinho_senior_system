@@ -9,7 +9,7 @@ void menu_vendas() {
         system("cls");
 
         printf("\n==============================\n");
-        printf("      MENU DE VENDAS (CRUD)\n");
+        printf("      MENU DE VENDAS \n");
         printf("==============================\n");
         printf("[1] Criar Venda\n");
         printf("[2] Listar Vendas\n");

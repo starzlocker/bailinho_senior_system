@@ -3,4 +3,4 @@ escova 15,50 5 |
 pasta_dental 8,75 0 |
 bengala 50,00 10 |
 cha 5,00 20 |
-almofada 30,00 15 |
+almofada 30,00 14 |

@@ -9,7 +9,7 @@ void menu_participantes() {
     system("cls");
 
     printf("\n==============================\n");
-    printf("      MENU DE PARTICIPANTES (CRUD)\n");
+    printf("      MENU DE PARTICIPANTES \n");
     printf("==============================\n");
     printf("[1] Cadastrar Participante\n");
     printf("[2] Listar Participantes\n");

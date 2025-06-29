@@ -9,7 +9,7 @@ void menu_produtos() {
     system("cls");
 
     printf("\n==============================\n");
-    printf("     MENU DE PRODUTOS (CRUD)\n");
+    printf("     MENU DE PRODUTOS \n");
     printf("==============================\n");
     printf("[1] Criar Produto\n");
     printf("[2] Listar Produtos\n");
