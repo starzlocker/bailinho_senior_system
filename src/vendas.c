@@ -41,7 +41,7 @@ int vendas_create() {
         }
     } while (!evento_existe(venda.nome_evento) || evento_passado(venda.nome_evento));
 
-    
+
     bool produto_encontrado = false;
     bool estoque_disponivel = false;
 
@@ -51,7 +51,7 @@ int vendas_create() {
 
         produto_encontrado = produto_existe(venda.nome_produto);
         estoque_disponivel = produto_estoque_disponivel(venda.nome_produto);
-        
+
         if (!produto_encontrado) {
             printf("⚠️ Produto %s não encontrado! Tente novamente.\n\n", venda.nome_produto);
         } else if (!estoque_disponivel) {
@@ -85,7 +85,7 @@ int vendas_list() {
     Venda venda;
     FILE *fp;
 
-    fp = fopen("data/vendas.txt", "r");
+    fp = fopen("../../data/vendas.txt", "r");
     if (fp == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return 1;

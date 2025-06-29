@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../include/participantes.h"
 #include <stddef.h>
+#include <time.h>
+#include <stdbool.h>
+
+#include "../include/participantes.h"
+#include "../utils/utils.h"
 
 /**
  * @brief Pausa a execução do programa até que o usuário pressione Enter
@@ -124,7 +128,7 @@ char validate_cpf(char cpf[], size_t length) {
  * 
  * @return int 1 se a string for inválida, 0 se for válida
  */
-int validar_string(char *str, int min, int max) {
+int validar_tamanho_string(char *str, int min, int max) {
     fflush(stdin);
 
     int len = strlen(str);
@@ -192,4 +196,81 @@ int contem_espaco(const char *str) {
         str++;
     }
     return 0;  // Não encontrou espaço
+}
+
+/**
+ * @brief Compara uma data no formato dd/mm/yyyy com a data atual
+ * 
+ * @param data A data no formato dd/mm/yyyy
+ * @return int Retorna 1 se a data já passou, 0 caso contrário
+ */
+int comparar_data(const char *data) {
+    int dia_evento, mes_evento, ano_evento;
+    int dia_atual, mes_atual, ano_atual;
+
+    // Converte a string da data do evento para dia, mês e ano
+    sscanf(data, "%d/%d/%d", &dia_evento, &mes_evento, &ano_evento);
+
+    // Obtém a data atual
+    time_t t = time(NULL);
+    struct tm *data_atual = localtime(&t);
+    dia_atual = data_atual->tm_mday;
+    mes_atual = data_atual->tm_mon + 1; // Meses começam em 0
+    ano_atual = data_atual->tm_year + 1900;
+
+    // Compara os anos
+    if (ano_evento < ano_atual) {
+        return 1; // Evento já passou
+    } else if (ano_evento > ano_atual) {
+        return 0; // Evento ainda não passou
+    }
+
+    // Compara os meses (se o ano for igual)
+    if (mes_evento < mes_atual) {
+        return 1; // Evento já passou
+    } else if (mes_evento > mes_atual) {
+        return 0; // Evento ainda não passou
+    }
+
+    // Compara os dias (se o ano e o mês forem iguais)
+    if (dia_evento < dia_atual) {
+        return 1; // Evento já passou
+    }
+
+    return 0; // Evento ainda não passou
+}
+
+
+/**
+ * @brief Valida se uma data no formato dd/mm/yyyy é válida
+ * 
+ * @param data A string contendo a data no formato dd/mm/yyyy
+ * @return bool Retorna true se a data for válida, false caso contrário
+ */
+bool validar_data(const char *data) {
+    int dia, mes, ano;
+
+    // Verifica se a data está no formato correto
+    if (sscanf(data, "%2d/%2d/%4d", &dia, &mes, &ano) != 3) {
+        return false;
+    }
+
+    // Verifica se o ano é válido
+    if (ano < 1900 || ano > 2100) {
+        return false;
+    }
+
+    // Verifica se o mês é válido
+    if (mes < 1 || mes > 12) {
+        return false;
+    }
+
+    // Verifica se o dia é válido para o mês
+    int dias_no_mes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    if (dia < 1 || dia > dias_no_mes[mes - 1]) {
+        return false;
+    }
+
+    return true;
 }

@@ -57,7 +57,7 @@ char validate_cpf(char cpf[], size_t length);
  * 
  * @return int 1 se a string for inválida, 0 se for válida
  */
-int validar_string(char *str, int min, int max);
+int validar_tamanho_string(char *str, int min, int max);
 
 /**
  * @brief Valida uma string com expressão regular
@@ -77,5 +77,22 @@ int validar_com_regex(const char *str, const char *pattern);
  * @return int 1 se a string contém espaços, 0 se não contém
  */
 int contem_espaco(const char *str);
+
+/**
+ * @brief Compara uma data no formato dd/mm/yyyy com a data atual
+ * 
+ * @param data A data no formato dd/mm/yyyy
+ * @return int Retorna 1 se a data já passou, 0 caso contrário
+ */
+int comparar_data(const char *data);
+
+/**
+ * @brief Valida se uma data no formato dd/mm/yyyy é válida
+ * 
+ * @param data A string contendo a data no formato dd/mm/yyyy
+ * @return bool Retorna true se a data for válida, false caso contrário
+ */
+bool validar_data(const char *data);
+
 
 #endif // UTILS_H

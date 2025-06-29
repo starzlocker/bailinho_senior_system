@@ -13,24 +13,23 @@
 
 int main()
 {
-    //muda a localização para Português do Brasil
     setlocale(LC_ALL, "portuguese");
 
     char input[MAX_INPUT];
     int opcao;
 
     do {
-        printf("\033[2J\033[H"); // Limpa a tela
+        system("cls");
         printf("\n========================================\n");
         printf("      SISTEMA DE GERENCIAMENTO\n");
         printf("========================================\n");
-        printf("[1] ➤ Eventos\n");
-        printf("[2] ➤ Participantes\n");
-        printf("[3] ➤ Produtos\n");
-        printf("[4] ➤ Vendas\n");
-        printf("[5] ✖ Sair\n");
+        printf("[1] Eventos\n");
+        printf("[2] Participantes\n");
+        printf("[3] Produtos\n");
+        printf("[4] Vendas\n");
+        printf("[5] Sair\n");
         printf("----------------------------------------\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma op��o: ");
         scanf("%d", &opcao);
         getchar();
         printf("----------------------------------------\n");
@@ -53,11 +52,11 @@ int main()
                 getchar();
                 break;
             default:
-                printf("\nOpção inválida. Tente novamente.\n");
+                printf("\nOp��o inv�lida. Tente novamente.\n");
                 printf("Pressione ENTER para continuar...");
                 getchar();
         }
-    } while (opcao != 5);
+    } while(opcao != 5);
 
     return 0;
 }

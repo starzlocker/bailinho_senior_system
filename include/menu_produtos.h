@@ -1,0 +1,6 @@
+#ifndef MENU_PRODUTOS_H_INCLUDED
+#define MENU_PRODUTOS_H_INCLUDED
+
+void menu_produtos();
+
+#endif // MENU_PRODUTOS_H_INCLUDED
