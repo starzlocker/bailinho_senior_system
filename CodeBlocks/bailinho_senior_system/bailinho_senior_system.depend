@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1751169080 source:c:\users\jedson\onedrive\documentos\codeblocksprojects\bailinho_senior_system\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<ctype.h>
+	<locale.h>
+	<time.h>
+	<stddef.h>
+	<stdbool.h>
+
+1751169979 source:c:\users\user\desktop\teste\bailinho_senior_system\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<ctype.h>
+	<locale.h>
+	<time.h>
+	<stddef.h>
+	<stdbool.h>
+
+1751169979 source:d:\aula\projetos_meus\bailinho_senior_system\codeblocks\bailinho_senior_system\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<ctype.h>
+	<locale.h>
+	<time.h>
+	<stddef.h>
+	<stdbool.h>
+
