@@ -8,13 +8,13 @@
 
 1751137315 d:\repositorios_git\bailinho_senior_system\include\eventos.h
 
-1751208451 source:d:\repositorios_git\bailinho_senior_system\menus\menu_participantes.c
+1751225701 source:d:\repositorios_git\bailinho_senior_system\menus\menu_participantes.c
 	<stdio.h>
 	<stdlib.h>
 	"../include/participantes.h"
 	"../include/menu_participantes.h"
 
-1751137315 d:\repositorios_git\bailinho_senior_system\include\participantes.h
+1751225579 d:\repositorios_git\bailinho_senior_system\include\participantes.h
 
 1751208451 source:d:\repositorios_git\bailinho_senior_system\menus\menu_produtos.c
 	<stdio.h>
@@ -32,12 +32,11 @@
 
 1751137315 d:\repositorios_git\bailinho_senior_system\include\vendas.h
 
-1751218503 source:d:\repositorios_git\bailinho_senior_system\src\eventos.c
+1751220817 source:d:\repositorios_git\bailinho_senior_system\src\eventos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<time.h>
-	<locale.h>
 	<stdbool.h>
 	"../include/eventos.h"
 	"../utils/utils.h"
@@ -46,11 +45,12 @@
 	<stddef.h>
 	<stdbool.h>
 
-1751208451 source:d:\repositorios_git\bailinho_senior_system\src\participantes.c
+1751229546 source:d:\repositorios_git\bailinho_senior_system\src\participantes.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
+	<stdbool.h>
 	"../include/participantes.h"
 	"../utils/utils.h"
 
@@ -73,7 +73,7 @@
 	"../include/produtos.h"
 	"../utils/utils.h"
 
-1751218635 source:d:\repositorios_git\bailinho_senior_system\utils\utils.c
+1751226006 source:d:\repositorios_git\bailinho_senior_system\utils\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
