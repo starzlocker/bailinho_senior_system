@@ -12,7 +12,7 @@ void menu_eventos() {
         system("cls");
 
         printf("\n==============================\n");
-        printf("      MENU DE EVENTOS (CRUD)\n");
+        printf("      MENU DE EVENTOS \n");
         printf("==============================\n");
         printf("[1] Criar Evento\n");
         printf("[2] Listar Eventos\n");

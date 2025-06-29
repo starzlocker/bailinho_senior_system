@@ -28,7 +28,7 @@ int produtos_create() {
         printf("Digite o nome do produto (sem espaço): "); 
         scanf(" %49[^\n]", produto.nome);
 
-        valida = validar_string(produto.nome, 1, 49);
+        valida = validar_tamanho_string(produto.nome, 1, 49);
 
         if (valida) {
             printf("Nome inválido! Deve ter entre 1 e 50 caracteres.\n");
@@ -150,7 +150,7 @@ int produtos_update() {
                 printf("Digite o novo nome do produto (sem espaços - atual: %s): ", produto.nome);
                 scanf(" %49[^\n]", new_produto.nome);
 
-                valida = validar_string(new_produto.nome, 1, 49);
+                valida = validar_tamanho_string(new_produto.nome, 1, 49);
 
                 if (valida) {
                     printf("Nome inválido! Deve ter entre 1 e 50 caracteres.\n");

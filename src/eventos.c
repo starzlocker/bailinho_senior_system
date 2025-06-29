@@ -8,147 +8,159 @@
 #include "../include/eventos.h"
 #include "../utils/utils.h"
 
-int validaEvento; // Variável global para validação de entradas
-
 /**
  * @brief Cadastra um novo evento no sistema
- *
- * Solicita ao usuário informações sobre o novo evento e
- * as armazena em um arquivo de texto (eventos.txt).
- *
- * @return int 0 em caso de sucesso, 1 em caso de erro
+ * 
+ * Solicita ao usuário informações sobre o novo evento, como nome, data, horário, valor e status.
+ * Valida cada entrada antes de salvar os dados no arquivo de eventos.
+ * 
+ * @return int Retorna 0 em caso de sucesso, 1 em caso de erro ao abrir o arquivo.
  */
 int eventos_create() {
     Evento evento;
     FILE *fp;
-    bool digitou_corretamente = false;
 
+    // Abre o arquivo para adicionar novos eventos
     fp = fopen("../../data/eventos.txt", "a+");
     if (fp == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo de eventos.\n");
         return 1;
     }
 
+    // Solicita e valida o nome do evento
+    bool nome_valido, contem_espacos;
     do {
-        printf("Digite o nome do evento (Sem espaços): ");
+        printf("Digite o nome do evento (ex: carnaval_2025): ");
         scanf(" %49[^\n]", evento.nome);
 
-        validaEvento = validar_string(evento.nome, 1, 49);
+        nome_valido = validar_tamanho_string(evento.nome, 1, 49);
+        contem_espacos = contem_espaco(evento.nome);
 
-        if (validaEvento) {
-            printf("Nome inválido! Deve ter entre 1 e 50 caracteres.\n");
-            continue;
+        if (!nome_valido) {
+            printf("Nome inválido! Deve ter entre 1 e 50 caracteres.\n\n");
+        } else if (contem_espacos) {
+            printf("Nome inválido! Não deve conter espaços.\n\n");
         }
+    } while (!nome_valido || contem_espacos);
 
-        validaEvento = contem_espaco(evento.nome);
-
-        if (validaEvento) {
-            printf("Nome inválido! Não deve conter espaços.\n");
-        }
-    } while (validaEvento == 1);
-
+    // Solicita e valida a data do evento
+    bool data_formato_invalido, data_inexistente;
     do {
         printf("Digite a data do evento (ex: 30/05/2003): ");
         scanf("%s", evento.data);
 
-        validaEvento = validar_com_regex(evento.data, "^([0-2][0-9]|(3)[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$");
-        if (validaEvento) {
-            printf("Data inválida! Deve estar no formato dd/mm/YY.\n");
-        }
-    } while (validaEvento == 1);
+        data_formato_invalido = validar_com_regex(evento.data, "^([0-2][0-9]|(3)[0-1])/(0[1-9]|1[0-2])/[0-9]{4}$");
+        data_inexistente = validar_data(evento.data);
 
+        if (data_formato_invalido) {
+            printf("Data inválida! Deve estar no formato dd/mm/yyyy.\n");
+        } else if(data_inexistente) {
+            printf("Data inválida! A data não existe.\n");
+        }
+    } while (data_formato_invalido || data_inexistente);
+
+    // Solicita e valida o horário do evento
+    bool horario_valido;
     do {
         printf("Digite o horário do evento (ex: 15:45): ");
         scanf("%s", evento.horario);
 
-        validaEvento = validar_com_regex(evento.horario, "^([01][0-9]|2[0-3]):[0-5][0-9]$");
-        if (validaEvento) {
+        horario_valido = !validar_com_regex(evento.horario, "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
+        if (!horario_valido) {
             printf("Horário inválido! Deve estar no formato HH:MM 24horas.\n");
         }
-    } while (validaEvento == 1);
+    } while (!horario_valido);
 
+    // Solicita e valida o valor do evento
+    bool valor_valido;
     do {
-        validaEvento = 0;
         printf("Digite o valor do evento: ");
         scanf("%f", &evento.valorEntrada);
 
         if (evento.valorEntrada < 0) {
-            printf("Valor inválido! Valor do evento deve ser um número positivo.\n");
-            validaEvento = 1;
+            printf("Valor inválido! Deve ser um número positivo.\n");
         }
-    } while (validaEvento == 1);
+    } while (!valor_valido);
 
+    // Exibe os status disponíveis e solicita o status do evento
     listar_status_evento();
-
+    bool status_valido;
     do {
-        validaEvento = 0;
         int status;
-
         printf("Digite o status do evento: ");
         scanf("%d", &status);
+
         strcpy(evento.status, status_evento(status));
+        status_valido = strcmp(evento.status, "invalido") != 0;
 
-        validaEvento = strcmp(evento.status, "invalido") == 0;
-
-        if (validaEvento) {
+        if (!status_valido) {
             printf("Status inválido! Escolha um status válido.\n");
         }
-    } while (validaEvento);
+    } while (!status_valido);
 
-    fprintf(
-        fp,
-        "%s %s %s %f %s |\n",
-        evento.nome, evento.data, evento.horario, evento.valorEntrada, evento.status
-    );
+    // Grava o evento no arquivo
+    fprintf(fp, "%s %s %s %.2f %s |\n", evento.nome, evento.data, evento.horario, evento.valorEntrada, evento.status);
 
     fclose(fp);
     limpar_tela();
-
     return 0;
 }
-
 
 /**
  * @brief Lista todos os eventos cadastrados
- *
- * @return int 0 em caso de sucesso, 1 em caso de erro
+ * 
+ * Lê os eventos do arquivo e exibe em formato tabular no console.
+ * 
+ * @return int Retorna 0 em caso de sucesso, 1 em caso de erro ao abrir o arquivo.
  */
 int eventos_list() {
-    Evento evento;
+    Evento eventos[100]; // Vetor para armazenar até 100 eventos
+    int count = 0;       // Contador para o número de eventos
     FILE *fp;
 
+    // Abre o arquivo para leitura
     fp = fopen("../../data/eventos.txt", "r");
     if (fp == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo de eventos.\n");
         return 1;
     }
 
+    // Lê os eventos do arquivo e armazena no vetor
+    while (fscanf(fp, "%49s %10s %5s %f %9s |", eventos[count].nome, eventos[count].data, eventos[count].horario, 
+                  &eventos[count].valorEntrada, eventos[count].status) == 5) {
+        count++;
+        if (count >= 100) {
+            printf("Aviso: Número máximo de eventos (100) atingido. Alguns eventos podem não ser exibidos.\n");
+            break;
+        }
+    }
+    fclose(fp);
+
+    // Exibe o cabeçalho da tabela
     printf("\nLista de eventos:\n");
     printf("|-----------------------------------------------------------------------------------------------|\n");
-    printf("| %-40s | %-12s | %-7s | %-13s | %-9s |\n", "Nome", "Data", "horario", "Entrada", "Status");
+    printf("| %-40s | %-12s | %-7s | %-13s | %-9s |\n", "Nome", "Data", "Horário", "Entrada", "Status");
     printf("|-----------------------------------------------------------------------------------------------|\n");
 
-    while (fscanf(fp, "%49s %10s %5s %f %9s |", evento.nome, evento.data, evento.horario, &evento.valorEntrada, evento.status) == 5) {
-        printf("| %-40s | %-12s | %-7s | R$ %-10.2f | %-9s |\n", evento.nome, evento.data, evento.horario, evento.valorEntrada, evento.status);
+    // Exibe os eventos armazenados no vetor
+    for (int i = 0; i < count; i++) {
+        printf("| %-40s | %-12s | %-7s | R$ %-10.2f | %-9s |\n", eventos[i].nome, eventos[i].data, eventos[i].horario, 
+               eventos[i].valorEntrada, eventos[i].status);
     }
     printf("|-----------------------------------------------------------------------------------------------|\n");
 
-    fclose(fp);
     pausar();
     limpar_tela();
-
     return 0;
 }
 
-
 /**
  * @brief Atualiza os status de um evento
- *
- * Solicita o nome do evento a ser atualizado e, se encontrado,
- * permite a alteração do seu status. Utiliza um arquivo temporário
- * para fazer a atualização.
- *
- * @return int 0 em caso de sucesso, 1 em caso de erro ou participante não encontrado
+ * 
+ * Solicita o nome do evento a ser atualizado e, se encontrado, permite a alteração do status.
+ * Utiliza um arquivo temporário para realizar a atualização de forma segura.
+ * 
+ * @return int Retorna 0 em caso de sucesso, 1 em caso de erro ou se o evento não for encontrado.
  */
 int eventos_update() {
     FILE *fp_original, *fp_temp;
@@ -156,15 +168,18 @@ int eventos_update() {
     char nome_alvo[50];
     int encontrado = 0;
 
+    // Solicita o nome do evento a ser atualizado
     printf("Digite o nome do evento que deseja alterar o status: ");
     scanf("%s", nome_alvo);
 
+    // Abre o arquivo original para leitura
     fp_original = fopen("../../data/eventos.txt", "r");
     if (fp_original == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo de eventos.\n");
         return 1;
     }
 
+    // Abre um arquivo temporário para escrita
     fp_temp = fopen("../../data/temp.txt", "w");
     if (fp_temp == NULL) {
         printf("Erro ao criar arquivo temporário.\n");
@@ -172,58 +187,60 @@ int eventos_update() {
         return 1;
     }
 
-    //Lê cada evento do arquivo original
+    // Lê cada evento do arquivo original
     while (fscanf(fp_original, "%49s %10s %5s %f %9s |", evento.nome, evento.data, evento.horario, &evento.valorEntrada, evento.status) == 5) {
         if (strcmp(nome_alvo, evento.nome) != 0) {
-            fprintf(fp_temp, "%s %s %s %f %s |\n", evento.nome, evento.data, evento.horario, evento.valorEntrada, evento.status);
-
+            // Copia o evento para o arquivo temporário se não for o alvo
+            fprintf(fp_temp, "%s %s %s %.2f %s |\n", evento.nome, evento.data, evento.horario, evento.valorEntrada, evento.status);
         } else {
             encontrado = 1;
 
+            // Solicita o novo status do evento
             listar_status_evento();
-
+            bool status_valido;
             do {
                 int status;
-
-                printf("Digite o status do evento (atual: %s): ", evento.status);
+                printf("Digite o novo status do evento (atual: %s): ", evento.status);
                 scanf("%d", &status);
+
                 strcpy(evento.status, status_evento(status));
+                status_valido = strcmp(evento.status, "invalido") != 0;
 
-                validaEvento = strcmp(evento.status, "invalido") == 0;
-
-                if (validaEvento) {
+                if (!status_valido) {
                     printf("Status inválido! Escolha um status válido.\n");
                 }
-            } while (validaEvento);
+            } while (!status_valido);
 
-            fprintf(fp_temp, "%s %s %s %f %s |\n", evento.nome, evento.data, evento.horario, evento.valorEntrada, evento.status);
+            // Grava o evento atualizado no arquivo temporário
+            fprintf(fp_temp, "%s %s %s %.2f %s |\n", evento.nome, evento.data, evento.horario, evento.valorEntrada, evento.status);
         }
     }
 
     fclose(fp_original);
     fclose(fp_temp);
 
+    // Substitui o arquivo original pelo temporário
     remove("../../data/eventos.txt");
     rename("../../data/temp.txt", "../../data/eventos.txt");
 
-    if (encontrado == 0) {
+    if (!encontrado) {
         printf("Evento não encontrado.\n");
         pausar();
         limpar_tela();
         return 1;
     }
 
-    printf("Dados atualizados com sucesso!");
+    printf("Dados atualizados com sucesso!\n");
     limpar_tela();
     return 0;
 }
 
 /**
  * @brief Lista os status dos eventos disponíveis
- *
+ * 
  * Exibe uma tabela com os status possíveis para os eventos,
  * incluindo "Concluido", "Cancelado" e "Agendado".
- *
+ * 
  * @return void
  */
 void listar_status_evento() {
@@ -237,11 +254,11 @@ void listar_status_evento() {
 
 /**
  * @brief Converte o status numérico de um evento para uma string
- *
+ * 
  * Recebe um inteiro representando o status do evento e retorna uma string
- *
+ * 
  * @param status O status do evento (1: concluido, 2: cancelado, 3: agendado)
- *
+ * 
  * @return const char* A string correspondente ao status do evento
  */
 const char* status_evento(int status) {
@@ -273,48 +290,6 @@ int evento_existe(const char *nome) {
 
     fclose(fp);
     return 0;
-}
-
-/**
- * @brief Compara uma data no formato dd/mm/yyyy com a data atual
- *
- * @param data A data no formato dd/mm/yyyy
- * @return int Retorna 1 se a data já passou, 0 caso contrário
- */
-int comparar_data(const char *data) {
-    int dia_evento, mes_evento, ano_evento;
-    int dia_atual, mes_atual, ano_atual;
-
-    // Converte a string da data do evento para dia, mês e ano
-    sscanf(data, "%d/%d/%d", &dia_evento, &mes_evento, &ano_evento);
-
-    // Obtém a data atual
-    time_t t = time(NULL);
-    struct tm *data_atual = localtime(&t);
-    dia_atual = data_atual->tm_mday;
-    mes_atual = data_atual->tm_mon + 1; // Meses começam em 0
-    ano_atual = data_atual->tm_year + 1900;
-
-    // Compara os anos
-    if (ano_evento < ano_atual) {
-        return 1; // Evento já passou
-    } else if (ano_evento > ano_atual) {
-        return 0; // Evento ainda não passou
-    }
-
-    // Compara os meses (se o ano for igual)
-    if (mes_evento < mes_atual) {
-        return 1; // Evento já passou
-    } else if (mes_evento > mes_atual) {
-        return 0; // Evento ainda não passou
-    }
-
-    // Compara os dias (se o ano e o mês forem iguais)
-    if (dia_evento < dia_atual) {
-        return 1; // Evento já passou
-    }
-
-    return 0; // Evento ainda não passou
 }
 
 int evento_passado(const char *nome) {
