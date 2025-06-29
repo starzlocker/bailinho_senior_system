@@ -1,7 +1,7 @@
-festa_junina 10/06/2025 18:00 50,00 agendado |
-show_rock 15/07/2025 20:00 100,00 concluido |
-feira_livros 01/08/2024 09:00 20,00 cancelado |
-corrida_5k 20/09/2025 07:00 30,00 agendado |
+baile_das_rosas 10/06/2025 18:00 30,00 agendado |
+noite_do_chapeu 15/07/2025 20:00 20,00 concluido |
+tarde_das_flores 01/08/2024 15:00 15,00 cancelado |
+baile_dos_sonhos 20/09/2025 19:00 25,00 agendado |
 carnaval_2023 20/02/2023 16:00 80,00 concluido |
 black_friday 25/11/2023 00:00 0,00 concluido |
 festival_verao 15/01/2024 14:00 120,00 cancelado |
