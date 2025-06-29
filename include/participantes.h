@@ -61,4 +61,25 @@ int participantes_delete();
  */
 int participante_existe(const char *cpf);
 
+/**
+ * @brief Carrega os participantes do arquivo para um vetor
+ * 
+ * Lê os dados dos participantes do arquivo e os armazena em um vetor.
+ * 
+ * @param participantes Vetor onde os participantes serão armazenados
+ * @param max_participantes Tamanho máximo do vetor de participantes
+ * @return int Número de participantes carregados, ou -1 em caso de erro
+ */
+int carregar_participantes(Participante *participantes, int max_participantes);
+
+/**
+ * @brief Cadastra os participantes no arquivo
+ * 
+ * Grava os dados dos participantes em um arquivo de texto.
+ * 
+ * @param participantes Vetor de participantes a serem gravados
+ * @return int 0 em caso de sucesso, 1 em caso de erro
+ */
+int cadastrar_participantes(Participante *participantes);
+
 #endif /* PARTICIPANTES_H */

@@ -2,265 +2,311 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 #include "../include/participantes.h"
 #include "../utils/utils.h"
 
+#define MAX_PARTICIPANTES 100
+
+/**
+ * @brief Lê os participantes do arquivo e armazena em um vetor
+ * 
+ * @param participantes Vetor de participantes para armazenar os dados
+ * @param max_participantes Número máximo de participantes que o vetor pode armazenar
+ * @return int Retorna o número de participantes lidos ou -1 em caso de erro ao abrir o arquivo
+ */
+int carregar_participantes(Participante *participantes, int max_participantes) {
+    FILE *fp = fopen("../../data/participantes.txt", "r");
+    if (fp == NULL) {
+        printf("Erro ao abrir o arquivo de participantes.\n\n");
+        return -1;
+    }
+
+    int count = 0;
+    while (fscanf(fp, "%49s %49s %11s %14s %d |", participantes[count].nome, participantes[count].sobrenome, 
+                  participantes[count].cpf, participantes[count].celular, &participantes[count].idade) == 5) {
+        count++;
+        if (count >= max_participantes) {
+            printf("Aviso: Número máximo de participantes (%d) atingido. Alguns participantes podem não ser carregados.\n\n", max_participantes);
+            break;
+        }
+    }
+
+    fclose(fp);
+    return count;
+}
+
+/**
+ * @brief Cadastra múltiplos participantes no sistema a partir de um vetor
+ * 
+ * Recebe um vetor de participantes e salva cada um no arquivo de participantes.
+ * 
+ * @param participantes Vetor de participantes a serem cadastrados (terminado com um marcador vazio)
+ * @return int Retorna 0 em caso de sucesso, 1 em caso de erro ao abrir o arquivo.
+ */
+int cadastrar_participantes(Participante *participantes) {
+    FILE *fp;
+
+    // Abre o arquivo para adicionar novos participantes
+    fp = fopen("../../data/participantes.txt", "a+");
+    if (fp == NULL) {
+        printf("Erro ao abrir o arquivo de participantes.\n\n");
+        return 1;
+    }
+
+    // Grava cada participante no arquivo até encontrar um marcador vazio
+    int count = 0;
+    while (strlen(participantes[count].cpf) > 0) { // Verifica se o CPF não está vazio
+        fprintf(fp, "%s %s %s %s %d |\n", participantes[count].nome, participantes[count].sobrenome, participantes[count].cpf, 
+                participantes[count].celular, participantes[count].idade);
+        count++;
+    }
+
+    fclose(fp);
+    printf("%d participantes cadastrados com sucesso!\n\n", count);
+    return 0;
+}
+
 /**
  * @brief Cadastra um novo participante no sistema
- *
- * Solicita ao usuário informações sobre o novo participante e
- * as armazena em um arquivo de texto (participantes.txt).
- *
- * @return int 0 em caso de sucesso, 1 em caso de erro
+ * 
+ * Solicita ao usuário informações sobre o novo participante, valida cada entrada e salva no arquivo.
+ * 
+ * @return int Retorna 0 em caso de sucesso, 1 em caso de erro ao abrir o arquivo.
  */
 int participantes_create() {
     Participante participante;
     FILE *fp;
-    char cpf[12];
-    char nome[50];
-    char sobrenome[50];
-    char is_cpf_valido = 0;
 
-
+    // Abre o arquivo para adicionar novos participantes
     fp = fopen("../../data/participantes.txt", "a+");
     if (fp == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo de participantes.\n\n");
         return 1;
     }
 
-    printf("Digite o nome do participante: ");
-    scanf("%49s", nome);
-    flush_in();
+    // Solicita e valida o nome do participante
+    bool nome_valido;
+    do {
+        printf("Digite o nome: ");
+        scanf(" %49s", participante.nome);
 
-    while (strlen(nome) < 3) {
-        printf("\nO nome deve ter 3 ou mais letras! \nDigite o nome do participante: ");
-        scanf("%49s", nome);
-        flush_in();
-    }
-
-    pretty_format_name(nome, strlen(nome));
-    strcpy(participante.nome, nome);
-
-    printf("Digite o sobrenome do participante: ");
-    scanf("%49s", sobrenome);
-    flush_in();
-
-    while (strlen(sobrenome) < 3) {
-        printf("\nO nome deve ter 3 ou mais letras! \nDigite o sobrenome do participante: ");
-        scanf("%49s", sobrenome);
-        flush_in();
-    }
-
-    pretty_format_name(sobrenome, strlen(sobrenome));
-    strcpy(participante.sobrenome, sobrenome);
-
-    printf("Digite o CPF do participante: ");
-    scanf("%11s", cpf);
-    flush_in();
-
-    is_cpf_valido = validate_cpf(cpf, strlen(cpf));
-
-    while (is_cpf_valido != 1) {
-        if (is_cpf_valido == 0) {
-            printf("\nO CPF já está cadastrado!\nDigite o CPF do participante: ");
-        } else if (is_cpf_valido == -1) {
-            printf("\nO CPF deve ser composto por 11 números! \nDigite o CPF do participante: ");
+        nome_valido = !validar_tamanho_string(participante.nome, 3, 49);
+        if (!nome_valido) {
+            printf("Nome inválido! Deve ter entre 3 e 50 caracteres.\n\n");
         }
-        scanf("%11s", cpf);
-        is_cpf_valido = validate_cpf(cpf, strlen(cpf));
-        flush_in();
-    }
+    } while (!nome_valido);
 
-    strcpy(participante.cpf, cpf);
+    pretty_format_name(participante.nome, strlen(participante.nome));
 
-    printf("Digite o celular do participante: ");
-    scanf("%14s", participante.celular);
-    flush_in();
+    // Solicita e valida o sobrenome do participante
+    bool sobrenome_valido;
+    do {
+        printf("Digite o sobrenome do participante: ");
+        scanf("%49s", participante.sobrenome);
 
-    while (strlen(participante.celular) < 10 || !is_valid_number(participante.celular, strlen(participante.celular))) {
-        printf("\nO celular deve ser composto por 10 ou mais números! \nDigite o celular do participante: ");
+        sobrenome_valido = !validar_tamanho_string(participante.sobrenome, 3, 49);
+        if (!sobrenome_valido) {
+            printf("Sobrenome inválido! Deve ter entre 3 e 50 caracteres.\n\n");
+        }
+    } while (!sobrenome_valido);
+
+    pretty_format_name(participante.sobrenome, strlen(participante.sobrenome));
+
+    // Solicita e valida o CPF do participante
+    bool cpf_valido;
+    do {
+        printf("Digite o CPF do participante (11 numeros): ");
+        scanf("%11s", participante.cpf);
+
+        cpf_valido = validate_cpf(participante.cpf, strlen(participante.cpf)) == 1;
+        if (!cpf_valido) {
+            printf("CPF inválido ou já cadastrado! Digite outro CPF.\n\n");
+        }
+    } while (!cpf_valido);
+
+    // Solicita e valida o celular do participante
+    bool celular_valido;
+    do {
+        printf("Digite o celular do participante (10 ou mais números): ");
         scanf("%14s", participante.celular);
-        flush_in();
-    }
 
-    printf("Digite a idade do participante: ");
-    scanf("%d", &participante.idade);
-    flush_in();
+        int tamanho_celular = strlen(participante.celular);
+        celular_valido = tamanho_celular >= 10 && is_valid_number(participante.celular, tamanho_celular);
+        
+        if (!celular_valido) {
+            printf("Celular inválido! Deve conter 10 ou mais números.\n\n");
+        }
+    } while (!celular_valido);
 
-    while (participante.idade < 0 || participante.idade > 120) {
-        printf("\nA idade deve ser um número entre 0 e 120! \nDigite a idade do participante: ");
+    // Solicita e valida a idade do participante
+    bool idade_valida;
+    do {
+        printf("Digite a idade do participante: ");
         scanf("%d", &participante.idade);
-        flush_in();
+
+        idade_valida = participante.idade >= 0 && participante.idade <= 120;
+        if (!idade_valida) {
+            printf("Idade inválida! Deve ser um número entre 0 e 120.\n\n");
+        }
+    } while (!idade_valida);
+
+    Participante participantes[1] = {participante};
+
+    // Grava o participante no arquivo
+    bool cadastrou_com_sucesso = cadastrar_participantes(participantes);
+    if (cadastrou_com_sucesso != 0) {
+        printf("Erro ao cadastrar o participante no arquivo.\n\n");
+        return 1;
     }
 
-    fprintf(fp, "%s %s %s %s %d |\n", participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
-
-    fclose(fp);
-    //limpar_tela();
+    printf("Participante cadastrado com sucesso!\n\n");
+    pausar();
+    limpar_tela();
 
     return 0;
 }
-
 
 /**
  * @brief Lista todos os participantes cadastrados
- *
- * @return int 0 em caso de sucesso, 1 em caso de erro
+ * 
+ * Lê os participantes do arquivo e exibe diretamente no console.
+ * 
+ * @return int Retorna 0 em caso de sucesso, 1 em caso de erro ao abrir o arquivo.
  */
 int participantes_list() {
-    Participante participante;
+    Participante participantes[MAX_PARTICIPANTES]; // Vetor para armazenar até 100 participantes
+    int count = 0;                                 // Contador para o número de participantes
     FILE *fp;
 
-    fp = fopen("../../data/participantes.txt", "r");
-    if (fp == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        return 1;
+    // Abre o arquivo para leitura
+    int count = carregar_participantes(participantes, MAX_PARTICIPANTES);
+
+    if (count == -1) {
+        return 1; // Erro ao abrir o arquivo
     }
 
+    // Exibe o cabeçalho da tabela
     printf("\nLista de participantes:\n");
-    printf("--------------------------------------------------------------------------------------\n");
+    printf("+--------------------------------------------------------------------------------------+\n");
     printf("| %-20s | %-20s | %-11s | %-14s | %-5s |\n", "Nome", "Sobrenome", "CPF", "Celular", "Idade");
-    printf("--------------------------------------------------------------------------------------\n");
+    printf("+--------------------------------------------------------------------------------------+\n");
 
-    while (fscanf(fp, "%49s %49s %11s %14s %d |", participante.nome, participante.sobrenome, participante.cpf, participante.celular, &participante.idade) == 5) {
-        printf("| %-20s | %-20s | %-11s | %-14s | %-5d |\n",
-               participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
+    // Exibe os participantes armazenados no vetor
+    for (int i = 0; i < count; i++) {
+        printf("| %-20s | %-20s | %-11s | %-14s | %-5d |\n", participantes[i].nome, participantes[i].sobrenome, 
+               participantes[i].cpf, participantes[i].celular, participantes[i].idade);
     }
+    printf("+--------------------------------------------------------------------------------------+\n");
 
-    printf("--------------------------------------------------------------------------------------\n");
-
-    fclose(fp);
+    pausar();
+    limpar_tela();
     return 0;
 }
 
-
-
 /**
- * @brief Atualiza os dados de um participante específico
- *
- * Solicita o CPF do participante a ser atualizado e, se encontrado,
- * permite a edição de todos os seus dados. Utiliza um arquivo temporário
- * para fazer a atualização.
- *
- * @return int 0 em caso de sucesso, 1 em caso de erro ou participante não encontrado
+ * @brief Atualiza os dados de um participante existente no sistema
+ * 
+ * Solicita o CPF do participante, permite ao usuário atualizar seus campos e salva as alterações no arquivo.
+ * 
+ * @return int Retorna 0 em caso de sucesso, 1 em caso de erro ou se o participante não for encontrado.
  */
 int participantes_update() {
-    FILE *fp_original, *fp_temp;
-    Participante participante, new_participante;
+    Participante participantes[MAX_PARTICIPANTES];
+    int count = carregar_participantes(participantes, MAX_PARTICIPANTES);
+
+    if (count == -1) {
+        return 1; // Erro ao abrir o arquivo
+    }
+
     char cpf_alvo[12];
-    char nome[50];
-    char sobrenome[50];
-    int encontrado = 0;
+    int indice_encontrado = -1;
 
+    // Solicita o CPF do participante a ser atualizado
+    bool cpf_valido;
+    do {
     printf("Digite o CPF do participante que deseja atualizar: ");
-    scanf("%11s", cpf_alvo);
-    flush_in();
-    while(strlen(cpf_alvo) != 11 || !is_valid_number(cpf_alvo, strlen(cpf_alvo))) {
-        printf("\nO CPF deve ser composto por 11 números! \nDigite o CPF do participante: ");
         scanf("%11s", cpf_alvo);
-        flush_in();
-    }
 
+        cpf_valido = validate_cpf(cpf_alvo, strlen(cpf_alvo)) != 0;
+        if (!cpf_valido) {
+            printf("CPF inválido ou não cadastrado! Digite outro CPF.\n\n");
+        }
+    } while (!cpf_valido);
 
-    fp_original = fopen("data/participantes.txt", "r");
-    if (fp_original == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        return 1;
-    }
-
-    fp_temp = fopen("../../data/temp.txt", "w");
-    if (fp_temp == NULL) {
-        printf("Erro ao criar arquivo temporário.\n");
-        fclose(fp_original);
-        return 1;
-    }
-
-    // Lê cada participante do arquivo original
-    while (fscanf(fp_original, "%49s %49s %11s %14s %d |", participante.nome, participante.sobrenome, participante.cpf, participante.celular, &participante.idade) == 5) {
-        if (strcmp(cpf_alvo, participante.cpf) != 0) {
-            fprintf(fp_temp, "%s %s %s %s %d |\n", participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
-        } else {
-            encontrado = 1;
-
-            printf("Digite o nome do participante (atual: %s): ", participante.nome);
-            scanf("%49s", nome);
-            flush_in();
-
-            while (strlen(nome) < 3) {
-                printf("\nO nome deve ter 3 ou mais letras! \nDigite o nome do participante: ");
-                scanf("%49s", nome);
-                flush_in();
-            }
-            pretty_format_name(nome, strlen(nome));
-            strcpy(new_participante.nome, nome);
-
-            printf("Digite o sobrenome do participante (atual: %s): ", participante.sobrenome);
-            scanf("%49s", sobrenome);
-            flush_in();
-
-            while (strlen(sobrenome) < 3) {
-                printf("\nO nome deve ter 3 ou mais letras! \nDigite o sobrenome do participante: ");
-                scanf("%49s", sobrenome);
-                flush_in();
-            }
-            pretty_format_name(sobrenome, strlen(sobrenome));
-            strcpy(new_participante.sobrenome, sobrenome);
-
-            printf("Digite o CPF do participante (atual: %s): ", participante.cpf);
-            scanf("%11s", new_participante.cpf);
-            flush_in();
-
-            if (strcmp(new_participante.cpf, participante.cpf) != 0) {
-                char cpf_valido = validate_cpf(new_participante.cpf, strlen(new_participante.cpf));
-                while (cpf_valido != 1) {
-                    if (cpf_valido == 0) {
-                        printf("CPF já cadastrado! Digite outro CPF: ");
-                    } else {
-                        printf("CPF inválido! Digite um CPF com 11 números: ");
-                    }
-                    scanf("%11s", new_participante.cpf);
-                    flush_in();
-                    cpf_valido = validate_cpf(new_participante.cpf, strlen(new_participante.cpf));
-                }
-            }
-
-            printf("Digite o celular do participante (atual: %s): ", participante.celular);
-            scanf("%14s", new_participante.celular);
-            flush_in();
-
-            while (strlen(new_participante.celular) < 10 || !is_valid_number(new_participante.celular, strlen(new_participante.celular))) {
-                printf("\nO celular deve ser composto por 10 ou mais números! \nDigite o celular do participante: ");
-                scanf("%14s", new_participante.celular);
-                flush_in();
-            }
-            printf("Digite a idade do participante (atual: %d): ", participante.idade);
-            scanf("%d", &new_participante.idade);
-            flush_in();
-
-            while (new_participante.idade < 0 || new_participante.idade > 120) {
-                printf("\nA idade deve ser um número entre 0 e 120! \nDigite a idade do participante: ");
-                scanf("%d", &new_participante.idade);
-                flush_in();
-            }
-
-            fprintf(fp_temp, "%s %s %s %s %d |\n", new_participante.nome, new_participante.sobrenome, new_participante.cpf, new_participante.celular, new_participante.idade);
+    // Procura o participante no vetor
+    for (int i = 0; i < count; i++) {
+        if (strcmp(cpf_alvo, participantes[i].cpf) == 0) {
+            indice_encontrado = i;
+            break;
         }
     }
-    fclose(fp_original);
-    fclose(fp_temp);
 
-    remove("../../data/participantes.txt");
-    rename("../../data/temp.txt", "data/participantes.txt");
+    // Atualiza os dados do participante encontrado
+    printf("Atualizando dados do participante '%s %s'.\n\n", participantes[indice_encontrado].nome, participantes[indice_encontrado].sobrenome);
 
-    if (encontrado == 0) {
-        printf("\nParticipante com CPF %s não encontrado!\n", cpf_alvo);
-        //pausar();
-        //limpar_tela();
+    // Atualiza o nome
+    bool nome_valido;
+    do {
+        printf("Novo nome (atual: %s): ", participantes[indice_encontrado].nome);
+        scanf(" %49[^\n]", participantes[indice_encontrado].nome);
+
+        nome_valido = !validar_tamanho_string(participantes[indice_encontrado].nome, 3, 49);
+        if (!nome_valido) {
+            printf("Nome inválido! Deve ter entre 3 e 50 caracteres.\n\n");
+        }
+    } while (!nome_valido);
+
+    pretty_format_name(participantes[indice_encontrado].nome, strlen(participantes[indice_encontrado].nome));
+
+    // Atualiza o sobrenome
+    bool sobrenome_valido;
+    do {
+        printf("Novo sobrenome (atual: %s): ", participantes[indice_encontrado].sobrenome);
+        scanf(" %49[^\n]", participantes[indice_encontrado].sobrenome);
+
+        sobrenome_valido = !validar_tamanho_string(participantes[indice_encontrado].sobrenome, 3, 49);
+        if (!sobrenome_valido) {
+            printf("Sobrenome inválido! Deve ter entre 3 e 50 caracteres.\n\n");
+        }
+    } while (!sobrenome_valido);
+
+    pretty_format_name(participantes[indice_encontrado].sobrenome, strlen(participantes[indice_encontrado].sobrenome));
+
+    // Atualiza o celular
+    bool celular_valido;
+    do {
+        printf("Novo celular (atual: %s): ", participantes[indice_encontrado].celular);
+        scanf("%14s", participantes[indice_encontrado].celular);
+
+        celular_valido = strlen(participantes[indice_encontrado].celular) >= 10 && is_valid_number(participantes[indice_encontrado].celular, strlen(participantes[indice_encontrado].celular));
+        if (!celular_valido) {
+            printf("Celular inválido! Deve conter 10 ou mais números.\n\n");
+        }
+    } while (!celular_valido);
+
+    // Atualiza a idade
+    bool idade_valida;
+    do {
+        printf("Nova idade (atual: %d): ", participantes[indice_encontrado].idade);
+        scanf("%d", &participantes[indice_encontrado].idade);
+
+        idade_valida = participantes[indice_encontrado].idade >= 0 && participantes[indice_encontrado].idade <= 120;
+        if (!idade_valida) {
+            printf("Idade inválida! Deve ser um número entre 0 e 120.\n\n");
+        }
+    } while (!idade_valida);
+
+    // Sobrescreve o arquivo com os dados atualizados
+    bool cadastrou_com_sucesso = cadastrar_participantes(participantes);
+    if (cadastrou_com_sucesso != 0) {
+        printf("Erro ao salvar as alterações no arquivo.\n\n");
         return 1;
     }
 
-    printf("Dados atualizados com sucesso!\n");
-    //mpar_tela();
+    printf("Dados do participante atualizados com sucesso!\n\n");
+    pausar();
+    limpar_tela();
     return 0;
 }
 
@@ -274,64 +320,51 @@ int participantes_update() {
  * @return int 0 em caso de sucesso, 1 em caso de erro
  */
 int participantes_delete() {
-    FILE *fp_original, *fp_temp;
-    Participante participante;
-    char cpf_alvo[12];
-    int encontrado = 0;
-    char nome_alvo[50];
+    Participante participantes[MAX_PARTICIPANTES];
+    int count = carregar_participantes(participantes, MAX_PARTICIPANTES);
 
+    if (count == -1) {
+        return 1; // Erro ao abrir o arquivo
+    }
+
+    char cpf_alvo[12];
+    int indice_encontrado = -1;
+
+    // Solicita o CPF do participante a ser removido
     printf("Digite o CPF do participante que deseja apagar: ");
     scanf("%11s", cpf_alvo);
-    flush_in();
-    while(strlen(cpf_alvo) != 11 || !is_valid_number(cpf_alvo, strlen(cpf_alvo))) {
-        printf("\nO CPF deve ser composto por 11 números! \nDigite o CPF do participante: ");
-        scanf("%11s", cpf_alvo);
-        flush_in();
-    }
 
-    fp_original = fopen("../../data/participantes.txt", "r");
-    if (fp_original == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        return 1;
-    }
-
-    fp_temp = fopen("../../data/temp.txt", "w");
-    if (fp_temp == NULL) {
-        printf("Erro ao criar arquivo temporário.\n");
-        fclose(fp_original);
-        return 1;
-    }
-
-    // Lê cada participante do arquivo original
-    // Lê cada participante do arquivo original
-    while (fscanf(fp_original, "%49s %49s %11s %14s %d |", participante.nome, participante.sobrenome, participante.cpf, participante.celular, &participante.idade) == 5) {
-        // Se o CPF não for o que estamos procurando, escreve no arquivo temporário
-        if (strcmp(participante.cpf, cpf_alvo) != 0) {
-            fprintf(fp_temp, "%s %s %s %s %d |\n", participante.nome, participante.sobrenome, participante.cpf, participante.celular, participante.idade);
-        } else {
-            encontrado = 1;
-            strcpy(nome_alvo, participante.nome);
+    // Procura o participante no vetor
+    for (int i = 0; i < count; i++) {
+        if (strcmp(participantes[i].cpf, cpf_alvo) == 0) {
+            indice_encontrado = i;
+            break;
         }
     }
 
-    fclose(fp_original);
-    fclose(fp_temp);
-
-    // Exclui o arquivo original
-    remove("../../data/participantes.txt");
-    // Renomeia o arquivo temporário para o nome do arquivo original
-    rename("../../data/temp.txt", "../../data/participantes.txt");
-
-    if (encontrado) {
-        printf("Participante %s com CPF %s removido com sucesso!\n", nome_alvo, cpf_alvo);
-
-    } else {
-        printf("\nParticipante com CPF %s não encontrado!\n", cpf_alvo);
+    if (indice_encontrado == -1) {
+        printf("Participante com CPF %s não encontrado.\n\n", cpf_alvo);
+        pausar();
+        limpar_tela();
+        return 1;
     }
 
-    //pausar();
-    //limpar_tela();
+    // Remove o participante do vetor deslocando os elementos seguintes
+    for (int i = indice_encontrado; i < count - 1; i++) {
+        participantes[i] = participantes[i + 1];
+    }
+    count--; // Reduz o número de participantes
 
+    // Sobrescreve o arquivo com os dados atualizados
+    bool cadastrou_com_sucesso = cadastrar_participantes(participantes);
+    if (cadastrou_com_sucesso != 0) {
+        printf("Erro ao remover participante no arquivo.\n\n");
+        return 1;
+    }
+
+    printf("Participante com CPF %s removido com sucesso!\n\n", cpf_alvo);
+    pausar();
+    limpar_tela();
     return 0;
 }
 
@@ -343,19 +376,18 @@ int participantes_delete() {
  * @return int 1 se o participante existir, 0 caso contrário
  */
 int participante_existe(const char *cpf) {
-    Participante participante;
-    FILE *fp = fopen("../../data/participantes.txt", "r");
-    if (fp == NULL) {
-        return 0;
+    Participante participantes[MAX_PARTICIPANTES];
+    int count = carregar_participantes(participantes, MAX_PARTICIPANTES);
+
+    if (count == -1) {
+        return 0; // Erro ao abrir o arquivo
     }
 
-    while (fscanf(fp, "%49s %11s %14s %d |", participante.nome, participante.cpf, participante.celular, &participante.idade) == 4) {
-        if (strcmp(participante.cpf, cpf) == 0) {
-            fclose(fp);
-            return 1;
+    for (int i = 0; i < count; i++) {
+        if (strcmp(participantes[i].cpf, cpf) == 0) {
+            return 1; // Participante encontrado
         }
     }
 
-    fclose(fp);
-    return 0;
+    return 0; // Participante não encontrado
 }
