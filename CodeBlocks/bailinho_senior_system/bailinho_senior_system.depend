@@ -32,7 +32,7 @@
 
 1751137315 d:\repositorios_git\bailinho_senior_system\include\vendas.h
 
-1751220817 source:d:\repositorios_git\bailinho_senior_system\src\eventos.c
+1751230352 source:d:\repositorios_git\bailinho_senior_system\src\eventos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -54,10 +54,11 @@
 	"../include/participantes.h"
 	"../utils/utils.h"
 
-1751215143 source:d:\repositorios_git\bailinho_senior_system\src\produtos.c
+1751232558 source:d:\repositorios_git\bailinho_senior_system\src\produtos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<stdbool.h>
 	"../include/produtos.h"
 	"../utils/utils.h"
 
