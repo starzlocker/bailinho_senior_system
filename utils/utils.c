@@ -100,7 +100,7 @@ char validate_cpf(char cpf[], size_t length) {
 
     FILE *fp;
 
-    fp = fopen("data/participantes.txt", "r");
+    fp = fopen("../../data/participantes.txt", "r");
     if (fp == NULL) {
         printf("Arquivo não encontrado.\n");
         return 1;
