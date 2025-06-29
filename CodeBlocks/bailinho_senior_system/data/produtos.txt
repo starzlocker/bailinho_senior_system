@@ -1,0 +1,4 @@
+Dentadura 100,00 1 |
+Peruca 20,00 1 |
+Escova 15,50 4 |
+Pasta_dental 8,75 0 |
