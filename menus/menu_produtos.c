@@ -1,23 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/produtos.h"
+#include "../include/menu_produtos.h"
 
 void menu_produtos() {
   int opcao;
   do {
-    printf("\033[2J\033[H"); // Limpa a tela
+    system("cls");
 
     printf("\n==============================\n");
-    printf("     MENU DE PRODUTOS (CRUD)\n");
+    printf("     MENU DE PRODUTOS \n");
     printf("==============================\n");
-    printf("[1] ➤ Criar Produto\n");
-    printf("[2] ➤ Listar Produtos\n");
-    printf("[3] ➤ Atualizar Produto\n");
-    printf("[4] ➤ Deletar Produto\n");
-    printf("[5] ⇦ Voltar ao menu principal\n");
-    printf("[6] ✖ Encerrar o programa\n");
+    printf("[1] Criar Produto\n");
+    printf("[2] Listar Produtos\n");
+    printf("[3] Atualizar Produto\n");
+    printf("[4] Deletar Produto\n");
+    printf("[5] Voltar ao menu principal\n");
+    printf("[6] Encerrar o programa\n");
     printf("------------------------------\n");
-    printf("Escolha uma opção: ");
+    printf("Escolha uma funcionalidade: ");
     scanf("%d", &opcao);
     getchar();
     printf("------------------------------\n");

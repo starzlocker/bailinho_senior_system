@@ -1,0 +1,126 @@
+# depslib dependency file v1.0
+1751215143 source:d:\repositorios_git\bailinho_senior_system\menus\menu_eventos.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	"../include/eventos.h"
+	"../include/menu_eventos.h"
+
+1751137315 d:\repositorios_git\bailinho_senior_system\include\eventos.h
+
+1751225701 source:d:\repositorios_git\bailinho_senior_system\menus\menu_participantes.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/participantes.h"
+	"../include/menu_participantes.h"
+
+1751225579 d:\repositorios_git\bailinho_senior_system\include\participantes.h
+
+1751208451 source:d:\repositorios_git\bailinho_senior_system\menus\menu_produtos.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/produtos.h"
+	"../include/menu_produtos.h"
+
+1751137315 d:\repositorios_git\bailinho_senior_system\include\produtos.h
+
+1751208451 source:d:\repositorios_git\bailinho_senior_system\menus\menu_vendas.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/vendas.h"
+	"../include/menu_vendas.h"
+
+1751137315 d:\repositorios_git\bailinho_senior_system\include\vendas.h
+
+1751230352 source:d:\repositorios_git\bailinho_senior_system\src\eventos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<stdbool.h>
+	"../include/eventos.h"
+	"../utils/utils.h"
+
+1751218635 d:\repositorios_git\bailinho_senior_system\utils\utils.h
+	<stddef.h>
+	<stdbool.h>
+
+1751229546 source:d:\repositorios_git\bailinho_senior_system\src\participantes.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<stdbool.h>
+	"../include/participantes.h"
+	"../utils/utils.h"
+
+1751232558 source:d:\repositorios_git\bailinho_senior_system\src\produtos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"../include/produtos.h"
+	"../utils/utils.h"
+
+1751232990 source:d:\repositorios_git\bailinho_senior_system\src\vendas.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	<time.h>
+	"../include/vendas.h"
+	"../include/participantes.h"
+	"../include/eventos.h"
+	"../include/produtos.h"
+	"../utils/utils.h"
+
+1751226006 source:d:\repositorios_git\bailinho_senior_system\utils\utils.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stddef.h>
+	<time.h>
+	<stdbool.h>
+	"../include/participantes.h"
+	"../utils/utils.h"
+	<regex.h>
+
+1751208451 source:d:\repositorios_git\bailinho_senior_system\codeblocks\bailinho_senior_system\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<ctype.h>
+	<locale.h>
+	"../../include/menu_eventos.h"
+	"../../include/menu_participantes.h"
+	"../../include/menu_produtos.h"
+	"../../include/menu_vendas.h"
+
+1751139737 d:\repositorios_git\bailinho_senior_system\menus\menu_eventos.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/eventos.h"
+
+1751140013 d:\repositorios_git\bailinho_senior_system\menus\menu_participantes.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/participantes.h"
+
+1751140013 d:\repositorios_git\bailinho_senior_system\menus\menu_produtos.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/produtos.h"
+
+1751140013 d:\repositorios_git\bailinho_senior_system\menus\menu_vendas.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/vendas.h"
+
+1751208451 d:\repositorios_git\bailinho_senior_system\include\menu_eventos.h
+
+1751208451 d:\repositorios_git\bailinho_senior_system\include\menu_participantes.h
+
+1751208451 d:\repositorios_git\bailinho_senior_system\include\menu_produtos.h
+
+1751208451 d:\repositorios_git\bailinho_senior_system\include\menu_vendas.h
+
