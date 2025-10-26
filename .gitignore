@@ -53,3 +53,8 @@ dkms.conf
 main
 tempCodeRunnerFile
 commandUtils.txt
+
+# Ignorar pastas temporárias e de build
+.vs/
+bin/
+obj/

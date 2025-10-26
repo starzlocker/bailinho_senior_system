@@ -1,7 +1,0 @@
-3333333333 festa_junina dentadura 1 |
-4444444444 show_rock peruca 2 |
-5555555555 feira_livros escova 3 |
-6666666666 corrida_5k pasta_dental 4 |
-5555555555 corrida_5k escova 1 |
-3333333333 show_rock escova 5 |
-6666666666 show_rock dentadura 2 |
