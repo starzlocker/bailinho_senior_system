@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace bailinho_snior_system
+namespace bailinho_senior_system
 {
     public partial class Form1 : Form
     {

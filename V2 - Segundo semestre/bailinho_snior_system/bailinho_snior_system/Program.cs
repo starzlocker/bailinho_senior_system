@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace bailinho_snior_system
+namespace bailinho_senior_system
 {
     internal static class Program
     {

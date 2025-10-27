@@ -1,4 +1,4 @@
-﻿namespace bailinho_snior_system
+﻿namespace bailinho_senior_system
 {
     partial class Form1
     {

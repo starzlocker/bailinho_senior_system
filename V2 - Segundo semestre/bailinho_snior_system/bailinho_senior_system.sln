@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36603.0 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bailinho_snior_system", "bailinho_snior_system\bailinho_snior_system.csproj", "{4B81AF8D-2700-488A-8ECF-945515486455}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bailinho_senior_system", "bailinho_snior_system\bailinho_senior_system.csproj", "{4B81AF8D-2700-488A-8ECF-945515486455}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
