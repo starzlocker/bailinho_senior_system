@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4B81AF8D-2700-488A-8ECF-945515486455}</ProjectGuid>
+    <ProjectGuid>{0DC3E3CD-E1AE-4361-BAEF-3B51DE7B7DDA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>bailinho_snior_system</RootNamespace>
-    <AssemblyName>bailinho_snior_system</AssemblyName>
+    <RootNamespace>bailinho_senior_system</RootNamespace>
+    <AssemblyName>bailinho_senior_system</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
