@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace bailinho_snior_system.Properties
+namespace bailinho_senior_system.Properties
 {
 
 
