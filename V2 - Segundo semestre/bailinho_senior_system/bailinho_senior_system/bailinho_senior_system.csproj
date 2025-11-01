@@ -48,18 +48,54 @@
   <ItemGroup>
     <Compile Include="Cliente.cs" />
     <Compile Include="Evento.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Fornecedor .cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidadorHelper.cs" />
     <Compile Include="Venda.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\ClientesView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\ClientesView.Designer.cs">
+      <DependentUpon>ClientesView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\CategoriasView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\CategoriasView.Designer.cs">
+      <DependentUpon>CategoriasView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\FornecedoresView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\FornecedoresView.Designer.cs">
+      <DependentUpon>FornecedoresView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\VendasView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\VendasView.Designer.cs">
+      <DependentUpon>VendasView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\EventosView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\EventosView.Designer.cs">
+      <DependentUpon>EventosView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\ProdutosView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\ProdutosView.Designer.cs">
+      <DependentUpon>ProdutosView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -68,7 +104,32 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="views\ClientesView.resx">
+      <DependentUpon>ClientesView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\CategoriasView.resx">
+      <DependentUpon>CategoriasView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\FornecedoresView.resx">
+      <DependentUpon>FornecedoresView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\VendasView.resx">
+      <DependentUpon>VendasView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\EventosView.resx">
+      <DependentUpon>EventosView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\ProdutosView.resx">
+      <DependentUpon>ProdutosView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -81,6 +142,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="models\" />
+    <Folder Include="resources\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\icons\trash_30.png" />
+    <None Include="resources\icons\search_30.png" />
+    <None Include="resources\icons\save_30.png" />
+    <None Include="resources\icons\plus_30.png" />
+    <None Include="resources\icons\exit_30.png" />
+    <None Include="resources\icons\edit_30.png" />
+    <None Include="resources\icons\close_30.png" />
+    <None Include="resources\icons\chevron-double_right_30.png" />
+    <None Include="resources\icons\chevron-double-left_30.png" />
+    <Content Include="resources\icons\chevron-left.png" />
+    <None Include="resources\icons\chevron-left_30.png" />
+    <Content Include="resources\icons\chevron-right.png" />
+    <None Include="resources\icons\chevron-right_30.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
