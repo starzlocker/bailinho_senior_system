@@ -47,17 +47,17 @@
             this.id_categoria = new System.Windows.Forms.ComboBox();
             this.preco = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button11 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.exitBtn = new System.Windows.Forms.Button();
+            this.deleteBtn = new System.Windows.Forms.Button();
+            this.saveBtn = new System.Windows.Forms.Button();
+            this.editBtn = new System.Windows.Forms.Button();
+            this.cancelBtn = new System.Windows.Forms.Button();
+            this.newBtn = new System.Windows.Forms.Button();
+            this.searchBtn = new System.Windows.Forms.Button();
+            this.lastBtn = new System.Windows.Forms.Button();
+            this.nextBtn = new System.Windows.Forms.Button();
+            this.previousBtn = new System.Windows.Forms.Button();
+            this.firstBtn = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -290,182 +290,182 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Lista";
             // 
-            // button11
+            // exitBtn
             // 
-            this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Image = global::bailinho_senior_system.Properties.Resources.exit_30;
-            this.button11.Location = new System.Drawing.Point(775, 15);
-            this.button11.Margin = new System.Windows.Forms.Padding(4);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(67, 62);
-            this.button11.TabIndex = 11;
-            this.button11.Text = "Sair";
-            this.button11.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button11.UseVisualStyleBackColor = true;
+            this.exitBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitBtn.Image = global::bailinho_senior_system.Properties.Resources.exit_30;
+            this.exitBtn.Location = new System.Drawing.Point(784, 13);
+            this.exitBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.exitBtn.Name = "exitBtn";
+            this.exitBtn.Size = new System.Drawing.Size(67, 62);
+            this.exitBtn.TabIndex = 25;
+            this.exitBtn.Text = "Sair";
+            this.exitBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.exitBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.exitBtn.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // deleteBtn
             // 
-            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Image = global::bailinho_senior_system.Properties.Resources.trash_30;
-            this.button9.Location = new System.Drawing.Point(688, 15);
-            this.button9.Margin = new System.Windows.Forms.Padding(4);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(67, 62);
-            this.button9.TabIndex = 9;
-            this.button9.Text = "Excluir";
-            this.button9.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button9.UseVisualStyleBackColor = true;
+            this.deleteBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deleteBtn.Image = global::bailinho_senior_system.Properties.Resources.trash_30;
+            this.deleteBtn.Location = new System.Drawing.Point(697, 13);
+            this.deleteBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.deleteBtn.Name = "deleteBtn";
+            this.deleteBtn.Size = new System.Drawing.Size(67, 62);
+            this.deleteBtn.TabIndex = 24;
+            this.deleteBtn.Text = "Excluir";
+            this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.deleteBtn.UseVisualStyleBackColor = true;
             // 
-            // button10
+            // saveBtn
             // 
-            this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.Image = global::bailinho_senior_system.Properties.Resources.save_30;
-            this.button10.Location = new System.Drawing.Point(613, 15);
-            this.button10.Margin = new System.Windows.Forms.Padding(4);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(67, 62);
-            this.button10.TabIndex = 8;
-            this.button10.Text = "Salvar";
-            this.button10.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button10.UseVisualStyleBackColor = true;
+            this.saveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveBtn.Image = global::bailinho_senior_system.Properties.Resources.save_30;
+            this.saveBtn.Location = new System.Drawing.Point(622, 13);
+            this.saveBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(67, 62);
+            this.saveBtn.TabIndex = 23;
+            this.saveBtn.Text = "Salvar";
+            this.saveBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.saveBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.saveBtn.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // editBtn
             // 
-            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Image = global::bailinho_senior_system.Properties.Resources.edit_30;
-            this.button7.Location = new System.Drawing.Point(539, 15);
-            this.button7.Margin = new System.Windows.Forms.Padding(4);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(67, 62);
-            this.button7.TabIndex = 7;
-            this.button7.Text = "Editar";
-            this.button7.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button7.UseVisualStyleBackColor = true;
+            this.editBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editBtn.Image = global::bailinho_senior_system.Properties.Resources.edit_30;
+            this.editBtn.Location = new System.Drawing.Point(548, 13);
+            this.editBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.editBtn.Name = "editBtn";
+            this.editBtn.Size = new System.Drawing.Size(67, 62);
+            this.editBtn.TabIndex = 22;
+            this.editBtn.Text = "Editar";
+            this.editBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.editBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.editBtn.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // cancelBtn
             // 
-            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Image = global::bailinho_senior_system.Properties.Resources.close_30;
-            this.button8.Location = new System.Drawing.Point(464, 15);
-            this.button8.Margin = new System.Windows.Forms.Padding(4);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(67, 62);
-            this.button8.TabIndex = 6;
-            this.button8.Text = "Cancelar";
-            this.button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button8.UseVisualStyleBackColor = true;
+            this.cancelBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cancelBtn.Image = global::bailinho_senior_system.Properties.Resources.close_30;
+            this.cancelBtn.Location = new System.Drawing.Point(473, 13);
+            this.cancelBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.cancelBtn.Name = "cancelBtn";
+            this.cancelBtn.Size = new System.Drawing.Size(67, 62);
+            this.cancelBtn.TabIndex = 21;
+            this.cancelBtn.Text = "Cancelar";
+            this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cancelBtn.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // newBtn
             // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Image = global::bailinho_senior_system.Properties.Resources.plus_30;
-            this.button5.Location = new System.Drawing.Point(389, 15);
-            this.button5.Margin = new System.Windows.Forms.Padding(4);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(67, 62);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Novo";
-            this.button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button5.UseVisualStyleBackColor = true;
+            this.newBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.newBtn.Image = global::bailinho_senior_system.Properties.Resources.plus_30;
+            this.newBtn.Location = new System.Drawing.Point(398, 13);
+            this.newBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.newBtn.Name = "newBtn";
+            this.newBtn.Size = new System.Drawing.Size(67, 62);
+            this.newBtn.TabIndex = 20;
+            this.newBtn.Text = "Novo";
+            this.newBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.newBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.newBtn.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // searchBtn
             // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Image = global::bailinho_senior_system.Properties.Resources.search_30;
-            this.button6.Location = new System.Drawing.Point(315, 15);
-            this.button6.Margin = new System.Windows.Forms.Padding(4);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(67, 62);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "Buscar";
-            this.button6.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button6.UseVisualStyleBackColor = true;
+            this.searchBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchBtn.Image = global::bailinho_senior_system.Properties.Resources.search_30;
+            this.searchBtn.Location = new System.Drawing.Point(324, 13);
+            this.searchBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.searchBtn.Name = "searchBtn";
+            this.searchBtn.Size = new System.Drawing.Size(67, 62);
+            this.searchBtn.TabIndex = 19;
+            this.searchBtn.Text = "Buscar";
+            this.searchBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.searchBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.searchBtn.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // lastBtn
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Image = global::bailinho_senior_system.Properties.Resources.chevron_double_right_30;
-            this.button3.Location = new System.Drawing.Point(240, 15);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(67, 62);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Último";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button3.UseVisualStyleBackColor = true;
+            this.lastBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lastBtn.Image = global::bailinho_senior_system.Properties.Resources.chevron_double_right_30;
+            this.lastBtn.Location = new System.Drawing.Point(240, 13);
+            this.lastBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.lastBtn.Name = "lastBtn";
+            this.lastBtn.Size = new System.Drawing.Size(67, 62);
+            this.lastBtn.TabIndex = 18;
+            this.lastBtn.Text = "Último";
+            this.lastBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.lastBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.lastBtn.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // nextBtn
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Image = global::bailinho_senior_system.Properties.Resources.chevron_right_30;
-            this.button4.Location = new System.Drawing.Point(165, 15);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(67, 62);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Próximo";
-            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button4.UseVisualStyleBackColor = true;
+            this.nextBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nextBtn.Image = global::bailinho_senior_system.Properties.Resources.chevron_right_30;
+            this.nextBtn.Location = new System.Drawing.Point(165, 13);
+            this.nextBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.nextBtn.Name = "nextBtn";
+            this.nextBtn.Size = new System.Drawing.Size(67, 62);
+            this.nextBtn.TabIndex = 17;
+            this.nextBtn.Text = "Próximo";
+            this.nextBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.nextBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.nextBtn.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // previousBtn
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Image = global::bailinho_senior_system.Properties.Resources.chevron_left_30;
-            this.button2.Location = new System.Drawing.Point(91, 15);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(67, 62);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Anterior";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button2.UseVisualStyleBackColor = true;
+            this.previousBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.previousBtn.Image = global::bailinho_senior_system.Properties.Resources.chevron_left_30;
+            this.previousBtn.Location = new System.Drawing.Point(91, 13);
+            this.previousBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.previousBtn.Name = "previousBtn";
+            this.previousBtn.Size = new System.Drawing.Size(67, 62);
+            this.previousBtn.TabIndex = 16;
+            this.previousBtn.Text = "Anterior";
+            this.previousBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.previousBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.previousBtn.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // firstBtn
             // 
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Image = global::bailinho_senior_system.Properties.Resources.chevron_double_left_30;
-            this.button1.Location = new System.Drawing.Point(16, 15);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 62);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Inicio";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button1.UseVisualStyleBackColor = true;
+            this.firstBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.firstBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.firstBtn.Image = global::bailinho_senior_system.Properties.Resources.chevron_double_left_30;
+            this.firstBtn.Location = new System.Drawing.Point(16, 13);
+            this.firstBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.firstBtn.Name = "firstBtn";
+            this.firstBtn.Size = new System.Drawing.Size(67, 62);
+            this.firstBtn.TabIndex = 15;
+            this.firstBtn.Text = "Inicio";
+            this.firstBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.firstBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.firstBtn.UseVisualStyleBackColor = true;
             // 
-            // ProdutosView
+            // VendasView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 624);
+            this.Controls.Add(this.exitBtn);
+            this.Controls.Add(this.deleteBtn);
+            this.Controls.Add(this.saveBtn);
+            this.Controls.Add(this.editBtn);
+            this.Controls.Add(this.cancelBtn);
+            this.Controls.Add(this.newBtn);
+            this.Controls.Add(this.searchBtn);
+            this.Controls.Add(this.lastBtn);
+            this.Controls.Add(this.nextBtn);
+            this.Controls.Add(this.previousBtn);
+            this.Controls.Add(this.firstBtn);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.button11);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "ProdutosView";
-            this.Text = "ProdutosView";
+            this.Name = "VendasView";
+            this.Text = "Vendas";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -479,18 +479,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button11;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -510,5 +498,16 @@
         private System.Windows.Forms.TextBox nome;
         private System.Windows.Forms.TextBox id;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button exitBtn;
+        private System.Windows.Forms.Button deleteBtn;
+        private System.Windows.Forms.Button saveBtn;
+        private System.Windows.Forms.Button editBtn;
+        private System.Windows.Forms.Button cancelBtn;
+        private System.Windows.Forms.Button newBtn;
+        private System.Windows.Forms.Button searchBtn;
+        private System.Windows.Forms.Button lastBtn;
+        private System.Windows.Forms.Button nextBtn;
+        private System.Windows.Forms.Button previousBtn;
+        private System.Windows.Forms.Button firstBtn;
     }
 }
