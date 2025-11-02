@@ -28,42 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.nome = new System.Windows.Forms.TextBox();
-            this.id = new System.Windows.Forms.TextBox();
-            this.descricao = new System.Windows.Forms.TextBox();
+            this.nomeBox = new System.Windows.Forms.TextBox();
+            this.idBox = new System.Windows.Forms.TextBox();
+            this.descricaoBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.fornecedores = new System.Windows.Forms.ComboBox();
+            this.fornecedoresBox = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.categoriaLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.qtd_estoque = new System.Windows.Forms.NumericUpDown();
-            this.id_categoria = new System.Windows.Forms.ComboBox();
-            this.preco = new System.Windows.Forms.NumericUpDown();
+            this.qtdEstoqueBox = new System.Windows.Forms.NumericUpDown();
+            this.id_categoriaBox = new System.Windows.Forms.ComboBox();
+            this.precoBox = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button11 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.produto_nome = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.produto_preco = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.produto_qtd_estoque = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.exitBtn = new System.Windows.Forms.Button();
+            this.deleteBtn = new System.Windows.Forms.Button();
+            this.saveBtn = new System.Windows.Forms.Button();
+            this.editBtn = new System.Windows.Forms.Button();
+            this.cancelBtn = new System.Windows.Forms.Button();
+            this.newBtn = new System.Windows.Forms.Button();
+            this.searchBtn = new System.Windows.Forms.Button();
+            this.lastBtn = new System.Windows.Forms.Button();
+            this.nextBtn = new System.Windows.Forms.Button();
+            this.previousBtn = new System.Windows.Forms.Button();
+            this.firstBtn = new System.Windows.Forms.Button();
+            this.produtoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.qtd_estoque)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.preco)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.precoBox)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.produtoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -103,9 +112,9 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.nome);
-            this.groupBox1.Controls.Add(this.id);
-            this.groupBox1.Controls.Add(this.descricao);
+            this.groupBox1.Controls.Add(this.nomeBox);
+            this.groupBox1.Controls.Add(this.idBox);
+            this.groupBox1.Controls.Add(this.descricaoBox);
             this.groupBox1.Location = new System.Drawing.Point(7, 7);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(1067, 137);
@@ -118,7 +127,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(7, 83);
+            this.label3.Location = new System.Drawing.Point(434, 31);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 18);
@@ -130,7 +139,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(434, 31);
+            this.label2.Location = new System.Drawing.Point(7, 82);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(49, 18);
@@ -149,43 +158,43 @@
             this.label1.Text = "ID";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // nome
+            // nomeBox
             // 
-            this.nome.Location = new System.Drawing.Point(437, 53);
-            this.nome.Margin = new System.Windows.Forms.Padding(4);
-            this.nome.Name = "nome";
-            this.nome.Size = new System.Drawing.Size(387, 26);
-            this.nome.TabIndex = 2;
+            this.nomeBox.Location = new System.Drawing.Point(10, 104);
+            this.nomeBox.Margin = new System.Windows.Forms.Padding(4);
+            this.nomeBox.Name = "nomeBox";
+            this.nomeBox.Size = new System.Drawing.Size(387, 26);
+            this.nomeBox.TabIndex = 2;
             // 
-            // id
+            // idBox
             // 
-            this.id.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.id.Location = new System.Drawing.Point(10, 53);
-            this.id.Margin = new System.Windows.Forms.Padding(4);
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Size = new System.Drawing.Size(386, 26);
-            this.id.TabIndex = 1;
+            this.idBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.idBox.Location = new System.Drawing.Point(10, 53);
+            this.idBox.Margin = new System.Windows.Forms.Padding(4);
+            this.idBox.Name = "idBox";
+            this.idBox.ReadOnly = true;
+            this.idBox.Size = new System.Drawing.Size(386, 26);
+            this.idBox.TabIndex = 1;
             // 
-            // descricao
+            // descricaoBox
             // 
-            this.descricao.Location = new System.Drawing.Point(10, 105);
-            this.descricao.Margin = new System.Windows.Forms.Padding(4);
-            this.descricao.Name = "descricao";
-            this.descricao.Size = new System.Drawing.Size(386, 26);
-            this.descricao.TabIndex = 3;
-            this.descricao.TextChanged += new System.EventHandler(this.descricao_TextChanged);
+            this.descricaoBox.Location = new System.Drawing.Point(437, 53);
+            this.descricaoBox.Margin = new System.Windows.Forms.Padding(4);
+            this.descricaoBox.Name = "descricaoBox";
+            this.descricaoBox.Size = new System.Drawing.Size(386, 26);
+            this.descricaoBox.TabIndex = 3;
+            this.descricaoBox.TextChanged += new System.EventHandler(this.descricao_TextChanged);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.fornecedores);
+            this.groupBox2.Controls.Add(this.fornecedoresBox);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.categoriaLabel);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.qtd_estoque);
-            this.groupBox2.Controls.Add(this.id_categoria);
-            this.groupBox2.Controls.Add(this.preco);
+            this.groupBox2.Controls.Add(this.qtdEstoqueBox);
+            this.groupBox2.Controls.Add(this.id_categoriaBox);
+            this.groupBox2.Controls.Add(this.precoBox);
             this.groupBox2.Location = new System.Drawing.Point(7, 150);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1067, 249);
@@ -193,14 +202,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Detalhes";
             // 
-            // fornecedores
+            // fornecedoresBox
             // 
-            this.fornecedores.FormattingEnabled = true;
-            this.fornecedores.Location = new System.Drawing.Point(437, 46);
-            this.fornecedores.Margin = new System.Windows.Forms.Padding(4);
-            this.fornecedores.Name = "fornecedores";
-            this.fornecedores.Size = new System.Drawing.Size(387, 28);
-            this.fornecedores.TabIndex = 16;
+            this.fornecedoresBox.FormattingEnabled = true;
+            this.fornecedoresBox.Location = new System.Drawing.Point(437, 46);
+            this.fornecedoresBox.Margin = new System.Windows.Forms.Padding(4);
+            this.fornecedoresBox.Name = "fornecedoresBox";
+            this.fornecedoresBox.Size = new System.Drawing.Size(387, 28);
+            this.fornecedoresBox.TabIndex = 16;
             // 
             // label6
             // 
@@ -250,38 +259,44 @@
             this.label5.Text = "Preço";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // qtd_estoque
+            // qtdEstoqueBox
             // 
-            this.qtd_estoque.Location = new System.Drawing.Point(10, 48);
-            this.qtd_estoque.Margin = new System.Windows.Forms.Padding(4);
-            this.qtd_estoque.Name = "qtd_estoque";
-            this.qtd_estoque.Size = new System.Drawing.Size(386, 26);
-            this.qtd_estoque.TabIndex = 11;
-            this.qtd_estoque.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.qtdEstoqueBox.Location = new System.Drawing.Point(10, 48);
+            this.qtdEstoqueBox.Margin = new System.Windows.Forms.Padding(4);
+            this.qtdEstoqueBox.Name = "qtdEstoqueBox";
+            this.qtdEstoqueBox.Size = new System.Drawing.Size(386, 26);
+            this.qtdEstoqueBox.TabIndex = 11;
+            this.qtdEstoqueBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // id_categoria
+            // id_categoriaBox
             // 
-            this.id_categoria.FormattingEnabled = true;
-            this.id_categoria.Location = new System.Drawing.Point(10, 158);
-            this.id_categoria.Margin = new System.Windows.Forms.Padding(4);
-            this.id_categoria.Name = "id_categoria";
-            this.id_categoria.Size = new System.Drawing.Size(386, 28);
-            this.id_categoria.TabIndex = 15;
+            this.id_categoriaBox.FormattingEnabled = true;
+            this.id_categoriaBox.Location = new System.Drawing.Point(10, 158);
+            this.id_categoriaBox.Margin = new System.Windows.Forms.Padding(4);
+            this.id_categoriaBox.Name = "id_categoriaBox";
+            this.id_categoriaBox.Size = new System.Drawing.Size(386, 28);
+            this.id_categoriaBox.TabIndex = 15;
             // 
-            // preco
+            // precoBox
             // 
-            this.preco.DecimalPlaces = 2;
-            this.preco.Location = new System.Drawing.Point(10, 102);
-            this.preco.Margin = new System.Windows.Forms.Padding(4);
-            this.preco.Name = "preco";
-            this.preco.Size = new System.Drawing.Size(386, 26);
-            this.preco.TabIndex = 14;
-            this.preco.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.preco.ValueChanged += new System.EventHandler(this.preco_ValueChanged);
+            this.precoBox.DecimalPlaces = 2;
+            this.precoBox.Location = new System.Drawing.Point(10, 102);
+            this.precoBox.Margin = new System.Windows.Forms.Padding(4);
+            this.precoBox.Maximum = new decimal(new int[] {
+            32000,
+            0,
+            0,
+            0});
+            this.precoBox.Name = "precoBox";
+            this.precoBox.Size = new System.Drawing.Size(386, 26);
+            this.precoBox.TabIndex = 14;
+            this.precoBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.precoBox.ValueChanged += new System.EventHandler(this.preco_ValueChanged);
             // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.LightGray;
+            this.tabPage2.Controls.Add(this.dataGridView1);
             this.tabPage2.Location = new System.Drawing.Point(4, 34);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
@@ -290,160 +305,192 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Lista";
             // 
-            // button11
+            // dataGridView1
             // 
-            this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Image = global::bailinho_senior_system.Properties.Resources.exit_30;
-            this.button11.Location = new System.Drawing.Point(775, 15);
-            this.button11.Margin = new System.Windows.Forms.Padding(4);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(67, 62);
-            this.button11.TabIndex = 11;
-            this.button11.Text = "Sair";
-            this.button11.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button11.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button11.UseVisualStyleBackColor = true;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.produto_nome,
+            this.produto_preco,
+            this.produto_qtd_estoque});
+            this.dataGridView1.Location = new System.Drawing.Point(7, 7);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(1050, 458);
+            this.dataGridView1.TabIndex = 0;
             // 
-            // button9
+            // produto_nome
             // 
-            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Image = global::bailinho_senior_system.Properties.Resources.trash_30;
-            this.button9.Location = new System.Drawing.Point(688, 15);
-            this.button9.Margin = new System.Windows.Forms.Padding(4);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(67, 62);
-            this.button9.TabIndex = 9;
-            this.button9.Text = "Excluir";
-            this.button9.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button9.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button9.UseVisualStyleBackColor = true;
+            this.produto_nome.HeaderText = "Nome";
+            this.produto_nome.Name = "produto_nome";
             // 
-            // button10
+            // produto_preco
             // 
-            this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.Image = global::bailinho_senior_system.Properties.Resources.save_30;
-            this.button10.Location = new System.Drawing.Point(613, 15);
-            this.button10.Margin = new System.Windows.Forms.Padding(4);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(67, 62);
-            this.button10.TabIndex = 8;
-            this.button10.Text = "Salvar";
-            this.button10.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button10.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button10.UseVisualStyleBackColor = true;
+            this.produto_preco.HeaderText = "Preço";
+            this.produto_preco.Name = "produto_preco";
             // 
-            // button7
+            // produto_qtd_estoque
             // 
-            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Image = global::bailinho_senior_system.Properties.Resources.edit_30;
-            this.button7.Location = new System.Drawing.Point(539, 15);
-            this.button7.Margin = new System.Windows.Forms.Padding(4);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(67, 62);
-            this.button7.TabIndex = 7;
-            this.button7.Text = "Editar";
-            this.button7.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button7.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button7.UseVisualStyleBackColor = true;
+            this.produto_qtd_estoque.HeaderText = "Qtd Estoque";
+            this.produto_qtd_estoque.Name = "produto_qtd_estoque";
             // 
-            // button8
+            // exitBtn
             // 
-            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Image = global::bailinho_senior_system.Properties.Resources.close_30;
-            this.button8.Location = new System.Drawing.Point(464, 15);
-            this.button8.Margin = new System.Windows.Forms.Padding(4);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(67, 62);
-            this.button8.TabIndex = 6;
-            this.button8.Text = "Cancelar";
-            this.button8.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button8.UseVisualStyleBackColor = true;
+            this.exitBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitBtn.Image = global::bailinho_senior_system.Properties.Resources.exit_30;
+            this.exitBtn.Location = new System.Drawing.Point(784, 15);
+            this.exitBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.exitBtn.Name = "exitBtn";
+            this.exitBtn.Size = new System.Drawing.Size(67, 62);
+            this.exitBtn.TabIndex = 11;
+            this.exitBtn.Text = "Sair";
+            this.exitBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.exitBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.exitBtn.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // deleteBtn
             // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Image = global::bailinho_senior_system.Properties.Resources.plus_30;
-            this.button5.Location = new System.Drawing.Point(389, 15);
-            this.button5.Margin = new System.Windows.Forms.Padding(4);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(67, 62);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Novo";
-            this.button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button5.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button5.UseVisualStyleBackColor = true;
+            this.deleteBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deleteBtn.Image = global::bailinho_senior_system.Properties.Resources.trash_30;
+            this.deleteBtn.Location = new System.Drawing.Point(697, 15);
+            this.deleteBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.deleteBtn.Name = "deleteBtn";
+            this.deleteBtn.Size = new System.Drawing.Size(67, 62);
+            this.deleteBtn.TabIndex = 9;
+            this.deleteBtn.Text = "Excluir";
+            this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.deleteBtn.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // saveBtn
             // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Image = global::bailinho_senior_system.Properties.Resources.search_30;
-            this.button6.Location = new System.Drawing.Point(315, 15);
-            this.button6.Margin = new System.Windows.Forms.Padding(4);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(67, 62);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "Buscar";
-            this.button6.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button6.UseVisualStyleBackColor = true;
+            this.saveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveBtn.Image = global::bailinho_senior_system.Properties.Resources.save_30;
+            this.saveBtn.Location = new System.Drawing.Point(622, 15);
+            this.saveBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(67, 62);
+            this.saveBtn.TabIndex = 8;
+            this.saveBtn.Text = "Salvar";
+            this.saveBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.saveBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
-            // button3
+            // editBtn
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Image = global::bailinho_senior_system.Properties.Resources.chevron_double_right_30;
-            this.button3.Location = new System.Drawing.Point(240, 15);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(67, 62);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Último";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button3.UseVisualStyleBackColor = true;
+            this.editBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editBtn.Image = global::bailinho_senior_system.Properties.Resources.edit_30;
+            this.editBtn.Location = new System.Drawing.Point(548, 15);
+            this.editBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.editBtn.Name = "editBtn";
+            this.editBtn.Size = new System.Drawing.Size(67, 62);
+            this.editBtn.TabIndex = 7;
+            this.editBtn.Text = "Editar";
+            this.editBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.editBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.editBtn.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // cancelBtn
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Image = global::bailinho_senior_system.Properties.Resources.chevron_right_30;
-            this.button4.Location = new System.Drawing.Point(165, 15);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(67, 62);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Próximo";
-            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button4.UseVisualStyleBackColor = true;
+            this.cancelBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cancelBtn.Image = global::bailinho_senior_system.Properties.Resources.close_30;
+            this.cancelBtn.Location = new System.Drawing.Point(473, 15);
+            this.cancelBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.cancelBtn.Name = "cancelBtn";
+            this.cancelBtn.Size = new System.Drawing.Size(67, 62);
+            this.cancelBtn.TabIndex = 6;
+            this.cancelBtn.Text = "Cancelar";
+            this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cancelBtn.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // newBtn
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Image = global::bailinho_senior_system.Properties.Resources.chevron_left_30;
-            this.button2.Location = new System.Drawing.Point(91, 15);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(67, 62);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Anterior";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button2.UseVisualStyleBackColor = true;
+            this.newBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.newBtn.Image = global::bailinho_senior_system.Properties.Resources.plus_30;
+            this.newBtn.Location = new System.Drawing.Point(398, 15);
+            this.newBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.newBtn.Name = "newBtn";
+            this.newBtn.Size = new System.Drawing.Size(67, 62);
+            this.newBtn.TabIndex = 5;
+            this.newBtn.Text = "Novo";
+            this.newBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.newBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.newBtn.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // searchBtn
             // 
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Image = global::bailinho_senior_system.Properties.Resources.chevron_double_left_30;
-            this.button1.Location = new System.Drawing.Point(16, 15);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 62);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Inicio";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button1.UseVisualStyleBackColor = true;
+            this.searchBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchBtn.Image = global::bailinho_senior_system.Properties.Resources.search_30;
+            this.searchBtn.Location = new System.Drawing.Point(324, 15);
+            this.searchBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.searchBtn.Name = "searchBtn";
+            this.searchBtn.Size = new System.Drawing.Size(67, 62);
+            this.searchBtn.TabIndex = 4;
+            this.searchBtn.Text = "Buscar";
+            this.searchBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.searchBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.searchBtn.UseVisualStyleBackColor = true;
+            // 
+            // lastBtn
+            // 
+            this.lastBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lastBtn.Image = global::bailinho_senior_system.Properties.Resources.chevron_double_right_30;
+            this.lastBtn.Location = new System.Drawing.Point(240, 15);
+            this.lastBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.lastBtn.Name = "lastBtn";
+            this.lastBtn.Size = new System.Drawing.Size(67, 62);
+            this.lastBtn.TabIndex = 3;
+            this.lastBtn.Text = "Último";
+            this.lastBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.lastBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.lastBtn.UseVisualStyleBackColor = true;
+            // 
+            // nextBtn
+            // 
+            this.nextBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nextBtn.Image = global::bailinho_senior_system.Properties.Resources.chevron_right_30;
+            this.nextBtn.Location = new System.Drawing.Point(165, 15);
+            this.nextBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.nextBtn.Name = "nextBtn";
+            this.nextBtn.Size = new System.Drawing.Size(67, 62);
+            this.nextBtn.TabIndex = 2;
+            this.nextBtn.Text = "Próximo";
+            this.nextBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.nextBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.nextBtn.UseVisualStyleBackColor = true;
+            // 
+            // previousBtn
+            // 
+            this.previousBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.previousBtn.Image = global::bailinho_senior_system.Properties.Resources.chevron_left_30;
+            this.previousBtn.Location = new System.Drawing.Point(91, 15);
+            this.previousBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.previousBtn.Name = "previousBtn";
+            this.previousBtn.Size = new System.Drawing.Size(67, 62);
+            this.previousBtn.TabIndex = 1;
+            this.previousBtn.Text = "Anterior";
+            this.previousBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.previousBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.previousBtn.UseVisualStyleBackColor = true;
+            // 
+            // firstBtn
+            // 
+            this.firstBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.firstBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.firstBtn.Image = global::bailinho_senior_system.Properties.Resources.chevron_double_left_30;
+            this.firstBtn.Location = new System.Drawing.Point(16, 15);
+            this.firstBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.firstBtn.Name = "firstBtn";
+            this.firstBtn.Size = new System.Drawing.Size(67, 62);
+            this.firstBtn.TabIndex = 0;
+            this.firstBtn.Text = "Inicio";
+            this.firstBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.firstBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.firstBtn.UseVisualStyleBackColor = true;
+            // 
+            // produtoBindingSource
+            // 
+            this.produtoBindingSource.DataSource = typeof(bailinho_senior_system.Produto);
             // 
             // ProdutosView
             // 
@@ -451,64 +498,73 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 624);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.button11);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.exitBtn);
+            this.Controls.Add(this.deleteBtn);
+            this.Controls.Add(this.saveBtn);
+            this.Controls.Add(this.editBtn);
+            this.Controls.Add(this.cancelBtn);
+            this.Controls.Add(this.newBtn);
+            this.Controls.Add(this.searchBtn);
+            this.Controls.Add(this.lastBtn);
+            this.Controls.Add(this.nextBtn);
+            this.Controls.Add(this.previousBtn);
+            this.Controls.Add(this.firstBtn);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ProdutosView";
             this.Text = "Produtos";
+            this.Load += new System.EventHandler(this.ProdutosView_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.qtd_estoque)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.preco)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.precoBox)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.produtoBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button firstBtn;
+        private System.Windows.Forms.Button previousBtn;
+        private System.Windows.Forms.Button lastBtn;
+        private System.Windows.Forms.Button nextBtn;
+        private System.Windows.Forms.Button newBtn;
+        private System.Windows.Forms.Button searchBtn;
+        private System.Windows.Forms.Button editBtn;
+        private System.Windows.Forms.Button cancelBtn;
+        private System.Windows.Forms.Button deleteBtn;
+        private System.Windows.Forms.Button saveBtn;
+        private System.Windows.Forms.Button exitBtn;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TextBox descricao;
+        private System.Windows.Forms.TextBox descricaoBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown preco;
+        private System.Windows.Forms.NumericUpDown precoBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown qtd_estoque;
+        private System.Windows.Forms.NumericUpDown qtdEstoqueBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label categoriaLabel;
-        private System.Windows.Forms.ComboBox fornecedores;
-        private System.Windows.Forms.ComboBox id_categoria;
+        private System.Windows.Forms.ComboBox fornecedoresBox;
+        private System.Windows.Forms.ComboBox id_categoriaBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox nome;
-        private System.Windows.Forms.TextBox id;
+        private System.Windows.Forms.TextBox nomeBox;
+        private System.Windows.Forms.TextBox idBox;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.BindingSource produtoBindingSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn produto_nome;
+        private System.Windows.Forms.DataGridViewTextBoxColumn produto_preco;
+        private System.Windows.Forms.DataGridViewTextBoxColumn produto_qtd_estoque;
     }
 }
