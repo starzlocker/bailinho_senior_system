@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,9 +64,12 @@
     <Compile Include="Cliente.cs" />
     <Compile Include="Evento.cs" />
     <Compile Include="Fornecedor .cs" />
-    <Compile Include="Produto.cs" />
+    <Compile Include="models\Categoria.cs" />
+    <Compile Include="models\Produto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="repositories\CategoriaRepository.cs" />
+    <Compile Include="repositories\ProdutoRepository.cs" />
     <Compile Include="ValidadorHelper.cs" />
     <Compile Include="Venda.cs" />
     <Compile Include="Form1.cs">
@@ -77,18 +95,6 @@
     </Compile>
     <Compile Include="views\FornecedoresView.Designer.cs">
       <DependentUpon>FornecedoresView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="views\MainView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="views\MainView.Designer.cs">
-      <DependentUpon>MainView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="views\Navbar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="views\Navbar.Designer.cs">
-      <DependentUpon>Navbar.cs</DependentUpon>
     </Compile>
     <Compile Include="views\VendasView.cs">
       <SubType>Form</SubType>
@@ -133,13 +139,6 @@
       <DependentUpon>FornecedoresView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="views\MainView.resx">
-      <DependentUpon>MainView.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="views\Navbar.resx">
-      <DependentUpon>Navbar.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="views\VendasView.resx">
       <DependentUpon>VendasView.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -152,6 +151,7 @@
       <DependentUpon>ProdutosView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\Produto.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -166,7 +166,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="models\" />
     <Folder Include="resources\images\" />
   </ItemGroup>
   <ItemGroup>
@@ -179,10 +178,29 @@
     <None Include="resources\icons\close_30.png" />
     <None Include="resources\icons\chevron-double_right_30.png" />
     <None Include="resources\icons\chevron-double-left_30.png" />
+    <Content Include="data\Database1.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\Database1_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>Database1.mdf</DependentUpon>
+    </Content>
     <Content Include="resources\icons\chevron-left.png" />
     <None Include="resources\icons\chevron-left_30.png" />
     <Content Include="resources\icons\chevron-right.png" />
     <None Include="resources\icons\chevron-right_30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
