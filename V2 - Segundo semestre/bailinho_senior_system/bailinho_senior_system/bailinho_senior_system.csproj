@@ -78,6 +78,18 @@
     <Compile Include="views\FornecedoresView.Designer.cs">
       <DependentUpon>FornecedoresView.cs</DependentUpon>
     </Compile>
+    <Compile Include="views\MainView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\MainView.Designer.cs">
+      <DependentUpon>MainView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\Navbar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="views\Navbar.Designer.cs">
+      <DependentUpon>Navbar.cs</DependentUpon>
+    </Compile>
     <Compile Include="views\VendasView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +108,9 @@
     <Compile Include="views\ProdutosView.Designer.cs">
       <DependentUpon>ProdutosView.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -117,6 +132,13 @@
     <EmbeddedResource Include="views\FornecedoresView.resx">
       <DependentUpon>FornecedoresView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\MainView.resx">
+      <DependentUpon>MainView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="views\Navbar.resx">
+      <DependentUpon>Navbar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="views\VendasView.resx">
       <DependentUpon>VendasView.cs</DependentUpon>
