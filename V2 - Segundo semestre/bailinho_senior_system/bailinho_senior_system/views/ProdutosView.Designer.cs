@@ -345,6 +345,7 @@
             this.exitBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.exitBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.exitBtn.UseVisualStyleBackColor = true;
+            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
             // 
             // deleteBtn
             // 
@@ -359,6 +360,7 @@
             this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.deleteBtn.UseVisualStyleBackColor = true;
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // saveBtn
             // 
@@ -388,6 +390,7 @@
             this.editBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.editBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.editBtn.UseVisualStyleBackColor = true;
+            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
             // 
             // cancelBtn
             // 
@@ -402,6 +405,7 @@
             this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // newBtn
             // 
@@ -416,6 +420,7 @@
             this.newBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.newBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.newBtn.UseVisualStyleBackColor = true;
+            this.newBtn.Click += new System.EventHandler(this.newBtn_Click);
             // 
             // searchBtn
             // 
@@ -444,6 +449,7 @@
             this.lastBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.lastBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.lastBtn.UseVisualStyleBackColor = true;
+            this.lastBtn.Click += new System.EventHandler(this.lastBtn_Click);
             // 
             // nextBtn
             // 
@@ -458,6 +464,7 @@
             this.nextBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.nextBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.nextBtn.UseVisualStyleBackColor = true;
+            this.nextBtn.Click += new System.EventHandler(this.nextBtn_Click);
             // 
             // previousBtn
             // 
@@ -472,6 +479,7 @@
             this.previousBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.previousBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.previousBtn.UseVisualStyleBackColor = true;
+            this.previousBtn.Click += new System.EventHandler(this.previousBtn_Click);
             // 
             // firstBtn
             // 
@@ -487,6 +495,7 @@
             this.firstBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.firstBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.firstBtn.UseVisualStyleBackColor = true;
+            this.firstBtn.Click += new System.EventHandler(this.firstBtn_Click);
             // 
             // produtoBindingSource
             // 
