@@ -45,13 +45,10 @@
             this.categoriaLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.qtdEstoqueBox = new System.Windows.Forms.NumericUpDown();
-            this.id_categoriaBox = new System.Windows.Forms.ComboBox();
+            this.categoriaBox = new System.Windows.Forms.ComboBox();
             this.precoBox = new System.Windows.Forms.NumericUpDown();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.produto_nome = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.produto_preco = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.produto_qtd_estoque = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.produtosTable = new System.Windows.Forms.DataGridView();
             this.exitBtn = new System.Windows.Forms.Button();
             this.deleteBtn = new System.Windows.Forms.Button();
             this.saveBtn = new System.Windows.Forms.Button();
@@ -71,7 +68,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.precoBox)).BeginInit();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.produtosTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.produtoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,7 +85,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1089, 519);
+            this.tabControl1.Size = new System.Drawing.Size(870, 383);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 14;
             this.tabControl1.Tag = "";
@@ -103,7 +100,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(1081, 481);
+            this.tabPage1.Size = new System.Drawing.Size(862, 345);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Cadastro";
             // 
@@ -193,7 +190,7 @@
             this.groupBox2.Controls.Add(this.categoriaLabel);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.qtdEstoqueBox);
-            this.groupBox2.Controls.Add(this.id_categoriaBox);
+            this.groupBox2.Controls.Add(this.categoriaBox);
             this.groupBox2.Controls.Add(this.precoBox);
             this.groupBox2.Location = new System.Drawing.Point(7, 150);
             this.groupBox2.Name = "groupBox2";
@@ -268,14 +265,14 @@
             this.qtdEstoqueBox.TabIndex = 11;
             this.qtdEstoqueBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // id_categoriaBox
+            // categoriaBox
             // 
-            this.id_categoriaBox.FormattingEnabled = true;
-            this.id_categoriaBox.Location = new System.Drawing.Point(10, 158);
-            this.id_categoriaBox.Margin = new System.Windows.Forms.Padding(4);
-            this.id_categoriaBox.Name = "id_categoriaBox";
-            this.id_categoriaBox.Size = new System.Drawing.Size(386, 28);
-            this.id_categoriaBox.TabIndex = 15;
+            this.categoriaBox.FormattingEnabled = true;
+            this.categoriaBox.Location = new System.Drawing.Point(10, 158);
+            this.categoriaBox.Margin = new System.Windows.Forms.Padding(4);
+            this.categoriaBox.Name = "categoriaBox";
+            this.categoriaBox.Size = new System.Drawing.Size(386, 28);
+            this.categoriaBox.TabIndex = 15;
             // 
             // precoBox
             // 
@@ -296,41 +293,29 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.LightGray;
-            this.tabPage2.Controls.Add(this.dataGridView1);
+            this.tabPage2.Controls.Add(this.produtosTable);
             this.tabPage2.Location = new System.Drawing.Point(4, 34);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1081, 481);
+            this.tabPage2.Size = new System.Drawing.Size(862, 345);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Lista";
             // 
-            // dataGridView1
+            // produtosTable
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.produto_nome,
-            this.produto_preco,
-            this.produto_qtd_estoque});
-            this.dataGridView1.Location = new System.Drawing.Point(7, 7);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1050, 458);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // produto_nome
-            // 
-            this.produto_nome.HeaderText = "Nome";
-            this.produto_nome.Name = "produto_nome";
-            // 
-            // produto_preco
-            // 
-            this.produto_preco.HeaderText = "Preço";
-            this.produto_preco.Name = "produto_preco";
-            // 
-            // produto_qtd_estoque
-            // 
-            this.produto_qtd_estoque.HeaderText = "Qtd Estoque";
-            this.produto_qtd_estoque.Name = "produto_qtd_estoque";
+            this.produtosTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.produtosTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.produtosTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.produtosTable.Location = new System.Drawing.Point(7, 7);
+            this.produtosTable.MultiSelect = false;
+            this.produtosTable.Name = "produtosTable";
+            this.produtosTable.RowHeadersVisible = false;
+            this.produtosTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.produtosTable.Size = new System.Drawing.Size(848, 331);
+            this.produtosTable.TabIndex = 0;
             // 
             // exitBtn
             // 
@@ -499,13 +484,13 @@
             // 
             // produtoBindingSource
             // 
-            this.produtoBindingSource.DataSource = typeof(bailinho_senior_system.Produto);
+            this.produtoBindingSource.DataSource = typeof(bailinho_senior_system.models.Produto);
             // 
             // ProdutosView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1113, 624);
+            this.ClientSize = new System.Drawing.Size(894, 488);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.deleteBtn);
@@ -532,7 +517,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.precoBox)).EndInit();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.produtosTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.produtoBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -564,16 +549,13 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label categoriaLabel;
         private System.Windows.Forms.ComboBox fornecedoresBox;
-        private System.Windows.Forms.ComboBox id_categoriaBox;
+        private System.Windows.Forms.ComboBox categoriaBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox nomeBox;
         private System.Windows.Forms.TextBox idBox;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView produtosTable;
         private System.Windows.Forms.BindingSource produtoBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn produto_nome;
-        private System.Windows.Forms.DataGridViewTextBoxColumn produto_preco;
-        private System.Windows.Forms.DataGridViewTextBoxColumn produto_qtd_estoque;
     }
 }
