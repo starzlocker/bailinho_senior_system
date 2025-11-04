@@ -28,6 +28,8 @@ namespace bailinho_senior_system.views
 
         private void ProdutosView_Load(object sender, EventArgs e)
         {
+            tabControlProduto.Selecting += tabControlProduto_Selecting;
+
             currentIndex = 0;
             ReadCategorias();
             ReadProdutos();
@@ -63,6 +65,15 @@ namespace bailinho_senior_system.views
             var creating = state == ViewState.Creating;
             var editing = state == ViewState.Editing;
             var listing = state == ViewState.Listing;
+
+
+            string curTab = tabControlProduto.SelectedTab?.Name ?? "";
+
+            if (creating || editing)
+            {
+                SwitchToTabByName("tabPageCadastro");
+            }
+
 
             deleteBtn.Enabled = produtos.Count > 0 && listing;
             editBtn.Enabled = produtos.Count > 0 && listing;
@@ -263,7 +274,6 @@ namespace bailinho_senior_system.views
 
             if (state == ViewState.Creating)
             {
-
                 produtoRepository.CreateProduto(editItem);
                 ReadProdutos();
                 currentIndex = produtos.Count - 1;
@@ -273,6 +283,7 @@ namespace bailinho_senior_system.views
                 produtoRepository.UpdateProduto(editItem);
                 ReadProdutos();
             }
+
 
             SetState(ViewState.Listing);
             MessageBox.Show("Produto salvo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -295,6 +306,7 @@ namespace bailinho_senior_system.views
             else currentIndex = 0;
 
             editItem = null;
+            ReadProdutos();
             SetState(ViewState.Listing);
         }
 
@@ -312,6 +324,76 @@ namespace bailinho_senior_system.views
                     return; // usuário cancelou — volta para o formulário
             }
             this.Close();
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            SwitchToTabByName("tabPageLista");
+            searchBox.Focus();
+        }
+
+        private void SwitchToTabByName(string tabName)
+        {
+            if (string.IsNullOrEmpty(tabName)) return;
+            var page = tabControlProduto.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
+            if (page != null) tabControlProduto.SelectedTab = page;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            List<Produto> produtosEncontrados = produtos;
+            if (searchBox.Text.Trim().Length > 0)
+            {
+                string searchStr = searchBox.Text.Trim().ToLower();
+
+                if (int.TryParse(searchStr, out int id))
+                {
+                    produtosEncontrados = produtos.FindAll(p => p.Id == id);
+                }
+                else
+                {
+                    produtosEncontrados = produtos.FindAll(p => p.Nome.ToLower().Contains(searchStr));
+                }
+            }
+            if (produtosEncontrados.Count > 0)
+                currentIndex = produtos.FindIndex(p => p.Id == produtosEncontrados[0].Id);
+            produtosTable.DataSource = produtosEncontrados;
+            SetState(ViewState.Listing);
+        }
+
+        private void produtosTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var cur = this.produtosTable.CurrentRow;
+            if (cur != null)
+                currentIndex = cur.Index;
+
+            SetState(ViewState.Listing);
+        }
+
+        private void tabControlProduto_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (state != ViewState.Listing)
+            {
+                var result = MessageBox.Show(
+                    "Se você sair, suas alterações serão perdidas. Deseja continuar?",
+                    "Confirmar",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                editItem = null;
+                SetState(ViewState.Listing);
+            }
         }
     }
 }
