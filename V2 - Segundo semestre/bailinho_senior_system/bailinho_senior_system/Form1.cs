@@ -11,58 +11,55 @@ using bailinho_senior_system.views;
 
 namespace bailinho_senior_system
 {
-    public partial class Form1 : Form
+    public partial class FrmHome : Form
     {
-        public Form1()
+        VendasView frmVendas;
+        ProdutosView frmProdutos;
+        EventosView frmEventos;
+        ClientesView frmClientes;
+
+        CategoriasView frmCategorias;
+        FornecedoresView frmFornecedores;
+
+        public FrmHome()
         {
             InitializeComponent();
         }
 
-        private void vendasBtn_Click(object sender, EventArgs e)
+        private void btnProdutos_Click(object sender, EventArgs e)
         {
-            using (VendasView form = new VendasView())
+            if(frmProdutos == null || frmProdutos.IsDisposed)
             {
-                form.ShowDialog();
+                frmProdutos = new ProdutosView();
+                frmProdutos.Show();
+            }
+
+        }
+
+        private void btnEventos_Click(object sender, EventArgs e)
+        {
+            if (frmEventos == null || frmEventos.IsDisposed)
+            {
+                frmEventos = new EventosView();
+                frmEventos.Show();
             }
         }
 
-        private void produtosBtn_Click(object sender, EventArgs e)
+        private void btnParticipantes_Click(object sender, EventArgs e)
         {
-            using (ProdutosView form = new ProdutosView())
+            if (frmClientes == null || frmClientes.IsDisposed)
             {
-                form.ShowDialog();
+                frmClientes = new ClientesView();
+                frmClientes.Show();
             }
         }
 
-        private void eventosBtn_Click(object sender, EventArgs e)
+        private void btnVendas_Click(object sender, EventArgs e)
         {
-            using (EventosView form = new EventosView())
+            if (frmVendas == null || frmVendas.IsDisposed)
             {
-                form.ShowDialog();
-            }
-        }
-
-        private void fornecedoresBtn_Click(object sender, EventArgs e)
-        {
-            using (FornecedoresView form = new FornecedoresView())
-            {
-                form.ShowDialog();
-            }
-        }
-
-        private void clientesBtn_Click(object sender, EventArgs e)
-        {
-            using (ClientesView form = new ClientesView())
-            {
-                form.ShowDialog();
-            }
-        }
-
-        private void categoriasBtn_Click(object sender, EventArgs e)
-        {
-            using (CategoriasView form = new CategoriasView())
-            {
-                form.ShowDialog();
+                frmVendas = new VendasView();
+                frmVendas.Show();
             }
         }
     }
