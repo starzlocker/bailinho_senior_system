@@ -1,4 +1,5 @@
 ﻿using bailinho_senior_system.models;
+using bailinho_senior_system.config;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,7 +13,7 @@ namespace bailinho_senior_system.repositories
 {
     internal class CategoriaRepository
     {
-        string ConnectionString = @"server=127.0.0.1;uid=root;pwd=ifsp;database=bailinhoseniorsystem;ConnectionTimeout=1";
+        private string ConnectionString => DatabaseConfig.ConnectionString;
 
         // private readonly string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
 

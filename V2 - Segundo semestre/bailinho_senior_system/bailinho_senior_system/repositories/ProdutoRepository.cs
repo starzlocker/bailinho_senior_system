@@ -6,15 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using bailinho_senior_system.models;
+using bailinho_senior_system.config;
 using MySql.Data.MySqlClient;
 
 namespace bailinho_senior_system.repositories
 {
     public class ProdutoRepository
     {
-        string ConnectionString = @"server=127.0.0.1;uid=root;pwd=ifsp;database=bailinhoseniorsystem;ConnectionTimeout=1";
+        private string ConnectionString => DatabaseConfig.ConnectionString;
         //private string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
-
 
         public List<Produto> GetProdutos()
         {
