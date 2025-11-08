@@ -6,12 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using bailinho_senior_system.models;
+using MySql.Data.MySqlClient;
 
 namespace bailinho_senior_system.repositories
 {
     public class ProdutoRepository
     {
-        private string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
+        string ConnectionString = @"server=127.0.0.1;uid=root;pwd=ifsp;database=bailinhoseniorsystem;ConnectionTimeout=1";
+        //private string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
 
 
         public List<Produto> GetProdutos()
@@ -20,16 +22,16 @@ namespace bailinho_senior_system.repositories
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
 
 
                     string sql = "SELECT tp.id, tp.nome, tp.descricao, tp.qtd_estoque, tp.preco, tp.id_categoria, tc.nome as categoria FROM Produto tp LEFT JOIN Categoria tc on tp.id_categoria = tc.id;";
 
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             int idxId = reader.GetOrdinal("id");
                             int idxNome = reader.GetOrdinal("nome");
@@ -89,17 +91,17 @@ namespace bailinho_senior_system.repositories
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
 
 
                     string sql = $"SELECT tp.id, tp.nome, tp.descricao, tp.qtd_estoque, tp.preco, tp.id_categoria, tc.nome as categoria FROM Produto tp LEFT JOIN Categoria tc on tp.id_categoria = tc.id WHERE tp.id=@id;";
 
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@id", id);
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             int idxId = reader.GetOrdinal("id");
                             int idxNome = reader.GetOrdinal("nome");
@@ -158,7 +160,7 @@ namespace bailinho_senior_system.repositories
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
 
@@ -167,7 +169,7 @@ namespace bailinho_senior_system.repositories
                                  "(nome, descricao, qtd_estoque, preco, id_categoria) " +
                                  "VALUES (@nome, @descricao, @qtd_estoque, @preco, @id_categoria);";
 
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@nome", produto.Nome);
                         command.Parameters.AddWithValue("@descricao", produto.Descricao);
@@ -191,7 +193,7 @@ namespace bailinho_senior_system.repositories
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
 
@@ -200,7 +202,7 @@ namespace bailinho_senior_system.repositories
                                  "set nome = @nome, descricao = @descricao, qtd_estoque = @qtd_estoque, preco = @preco, id_categoria = @id_categoria " +
                                  "WHERE id = @id";
 
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@id", produto.Id);
                         command.Parameters.AddWithValue("@nome", produto.Nome);
@@ -226,14 +228,14 @@ namespace bailinho_senior_system.repositories
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
 
 
                     string sql = "DELETE FROM Produto WHERE id = @id;";
 
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@id", id);
 
