@@ -101,5 +101,10 @@ namespace bailinho_senior_system.views
         {
 
         }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace bailinho_senior_system.views
 
         private void ProdutosView_Load(object sender, EventArgs e)
         {
-            tabControlProduto.Selecting += tabControlProduto_Selecting;
+            tabControl.Selecting += tabControl_Selecting;
 
             currentIndex = 0;
             ReadCategorias();
@@ -67,7 +67,7 @@ namespace bailinho_senior_system.views
             var listing = state == ViewState.Listing;
 
 
-            string curTab = tabControlProduto.SelectedTab?.Name ?? "";
+            string curTab = tabControl.SelectedTab?.Name ?? "";
 
             if (creating || editing)
             {
@@ -146,7 +146,7 @@ namespace bailinho_senior_system.views
                 dataTable.Rows.Add(row);
             }
 
-            produtosTable.DataSource = dataTable;
+            listTable.DataSource = dataTable;
         }
 
 
@@ -341,8 +341,8 @@ namespace bailinho_senior_system.views
         private void SwitchToTabByName(string tabName)
         {
             if (string.IsNullOrEmpty(tabName)) return;
-            var page = tabControlProduto.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
-            if (page != null) tabControlProduto.SelectedTab = page;
+            var page = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
+            if (page != null) tabControl.SelectedTab = page;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -363,20 +363,20 @@ namespace bailinho_senior_system.views
             }
             if (produtosEncontrados.Count > 0)
                 currentIndex = produtos.FindIndex(p => p.Id == produtosEncontrados[0].Id);
-            produtosTable.DataSource = produtosEncontrados;
+            listTable.DataSource = produtosEncontrados;
             SetState(ViewState.Listing);
         }
 
         private void produtosTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            var cur = this.produtosTable.CurrentRow;
+            var cur = this.listTable.CurrentRow;
             if (cur != null)
                 currentIndex = cur.Index;
 
             SetState(ViewState.Listing);
         }
 
-        private void tabControlProduto_Selecting(object sender, TabControlCancelEventArgs e)
+        private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
             if (state != ViewState.Listing)
             {

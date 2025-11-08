@@ -23,7 +23,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.tabControlProduto = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageCadastro = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -42,7 +42,7 @@
             this.categoriaBox = new System.Windows.Forms.ComboBox();
             this.precoBox = new System.Windows.Forms.NumericUpDown();
             this.tabPageLista = new System.Windows.Forms.TabPage();
-            this.produtosTable = new System.Windows.Forms.DataGridView();
+            this.listTable = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.searchBox = new System.Windows.Forms.TextBox();
@@ -58,34 +58,34 @@
             this.previousBtn = new System.Windows.Forms.Button();
             this.firstBtn = new System.Windows.Forms.Button();
             this.produtoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.tabControlProduto.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabPageCadastro.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.precoBox)).BeginInit();
             this.tabPageLista.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.produtosTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.produtoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // tabControlProduto
+            // tabControl
             // 
-            this.tabControlProduto.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlProduto.Controls.Add(this.tabPageCadastro);
-            this.tabControlProduto.Controls.Add(this.tabPageLista);
-            this.tabControlProduto.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControlProduto.ItemSize = new System.Drawing.Size(110, 30);
-            this.tabControlProduto.Location = new System.Drawing.Point(16, 128);
-            this.tabControlProduto.Margin = new System.Windows.Forms.Padding(4);
-            this.tabControlProduto.Name = "tabControlProduto";
-            this.tabControlProduto.SelectedIndex = 0;
-            this.tabControlProduto.Size = new System.Drawing.Size(870, 403);
-            this.tabControlProduto.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabControlProduto.TabIndex = 14;
-            this.tabControlProduto.Tag = "";
+            this.tabControl.Controls.Add(this.tabPageCadastro);
+            this.tabControl.Controls.Add(this.tabPageLista);
+            this.tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl.ItemSize = new System.Drawing.Size(110, 30);
+            this.tabControl.Location = new System.Drawing.Point(16, 128);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(860, 440);
+            this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabControl.TabIndex = 14;
+            this.tabControl.Tag = "";
             // 
             // tabPageCadastro
             // 
@@ -97,12 +97,14 @@
             this.tabPageCadastro.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageCadastro.Name = "tabPageCadastro";
             this.tabPageCadastro.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageCadastro.Size = new System.Drawing.Size(862, 365);
+            this.tabPageCadastro.Size = new System.Drawing.Size(852, 402);
             this.tabPageCadastro.TabIndex = 0;
             this.tabPageCadastro.Text = "Cadastro";
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
@@ -111,7 +113,7 @@
             this.groupBox1.Controls.Add(this.descricaoBox);
             this.groupBox1.Location = new System.Drawing.Point(7, 7);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1067, 137);
+            this.groupBox1.Size = new System.Drawing.Size(838, 137);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Informações Gerais";
@@ -181,6 +183,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.fornecedoresBox);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label4);
@@ -191,7 +196,7 @@
             this.groupBox2.Controls.Add(this.precoBox);
             this.groupBox2.Location = new System.Drawing.Point(7, 150);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1067, 249);
+            this.groupBox2.Size = new System.Drawing.Size(838, 245);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Detalhes";
@@ -289,47 +294,48 @@
             // 
             // tabPageLista
             // 
-            this.tabPageLista.BackColor = System.Drawing.Color.LightGray;
-            this.tabPageLista.Controls.Add(this.produtosTable);
+            this.tabPageLista.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPageLista.Controls.Add(this.listTable);
             this.tabPageLista.Controls.Add(this.button1);
             this.tabPageLista.Controls.Add(this.label8);
             this.tabPageLista.Controls.Add(this.searchBox);
+            this.tabPageLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabPageLista.Location = new System.Drawing.Point(4, 34);
             this.tabPageLista.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageLista.Name = "tabPageLista";
             this.tabPageLista.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageLista.Size = new System.Drawing.Size(862, 365);
+            this.tabPageLista.Size = new System.Drawing.Size(852, 402);
             this.tabPageLista.TabIndex = 1;
             this.tabPageLista.Text = "Lista";
             // 
-            // produtosTable
+            // listTable
             // 
-            this.produtosTable.AllowUserToAddRows = false;
-            this.produtosTable.AllowUserToDeleteRows = false;
-            this.produtosTable.AllowUserToResizeColumns = false;
-            this.produtosTable.AllowUserToResizeRows = false;
-            this.produtosTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listTable.AllowUserToAddRows = false;
+            this.listTable.AllowUserToDeleteRows = false;
+            this.listTable.AllowUserToResizeColumns = false;
+            this.listTable.AllowUserToResizeRows = false;
+            this.listTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.produtosTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.produtosTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.produtosTable.Location = new System.Drawing.Point(10, 50);
-            this.produtosTable.MultiSelect = false;
-            this.produtosTable.Name = "produtosTable";
-            this.produtosTable.ReadOnly = true;
-            this.produtosTable.RowHeadersVisible = false;
-            this.produtosTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.produtosTable.Size = new System.Drawing.Size(848, 308);
-            this.produtosTable.TabIndex = 18;
+            this.listTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.listTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.listTable.Location = new System.Drawing.Point(10, 59);
+            this.listTable.MultiSelect = false;
+            this.listTable.Name = "listTable";
+            this.listTable.ReadOnly = true;
+            this.listTable.RowHeadersVisible = false;
+            this.listTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.listTable.Size = new System.Drawing.Size(838, 336);
+            this.listTable.TabIndex = 18;
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(601, 23);
+            this.button1.Location = new System.Drawing.Point(601, 27);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(44, 22);
+            this.button1.Size = new System.Drawing.Size(67, 26);
             this.button1.TabIndex = 17;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
@@ -340,16 +346,16 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(7, 4);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(126, 16);
+            this.label8.Size = new System.Drawing.Size(153, 20);
             this.label8.TabIndex = 15;
             this.label8.Text = "Buscar (nome ou Id)";
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // searchBox
             // 
-            this.searchBox.Location = new System.Drawing.Point(10, 23);
+            this.searchBox.Location = new System.Drawing.Point(10, 27);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(585, 22);
+            this.searchBox.Size = new System.Drawing.Size(585, 26);
             this.searchBox.TabIndex = 16;
             // 
             // exitBtn
@@ -526,8 +532,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(894, 539);
-            this.Controls.Add(this.tabControlProduto);
+            this.ClientSize = new System.Drawing.Size(884, 576);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.deleteBtn);
             this.Controls.Add(this.saveBtn);
@@ -541,10 +547,11 @@
             this.Controls.Add(this.firstBtn);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(900, 615);
             this.Name = "ProdutosView";
             this.Text = "Produtos";
             this.Load += new System.EventHandler(this.ProdutosView_Load);
-            this.tabControlProduto.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
             this.tabPageCadastro.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -554,7 +561,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.precoBox)).EndInit();
             this.tabPageLista.ResumeLayout(false);
             this.tabPageLista.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.produtosTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.produtoBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -573,7 +580,7 @@
         private System.Windows.Forms.Button deleteBtn;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button exitBtn;
-        private System.Windows.Forms.TabControl tabControlProduto;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabPageCadastro;
         private System.Windows.Forms.TabPage tabPageLista;
         private System.Windows.Forms.TextBox descricaoBox;
@@ -596,6 +603,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.Button button1;
-        internal System.Windows.Forms.DataGridView produtosTable;
+        internal System.Windows.Forms.DataGridView listTable;
     }
 }
