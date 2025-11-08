@@ -53,8 +53,8 @@ namespace bailinho_senior_system.views
             if (qtdEstoqueBox.Value < 0) errors.Add("Quantidade não pode ser negativa");
             if (precoBox.Value < 0) errors.Add("Preço não pode ser negativo.");
 
-            if (categoriaBox.Text.Trim().Length == 0) errors.Add("Escolha um fornecedor.");
-
+            //if (categoriaBox.Text.Trim().Length == 0) errors.Add("Escolha um fornecedor.");
+            
             return errors;
         }
 
@@ -291,13 +291,15 @@ namespace bailinho_senior_system.views
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-            if (produtos.Count == 0) 
+            if (produtos.Count == 0)
             {
                 return;
             }
-            
+
             ProdutoRepository produtoRepository = new ProdutoRepository();
             produtoRepository.DeleteProduto(produtos[currentIndex].Id);
+
+            ReadProdutos();
 
             if (produtos.Count > 0)
             {
@@ -306,7 +308,6 @@ namespace bailinho_senior_system.views
             else currentIndex = 0;
 
             editItem = null;
-            ReadProdutos();
             SetState(ViewState.Listing);
         }
 
