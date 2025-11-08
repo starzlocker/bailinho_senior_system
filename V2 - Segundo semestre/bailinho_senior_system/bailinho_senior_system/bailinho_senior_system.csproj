@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cliente.cs" />
+    <Compile Include="config\DatabaseConfig.cs" />
     <Compile Include="Evento.cs" />
     <Compile Include="Fornecedor .cs" />
     <Compile Include="models\Categoria.cs" />
