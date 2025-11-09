@@ -378,6 +378,15 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
+                var result = MessageBox.Show(
+                    $"Tem certeza que deseja excluir a o produto '{produtos[currentIndex].Nome}'?",
+                    "Confirmar Exclusão",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                    return;
+
                 ProdutoRepository produtoRepository = new ProdutoRepository();
                 produtoRepository.DeleteProduto(produtos[currentIndex].Id);
 
