@@ -151,7 +151,8 @@ namespace bailinho_senior_system.repositories
 
                     string sql = "INSERT INTO Fornecedor " +
                                  "(nome, cnpj, email, telefone) " +
-                                 "VALUES (@nome, @cnpj, @email, @telefone);";
+                                 "VALUES (@nome, @cnpj, @email, @telefone); " +
+                                 "SELECT LAST_INSERT_ID();";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -160,7 +161,11 @@ namespace bailinho_senior_system.repositories
                         command.Parameters.AddWithValue("@email", fornecedor.Email);
                         command.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
 
-                        command.ExecuteNonQuery();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            fornecedor.Id = Convert.ToInt32(result);
+                        }
                     }
                 }
             }
