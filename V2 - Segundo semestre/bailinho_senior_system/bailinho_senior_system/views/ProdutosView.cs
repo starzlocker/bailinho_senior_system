@@ -465,15 +465,6 @@ namespace bailinho_senior_system.views
             SetState(ViewState.Listing);
         }
 
-        private void produtosTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var cur = this.listTable.CurrentRow;
-            if (cur != null)
-                currentIndex = cur.Index;
-
-            SetState(ViewState.Listing);
-        }
-
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
             if (state != ViewState.Listing)
@@ -493,6 +484,14 @@ namespace bailinho_senior_system.views
                 editItem = null;
                 SetState(ViewState.Listing);
             }
+        }
+        private void listTable_SelectionChanged(object sender, EventArgs e)
+        {
+            var cur = this.listTable.CurrentRow;
+            if (cur != null)
+                currentIndex = cur.Index;
+
+            SetState(ViewState.Listing);
         }
     }
 }
