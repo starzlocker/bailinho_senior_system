@@ -467,7 +467,7 @@ namespace bailinho_senior_system.views
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
 
-            if (state != ViewState.Listing)
+            if (state != ViewState.Listing && tabControl.SelectedTab.Name != "tabPageCadastro")
             {
                 var result = MessageBox.Show(
                     "Se você sair, suas alterações serão perdidas. Deseja continuar?",
