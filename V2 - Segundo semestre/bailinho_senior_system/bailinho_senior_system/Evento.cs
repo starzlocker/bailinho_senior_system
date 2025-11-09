@@ -24,7 +24,8 @@ namespace bailinho_senior_system
             TimeSpan hora,
             decimal valor_entrada,
             int endereco
-        ) {
+        )
+        {
             setNome(nome);
             setDescricao(descricao);
             setData(data);

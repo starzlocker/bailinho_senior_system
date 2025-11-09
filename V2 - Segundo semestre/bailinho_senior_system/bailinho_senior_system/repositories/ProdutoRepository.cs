@@ -6,15 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using bailinho_senior_system.models;
+using bailinho_senior_system.config;
 using MySql.Data.MySqlClient;
+using System.ComponentModel;
 
 namespace bailinho_senior_system.repositories
 {
     public class ProdutoRepository
     {
-        string ConnectionString = @"server=127.0.0.1;uid=root;pwd=ifsp;database=bailinhoseniorsystem;ConnectionTimeout=1";
+        private string ConnectionString => DatabaseConfig.ConnectionString;
         //private string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
-
 
         public List<Produto> GetProdutos()
         {
@@ -27,7 +28,20 @@ namespace bailinho_senior_system.repositories
                     connection.Open();
 
 
-                    string sql = "SELECT tp.id, tp.nome, tp.descricao, tp.qtd_estoque, tp.preco, tp.id_categoria, tc.nome as categoria FROM Produto tp LEFT JOIN Categoria tc on tp.id_categoria = tc.id;";
+                    string sql = $"SELECT " +
+                                     $"tp.id, " +
+                                     $"tp.nome, " +
+                                     $"tp.descricao, " +
+                                     $"tp.qtd_estoque, " +
+                                     $"tp.preco, " +
+                                     $"tp.id_categoria, " +
+                                     $"tc.nome as categoria, " +
+                                     $"tf.id as id_fornecedor, " +
+                                     $"tf.nome as fornecedor " +
+                                 $"FROM Produto tp " +
+                                 $"LEFT JOIN Categoria tc on tp.id_categoria = tc.id " +
+                                 $"LEFT JOIN produtofornecedor tpf on tpf.id_produto=tp.id " +
+                                 $"LEFT JOIN Fornecedor tf on tf.id=tpf.id_fornecedor;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -40,6 +54,8 @@ namespace bailinho_senior_system.repositories
                             int idxPreco = reader.GetOrdinal("preco");
                             int idxIdCategoria = reader.GetOrdinal("id_categoria");
                             int idxCategoria = reader.GetOrdinal("categoria");
+                            int idxIdFornecedor = reader.GetOrdinal("id_fornecedor");
+                            int idxFornecedor = reader.GetOrdinal("fornecedor");
 
                             while (reader.Read())
                             {
@@ -67,6 +83,12 @@ namespace bailinho_senior_system.repositories
                                 if (!reader.IsDBNull(idxIdCategoria))
                                     produto.IdCategoria = reader.GetInt32(idxIdCategoria);
 
+                                if (!reader.IsDBNull(idxFornecedor))
+                                    produto.Fornecedor = reader.GetString(idxFornecedor);
+
+                                if (!reader.IsDBNull(idxIdFornecedor))
+                                    produto.IdFornecedor = reader.GetInt32(idxIdFornecedor);
+
                                 // Se precisar do Id e não houver propriedade pública, você pode adicionar uma propriedade Id no model.
                                 // Ex.: produto.Id = reader.GetInt32(idxId);
 
@@ -79,8 +101,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro ao conectar com banco!");
                 Console.Write(ex.ToString());
+                throw;
             }
 
             return products;
@@ -96,7 +118,21 @@ namespace bailinho_senior_system.repositories
                     connection.Open();
 
 
-                    string sql = $"SELECT tp.id, tp.nome, tp.descricao, tp.qtd_estoque, tp.preco, tp.id_categoria, tc.nome as categoria FROM Produto tp LEFT JOIN Categoria tc on tp.id_categoria = tc.id WHERE tp.id=@id;";
+                    string sql = $"SELECT " +
+                                     $"tp.id, " +
+                                     $"tp.nome, " +
+                                     $"tp.descricao, " +
+                                     $"tp.qtd_estoque, " +
+                                     $"tp.preco, " +
+                                     $"tp.id_categoria, " +
+                                     $"tc.nome as categoria, " +
+                                     $"tf.id as id_fornecedor, " +
+                                     $"tf.nome as fornecedor " +
+                                 $"FROM Produto tp " +
+                                 $"LEFT JOIN Categoria tc on tp.id_categoria = tc.id " +
+                                 $"LEFT JOIN produtofornecedor tpf on tpf.id_produto=tp.id " +
+                                 $"LEFT JOIN Fornecedor tf on tf.id=tpf.id_fornecedor " +
+                                 $"WHERE tp.id=@id;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -108,8 +144,11 @@ namespace bailinho_senior_system.repositories
                             int idxDescricao = reader.GetOrdinal("descricao");
                             int idxQtd = reader.GetOrdinal("qtd_estoque");
                             int idxPreco = reader.GetOrdinal("preco");
-                            int idxCategoria = reader.GetOrdinal("categoria");
                             int idxIdCategoria = reader.GetOrdinal("id_categoria");
+                            int idxCategoria = reader.GetOrdinal("categoria");
+                            int idxIdFornecedor = reader.GetOrdinal("id_fornecedor");
+                            int idxFornecedor = reader.GetOrdinal("fornecedor");
+
                             if (reader.Read())
                             {
                                 var produto = new Produto();
@@ -136,6 +175,12 @@ namespace bailinho_senior_system.repositories
                                 if (!reader.IsDBNull(idxIdCategoria))
                                     produto.IdCategoria = reader.GetInt32(idxIdCategoria);
 
+                                if (!reader.IsDBNull(idxFornecedor))
+                                    produto.Fornecedor = reader.GetString(idxFornecedor);
+
+                                if (!reader.IsDBNull(idxIdFornecedor))
+                                    produto.IdFornecedor = reader.GetInt32(idxIdFornecedor);
+
                                 // Se precisar do Id e não houver propriedade pública, você pode adicionar uma propriedade Id no model.
                                 // Ex.: produto.Id = reader.GetInt32(idxId);
 
@@ -148,14 +193,14 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro ao conectar com banco!");
+                
                 Console.Write(ex.ToString());
-
+                throw;
             }
 
             return null;
         }
-
+      
         public void CreateProduto(Produto produto)
         {
             try
@@ -183,8 +228,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro de conexão com o banco", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.Write(ex.ToString());
+                throw;
 
             }
         }
@@ -217,8 +262,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro de conexão com o banco", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.Write(ex.ToString());
+                throw;
 
             }
 
@@ -245,8 +290,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro de conexão com o banco", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.Write(ex.ToString());
+                throw;
 
             }
         }

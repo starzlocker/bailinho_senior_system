@@ -11,16 +11,16 @@ using MySql.Data.MySqlClient;
 
 namespace bailinho_senior_system.repositories
 {
-    internal class CategoriaRepository
+    internal class FornecedorRepository
     {
         private string ConnectionString => DatabaseConfig.ConnectionString;
 
         // private readonly string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
 
 
-        public List<Categoria> GetCategorias()
+        public List<Fornecedor> GetFornecedores()
         {
-            var categorias = new List<Categoria>();
+            var fornecedores = new List<Fornecedor>();
 
             try
             {
@@ -29,7 +29,7 @@ namespace bailinho_senior_system.repositories
                     connection.Open();
 
 
-                    string sql = "SELECT id, nome, descricao FROM Categoria;";
+                    string sql = "SELECT id, nome, cnpj, email, telefone FROM Fornecedor;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -37,23 +37,32 @@ namespace bailinho_senior_system.repositories
                         {
                             int idxId = reader.GetOrdinal("id");
                             int idxNome = reader.GetOrdinal("nome");
-                            int idxDescricao = reader.GetOrdinal("descricao");
+                            int idxCnpj = reader.GetOrdinal("cnpj");
+                            int idxEmail = reader.GetOrdinal("email");
+                            int idxTelefone = reader.GetOrdinal("telefone");
+
 
                             while (reader.Read())
                             {
-                                var categoria = new Categoria();
+                                var fornecedor = new Fornecedor();
 
                                 // Só atribui quando o valor não for nulo no banco
                                 if (!reader.IsDBNull(idxId))
-                                    categoria.Id = reader.GetInt32(idxId);
+                                    fornecedor.Id = reader.GetInt32(idxId);
 
                                 if (!reader.IsDBNull(idxNome))
-                                    categoria.Nome = reader.GetString(idxNome);
+                                    fornecedor.Nome = reader.GetString(idxNome);
 
-                                if (!reader.IsDBNull(idxDescricao))
-                                    categoria.Descricao = reader.GetString(idxDescricao);
+                                if (!reader.IsDBNull(idxCnpj))
+                                    fornecedor.Cnpj = reader.GetString(idxCnpj);
 
-                                categorias.Add(categoria);
+                                if (!reader.IsDBNull(idxEmail))
+                                    fornecedor.Email = reader.GetString(idxEmail);
+
+                                if (!reader.IsDBNull(idxTelefone))
+                                    fornecedor.Telefone = reader.GetString(idxTelefone);
+
+                                fornecedores.Add(fornecedor);
                             }
                         }
                     }
@@ -63,14 +72,15 @@ namespace bailinho_senior_system.repositories
             catch (Exception ex)
             {
                 Console.Write(ex.ToString());
+
                 throw;
             }
 
-            return categorias;
+            return fornecedores;
         }
 
 
-        public Categoria GetCategoria(int id)
+        public Fornecedor GetFornecedor(int id)
         {
             try
             {
@@ -79,7 +89,7 @@ namespace bailinho_senior_system.repositories
                     connection.Open();
 
 
-                    string sql = "SELECT id, nome, descricao FROM Categoria WHERE id=@id;";
+                    string sql = "SELECT id, nome, cnpj, email, telefone FROM Fornecedor WHERE id=@id;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -88,23 +98,31 @@ namespace bailinho_senior_system.repositories
                         {
                             int idxId = reader.GetOrdinal("id");
                             int idxNome = reader.GetOrdinal("nome");
-                            int idxDescricao = reader.GetOrdinal("descricao");
+                            int idxCnpj = reader.GetOrdinal("cnpj");
+                            int idxEmail = reader.GetOrdinal("email");
+                            int idxTelefone = reader.GetOrdinal("telefone");
 
                             if (reader.Read())
                             {
-                                var categoria = new Categoria();
+                                var fornecedor = new Fornecedor();
 
                                 // Só atribui quando o valor não for nulo no banco
                                 if (!reader.IsDBNull(idxId))
-                                    categoria.Id = reader.GetInt32(idxId);
+                                    fornecedor.Id = reader.GetInt32(idxId);
 
                                 if (!reader.IsDBNull(idxNome))
-                                    categoria.Nome = reader.GetString(idxNome);
+                                    fornecedor.Nome = reader.GetString(idxNome);
 
-                                if (!reader.IsDBNull(idxDescricao))
-                                    categoria.Descricao = reader.GetString(idxDescricao);
+                                if (!reader.IsDBNull(idxCnpj))
+                                    fornecedor.Cnpj = reader.GetString(idxCnpj);
 
-                                return categoria;
+                                if (!reader.IsDBNull(idxEmail))
+                                    fornecedor.Email = reader.GetString(idxEmail);
+
+                                if (!reader.IsDBNull(idxTelefone))
+                                    fornecedor.Telefone = reader.GetString(idxTelefone);
+
+                                return fornecedor;
                             }
                         }
                     }
@@ -114,6 +132,7 @@ namespace bailinho_senior_system.repositories
             catch (Exception ex)
             {
                 Console.Write(ex.ToString());
+
                 throw;
 
             }
@@ -121,7 +140,7 @@ namespace bailinho_senior_system.repositories
             return null;
         }
 
-        public void CreateCategoria(Categoria categoria)
+        public void CreateFornecedor(Fornecedor fornecedor)
         {
             try
             {
@@ -130,14 +149,16 @@ namespace bailinho_senior_system.repositories
                     connection.Open();
 
 
-                    string sql = "INSERT INTO Categoria " +
-                                 "(nome, descricao) " +
-                                 "VALUES (@nome, @descricao);";
+                    string sql = "INSERT INTO Fornecedor " +
+                                 "(nome, cnpj, email, telefone) " +
+                                 "VALUES (@nome, @cnpj, @email, @telefone);";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("@nome", categoria.Nome);
-                        command.Parameters.AddWithValue("@descricao", categoria.Descricao);
+                        command.Parameters.AddWithValue("@nome", fornecedor.Nome);
+                        command.Parameters.AddWithValue("@cnpj", fornecedor.Cnpj);
+                        command.Parameters.AddWithValue("@email", fornecedor.Email);
+                        command.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
 
                         command.ExecuteNonQuery();
                     }
@@ -151,7 +172,7 @@ namespace bailinho_senior_system.repositories
             }
         }
 
-        public void UpdateCategoria(Categoria categoria)
+        public void UpdateFornecedor(Fornecedor fornecedor)
         {
             try
             {
@@ -160,15 +181,17 @@ namespace bailinho_senior_system.repositories
                     connection.Open();
 
 
-                    string sql = "UPDATE Categoria " +
-                                 "set nome = @nome, descricao = @descricao " +
+                    string sql = "UPDATE Fornecedor " +
+                                 "SET nome = @nome, cnpj = @cnpj, email = @email, telefone = @telefone " +
                                  "WHERE id = @id";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("@id", categoria.Id);
-                        command.Parameters.AddWithValue("@nome", categoria.Nome);
-                        command.Parameters.AddWithValue("@descricao", categoria.Descricao);
+                        command.Parameters.AddWithValue("@id", fornecedor.Id);
+                        command.Parameters.AddWithValue("@nome", fornecedor.Nome);
+                        command.Parameters.AddWithValue("@cnpj", fornecedor.Cnpj);
+                        command.Parameters.AddWithValue("@email", fornecedor.Email);
+                        command.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
 
                         command.ExecuteNonQuery();
                     }
@@ -176,14 +199,14 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                Console.Write(ex.ToString());
                 throw;
+                Console.Write(ex.ToString());
 
             }
 
         }
 
-        public void DeleteCategoria(int id)
+        public void DeleteFornecedor(int id)
         {
             try
             {
@@ -192,7 +215,7 @@ namespace bailinho_senior_system.repositories
                     connection.Open();
 
 
-                    string sql = "DELETE FROM Categoria WHERE id = @id;";
+                    string sql = "DELETE FROM Fornecedor WHERE id = @id;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -204,9 +227,9 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
+                
                 Console.Write(ex.ToString());
                 throw;
-
             }
         }
     }

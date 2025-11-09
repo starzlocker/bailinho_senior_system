@@ -1,4 +1,6 @@
-﻿namespace bailinho_senior_system
+﻿using System;
+
+namespace bailinho_senior_system
 {
     partial class FrmHome
     {
@@ -289,6 +291,7 @@
             this.btnCategorias.Name = "btnCategorias";
             this.btnCategorias.Size = new System.Drawing.Size(200, 110);
             this.btnCategorias.TabIndex = 9;
+            this.btnCategorias.Click += new System.EventHandler(this.btnCategorias_Click);
             // 
             // label9
             // 
@@ -334,6 +337,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 110);
             this.panel1.TabIndex = 10;
+            this.panel1.Click += new System.EventHandler(this.panel1_Click);
             // 
             // label11
             // 

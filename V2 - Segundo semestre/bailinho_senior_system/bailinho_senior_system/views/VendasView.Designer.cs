@@ -28,25 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.nome = new System.Windows.Forms.TextBox();
-            this.id = new System.Windows.Forms.TextBox();
-            this.descricao = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.fornecedores = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.categoriaLabel = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.qtd_estoque = new System.Windows.Forms.NumericUpDown();
-            this.id_categoria = new System.Windows.Forms.ComboBox();
-            this.preco = new System.Windows.Forms.NumericUpDown();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.exitBtn = new System.Windows.Forms.Button();
             this.deleteBtn = new System.Windows.Forms.Button();
             this.saveBtn = new System.Windows.Forms.Button();
@@ -58,237 +39,38 @@
             this.nextBtn = new System.Windows.Forms.Button();
             this.previousBtn = new System.Windows.Forms.Button();
             this.firstBtn = new System.Windows.Forms.Button();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPageCadastro = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.nomeBox = new System.Windows.Forms.TextBox();
+            this.idBox = new System.Windows.Forms.TextBox();
+            this.descricaoBox = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.fornecedoresBox = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.categoriaLabel = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.qtdEstoqueBox = new System.Windows.Forms.NumericUpDown();
+            this.categoriaBox = new System.Windows.Forms.ComboBox();
+            this.precoBox = new System.Windows.Forms.NumericUpDown();
+            this.tabPageLista = new System.Windows.Forms.TabPage();
+            this.listTable = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.searchBox = new System.Windows.Forms.TextBox();
+            this.tabControl.SuspendLayout();
+            this.tabPageCadastro.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.qtd_estoque)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.preco)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.precoBox)).BeginInit();
+            this.tabPageLista.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.listTable)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl1.ItemSize = new System.Drawing.Size(110, 30);
-            this.tabControl1.Location = new System.Drawing.Point(16, 97);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1089, 519);
-            this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabControl1.TabIndex = 14;
-            this.tabControl1.Tag = "";
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage1.Location = new System.Drawing.Point(4, 34);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(1081, 481);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Cadastro";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.nome);
-            this.groupBox1.Controls.Add(this.id);
-            this.groupBox1.Controls.Add(this.descricao);
-            this.groupBox1.Location = new System.Drawing.Point(7, 7);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1067, 137);
-            this.groupBox1.TabIndex = 19;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Informações Gerais";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(7, 83);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 18);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Descrição";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(434, 31);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 18);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "Nome";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(7, 31);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(22, 18);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "ID";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // nome
-            // 
-            this.nome.Location = new System.Drawing.Point(437, 53);
-            this.nome.Margin = new System.Windows.Forms.Padding(4);
-            this.nome.Name = "nome";
-            this.nome.Size = new System.Drawing.Size(387, 26);
-            this.nome.TabIndex = 2;
-            // 
-            // id
-            // 
-            this.id.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.id.Location = new System.Drawing.Point(10, 53);
-            this.id.Margin = new System.Windows.Forms.Padding(4);
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Size = new System.Drawing.Size(386, 26);
-            this.id.TabIndex = 1;
-            // 
-            // descricao
-            // 
-            this.descricao.Location = new System.Drawing.Point(10, 105);
-            this.descricao.Margin = new System.Windows.Forms.Padding(4);
-            this.descricao.Name = "descricao";
-            this.descricao.Size = new System.Drawing.Size(386, 26);
-            this.descricao.TabIndex = 3;
-            this.descricao.TextChanged += new System.EventHandler(this.descricao_TextChanged);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.fornecedores);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.categoriaLabel);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.qtd_estoque);
-            this.groupBox2.Controls.Add(this.id_categoria);
-            this.groupBox2.Controls.Add(this.preco);
-            this.groupBox2.Location = new System.Drawing.Point(7, 150);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1067, 249);
-            this.groupBox2.TabIndex = 20;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Detalhes";
-            // 
-            // fornecedores
-            // 
-            this.fornecedores.FormattingEnabled = true;
-            this.fornecedores.Location = new System.Drawing.Point(437, 46);
-            this.fornecedores.Margin = new System.Windows.Forms.Padding(4);
-            this.fornecedores.Name = "fornecedores";
-            this.fornecedores.Size = new System.Drawing.Size(387, 28);
-            this.fornecedores.TabIndex = 16;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(434, 25);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(101, 18);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "Fornecedores";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(7, 26);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(167, 18);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Quantidade em Estoque";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // categoriaLabel
-            // 
-            this.categoriaLabel.AutoSize = true;
-            this.categoriaLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.categoriaLabel.Location = new System.Drawing.Point(7, 136);
-            this.categoriaLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.categoriaLabel.Name = "categoriaLabel";
-            this.categoriaLabel.Size = new System.Drawing.Size(72, 18);
-            this.categoriaLabel.TabIndex = 17;
-            this.categoriaLabel.Text = "Categoria";
-            this.categoriaLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(7, 80);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 18);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Preço";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // qtd_estoque
-            // 
-            this.qtd_estoque.Location = new System.Drawing.Point(10, 48);
-            this.qtd_estoque.Margin = new System.Windows.Forms.Padding(4);
-            this.qtd_estoque.Name = "qtd_estoque";
-            this.qtd_estoque.Size = new System.Drawing.Size(386, 26);
-            this.qtd_estoque.TabIndex = 11;
-            this.qtd_estoque.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // id_categoria
-            // 
-            this.id_categoria.FormattingEnabled = true;
-            this.id_categoria.Location = new System.Drawing.Point(10, 158);
-            this.id_categoria.Margin = new System.Windows.Forms.Padding(4);
-            this.id_categoria.Name = "id_categoria";
-            this.id_categoria.Size = new System.Drawing.Size(386, 28);
-            this.id_categoria.TabIndex = 15;
-            // 
-            // preco
-            // 
-            this.preco.DecimalPlaces = 2;
-            this.preco.Location = new System.Drawing.Point(10, 102);
-            this.preco.Margin = new System.Windows.Forms.Padding(4);
-            this.preco.Name = "preco";
-            this.preco.Size = new System.Drawing.Size(386, 26);
-            this.preco.TabIndex = 14;
-            this.preco.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.preco.ValueChanged += new System.EventHandler(this.preco_ValueChanged);
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.BackColor = System.Drawing.Color.LightGray;
-            this.tabPage2.Location = new System.Drawing.Point(4, 34);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1081, 481);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Lista";
             // 
             // exitBtn
             // 
@@ -445,11 +227,291 @@
             this.firstBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.firstBtn.UseVisualStyleBackColor = true;
             // 
+            // tabControl
+            // 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl.Controls.Add(this.tabPageCadastro);
+            this.tabControl.Controls.Add(this.tabPageLista);
+            this.tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl.ItemSize = new System.Drawing.Size(110, 30);
+            this.tabControl.Location = new System.Drawing.Point(16, 126);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(1084, 485);
+            this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabControl.TabIndex = 30;
+            this.tabControl.Tag = "";
+            // 
+            // tabPageCadastro
+            // 
+            this.tabPageCadastro.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPageCadastro.Controls.Add(this.groupBox1);
+            this.tabPageCadastro.Controls.Add(this.groupBox2);
+            this.tabPageCadastro.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabPageCadastro.Location = new System.Drawing.Point(4, 34);
+            this.tabPageCadastro.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPageCadastro.Name = "tabPageCadastro";
+            this.tabPageCadastro.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPageCadastro.Size = new System.Drawing.Size(1076, 447);
+            this.tabPageCadastro.TabIndex = 0;
+            this.tabPageCadastro.Text = "Cadastro";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.nomeBox);
+            this.groupBox1.Controls.Add(this.idBox);
+            this.groupBox1.Controls.Add(this.descricaoBox);
+            this.groupBox1.Location = new System.Drawing.Point(7, 7);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1062, 137);
+            this.groupBox1.TabIndex = 19;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Informações Gerais";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(434, 31);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 18);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Descrição";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(7, 82);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(49, 18);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Nome";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(7, 31);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(22, 18);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "ID";
+            // 
+            // nomeBox
+            // 
+            this.nomeBox.Location = new System.Drawing.Point(10, 104);
+            this.nomeBox.Margin = new System.Windows.Forms.Padding(4);
+            this.nomeBox.Name = "nomeBox";
+            this.nomeBox.Size = new System.Drawing.Size(387, 26);
+            this.nomeBox.TabIndex = 2;
+            // 
+            // idBox
+            // 
+            this.idBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.idBox.Location = new System.Drawing.Point(10, 53);
+            this.idBox.Margin = new System.Windows.Forms.Padding(4);
+            this.idBox.Name = "idBox";
+            this.idBox.ReadOnly = true;
+            this.idBox.Size = new System.Drawing.Size(386, 26);
+            this.idBox.TabIndex = 1;
+            // 
+            // descricaoBox
+            // 
+            this.descricaoBox.Location = new System.Drawing.Point(437, 53);
+            this.descricaoBox.Margin = new System.Windows.Forms.Padding(4);
+            this.descricaoBox.Name = "descricaoBox";
+            this.descricaoBox.Size = new System.Drawing.Size(386, 26);
+            this.descricaoBox.TabIndex = 3;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.fornecedoresBox);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.categoriaLabel);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.qtdEstoqueBox);
+            this.groupBox2.Controls.Add(this.categoriaBox);
+            this.groupBox2.Controls.Add(this.precoBox);
+            this.groupBox2.Location = new System.Drawing.Point(7, 150);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(1062, 290);
+            this.groupBox2.TabIndex = 20;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Detalhes";
+            // 
+            // fornecedoresBox
+            // 
+            this.fornecedoresBox.FormattingEnabled = true;
+            this.fornecedoresBox.Location = new System.Drawing.Point(437, 46);
+            this.fornecedoresBox.Margin = new System.Windows.Forms.Padding(4);
+            this.fornecedoresBox.Name = "fornecedoresBox";
+            this.fornecedoresBox.Size = new System.Drawing.Size(387, 28);
+            this.fornecedoresBox.TabIndex = 16;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(434, 25);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(101, 18);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Fornecedores";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(7, 26);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(167, 18);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Quantidade em Estoque";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // categoriaLabel
+            // 
+            this.categoriaLabel.AutoSize = true;
+            this.categoriaLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.categoriaLabel.Location = new System.Drawing.Point(7, 136);
+            this.categoriaLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.categoriaLabel.Name = "categoriaLabel";
+            this.categoriaLabel.Size = new System.Drawing.Size(72, 18);
+            this.categoriaLabel.TabIndex = 17;
+            this.categoriaLabel.Text = "Categoria";
+            this.categoriaLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(7, 80);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 18);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Preço";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // qtdEstoqueBox
+            // 
+            this.qtdEstoqueBox.Location = new System.Drawing.Point(10, 48);
+            this.qtdEstoqueBox.Margin = new System.Windows.Forms.Padding(4);
+            this.qtdEstoqueBox.Name = "qtdEstoqueBox";
+            this.qtdEstoqueBox.Size = new System.Drawing.Size(386, 26);
+            this.qtdEstoqueBox.TabIndex = 11;
+            this.qtdEstoqueBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // categoriaBox
+            // 
+            this.categoriaBox.FormattingEnabled = true;
+            this.categoriaBox.Location = new System.Drawing.Point(10, 158);
+            this.categoriaBox.Margin = new System.Windows.Forms.Padding(4);
+            this.categoriaBox.Name = "categoriaBox";
+            this.categoriaBox.Size = new System.Drawing.Size(386, 28);
+            this.categoriaBox.TabIndex = 15;
+            // 
+            // precoBox
+            // 
+            this.precoBox.DecimalPlaces = 2;
+            this.precoBox.Location = new System.Drawing.Point(10, 102);
+            this.precoBox.Margin = new System.Windows.Forms.Padding(4);
+            this.precoBox.Maximum = new decimal(new int[] {
+            32000,
+            0,
+            0,
+            0});
+            this.precoBox.Name = "precoBox";
+            this.precoBox.Size = new System.Drawing.Size(386, 26);
+            this.precoBox.TabIndex = 14;
+            this.precoBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // tabPageLista
+            // 
+            this.tabPageLista.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPageLista.Controls.Add(this.listTable);
+            this.tabPageLista.Controls.Add(this.button1);
+            this.tabPageLista.Controls.Add(this.label8);
+            this.tabPageLista.Controls.Add(this.searchBox);
+            this.tabPageLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.tabPageLista.Location = new System.Drawing.Point(4, 34);
+            this.tabPageLista.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPageLista.Name = "tabPageLista";
+            this.tabPageLista.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPageLista.Size = new System.Drawing.Size(1076, 447);
+            this.tabPageLista.TabIndex = 1;
+            this.tabPageLista.Text = "Lista";
+            // 
+            // listTable
+            // 
+            this.listTable.AllowUserToAddRows = false;
+            this.listTable.AllowUserToDeleteRows = false;
+            this.listTable.AllowUserToResizeColumns = false;
+            this.listTable.AllowUserToResizeRows = false;
+            this.listTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.listTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.listTable.Location = new System.Drawing.Point(10, 59);
+            this.listTable.MultiSelect = false;
+            this.listTable.Name = "listTable";
+            this.listTable.ReadOnly = true;
+            this.listTable.RowHeadersVisible = false;
+            this.listTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.listTable.Size = new System.Drawing.Size(1062, 381);
+            this.listTable.TabIndex = 18;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(602, 27);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(67, 26);
+            this.button1.TabIndex = 17;
+            this.button1.Text = "OK";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 4);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(153, 20);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Buscar (nome ou Id)";
+            // 
+            // searchBox
+            // 
+            this.searchBox.Location = new System.Drawing.Point(10, 27);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(585, 26);
+            this.searchBox.TabIndex = 16;
+            // 
             // VendasView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 624);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.deleteBtn);
             this.Controls.Add(this.saveBtn);
@@ -461,43 +523,27 @@
             this.Controls.Add(this.nextBtn);
             this.Controls.Add(this.previousBtn);
             this.Controls.Add(this.firstBtn);
-            this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(900, 615);
             this.Name = "VendasView";
             this.Text = "Vendas";
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
+            this.tabPageCadastro.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.qtd_estoque)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.preco)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.precoBox)).EndInit();
+            this.tabPageLista.ResumeLayout(false);
+            this.tabPageLista.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.listTable)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TextBox descricao;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown preco;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown qtd_estoque;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label categoriaLabel;
-        private System.Windows.Forms.ComboBox fornecedores;
-        private System.Windows.Forms.ComboBox id_categoria;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox nome;
-        private System.Windows.Forms.TextBox id;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button exitBtn;
         private System.Windows.Forms.Button deleteBtn;
         private System.Windows.Forms.Button saveBtn;
@@ -509,5 +555,28 @@
         private System.Windows.Forms.Button nextBtn;
         private System.Windows.Forms.Button previousBtn;
         private System.Windows.Forms.Button firstBtn;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabPageCadastro;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox nomeBox;
+        private System.Windows.Forms.TextBox idBox;
+        private System.Windows.Forms.TextBox descricaoBox;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox fornecedoresBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label categoriaLabel;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown qtdEstoqueBox;
+        private System.Windows.Forms.ComboBox categoriaBox;
+        private System.Windows.Forms.NumericUpDown precoBox;
+        private System.Windows.Forms.TabPage tabPageLista;
+        internal System.Windows.Forms.DataGridView listTable;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox searchBox;
     }
 }

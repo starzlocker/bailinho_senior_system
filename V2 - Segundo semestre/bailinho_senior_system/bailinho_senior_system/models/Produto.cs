@@ -14,7 +14,7 @@ namespace bailinho_senior_system.models
         public int Id
         {
             get { return id; }
-            set 
+            set
             {
                 if (value < 0)
                     throw new ArgumentException("Id cannot be negative", nameof(value));
@@ -23,8 +23,9 @@ namespace bailinho_senior_system.models
             }
         }
         private string nome;
-        public string Nome { 
-            get { return nome; } 
+        public string Nome
+        {
+            get { return nome; }
             set
             {
                 string validacao = ValidadorHelper.VerificarVazio(value, "Nome");
@@ -38,9 +39,10 @@ namespace bailinho_senior_system.models
         }
 
         private string descricao;
-        public string Descricao {
+        public string Descricao
+        {
             get { return descricao; }
-            set 
+            set
             {
                 string validacao = ValidadorHelper.VerificarVazio(value, "Descrição");
                 if (validacao != null) throw new ArgumentException(validacao);
@@ -53,9 +55,10 @@ namespace bailinho_senior_system.models
         }
 
         private int qtd_estoque;
-        public int QtdEstoque {
+        public int QtdEstoque
+        {
             get { return qtd_estoque; }
-            set 
+            set
             {
                 if (value < 0)
                 {
@@ -67,9 +70,10 @@ namespace bailinho_senior_system.models
         }
 
         private decimal preco;
-        public decimal Preco {
+        public decimal Preco
+        {
             get { return preco; }
-            set 
+            set
             {
                 if (value < 0)
                     throw new ArgumentException("O preço do produto não pode ser negativo");
@@ -84,11 +88,32 @@ namespace bailinho_senior_system.models
             get { return id_categoria; }
             set { id_categoria = value; }
         }
-        
+
         private string categoria;
-        public string Categoria {
+        public string Categoria
+        {
             get { return categoria; }
             set { categoria = value; }
+        }
+
+        private int id_fornecedor;
+        public int IdFornecedor
+        {
+            get { return id_fornecedor; }
+            set
+            {
+                id_fornecedor = value;
+            }
+        }
+
+        private string fornecedor;
+        public string Fornecedor
+        {
+            get { return fornecedor; }
+            set 
+            {
+                fornecedor = value;
+            }
         }
 
         public Produto() { }
@@ -97,7 +122,8 @@ namespace bailinho_senior_system.models
             string Descricao,
             int QtdEstoque,
             decimal Preco
-        ) {
+        )
+        {
             this.Nome = Nome;
             this.Descricao = Descricao;
             this.QtdEstoque = QtdEstoque;

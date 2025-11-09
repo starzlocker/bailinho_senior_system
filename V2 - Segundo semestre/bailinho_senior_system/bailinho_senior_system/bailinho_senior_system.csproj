@@ -111,13 +111,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cliente.cs" />
+    <Compile Include="config\DatabaseConfig.cs" />
     <Compile Include="Evento.cs" />
-    <Compile Include="Fornecedor .cs" />
     <Compile Include="models\Categoria.cs" />
+    <Compile Include="models\Fornecedor.cs" />
     <Compile Include="models\Produto.cs" />
+    <Compile Include="models\ProdutoFornecedor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="repositories\CategoriaRepository.cs" />
+    <Compile Include="repositories\FornecedorRepository.cs" />
+    <Compile Include="repositories\ProdutoFornecedorRepository.cs" />
     <Compile Include="repositories\ProdutoRepository.cs" />
     <Compile Include="ValidadorHelper.cs" />
     <Compile Include="Venda.cs" />
