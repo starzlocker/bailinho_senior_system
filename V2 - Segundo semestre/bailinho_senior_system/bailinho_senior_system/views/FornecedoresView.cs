@@ -538,6 +538,14 @@ namespace bailinho_senior_system.views
                 MessageBox.Show("Erro ao vincular produto com fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void listTable_SelectionChanged(object sender, EventArgs e)
+        {
+            var cur = this.listTable.CurrentRow;
+            if (cur != null)
+                currentIndex = cur.Index;
+
+            SetState(ViewState.Listing);
+        }
 
         private void removeProdutoBtn_Click(object sender, EventArgs e)
         {
