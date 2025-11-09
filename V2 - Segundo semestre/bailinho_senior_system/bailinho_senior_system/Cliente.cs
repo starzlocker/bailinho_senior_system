@@ -18,7 +18,7 @@ namespace bailinho_senior_system
 
         private string telefone;
 
-        public Cliente() {}
+        public Cliente() { }
 
         public Cliente(
             string nome,
@@ -26,7 +26,8 @@ namespace bailinho_senior_system
             char genero,
             string cpf,
             string telefone
-        ) {
+        )
+        {
             setNome(nome);
             setDt_nascimento(dataNascimento);
             setGenero(genero);
@@ -118,7 +119,7 @@ namespace bailinho_senior_system
                 return "O CPF deve conter exatamente 11 dígitos.";
 
             if (!CpfValido(cpfNumeros))
-               return "O CPF informado é inválido.";
+                return "O CPF informado é inválido.";
 
             this.cpf = cpf;
 

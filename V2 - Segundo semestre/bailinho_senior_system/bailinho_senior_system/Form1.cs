@@ -62,5 +62,22 @@ namespace bailinho_senior_system
                 frmVendas.Show();
             }
         }
+
+        private void btnCategorias_Click(object sender, EventArgs e)
+        {
+            if (frmCategorias == null || frmCategorias.IsDisposed)
+            {
+                frmCategorias = new CategoriasView();
+                frmCategorias.Show();
+            }
+        }
+        private void panel1_Click(object sender, EventArgs e)
+        {
+            if (frmFornecedores == null || frmFornecedores.IsDisposed)
+            {
+                frmFornecedores = new FornecedoresView();
+                frmFornecedores.Show();
+            }
+        }
     }
 }
