@@ -128,7 +128,9 @@ namespace bailinho_senior_system.views
                     dataTable.Rows.Add(row);
                 }
 
+                listTable.SelectionChanged -= listTable_SelectionChanged;
                 listTable.DataSource = dataTable;
+                listTable.SelectionChanged += listTable_SelectionChanged;
             }
             catch (Exception ex)
             {
@@ -259,7 +261,10 @@ namespace bailinho_senior_system.views
 
                 if (categorias.Count > 0)
                 {
-                    if (currentIndex > categorias.Count - 1) currentIndex--;
+                    if (currentIndex >= categorias.Count)
+                    {
+                        currentIndex = categorias.Count - 1;
+                    }
                 }
                 else
                 {
