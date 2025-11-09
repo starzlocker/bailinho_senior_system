@@ -312,6 +312,15 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
+                var result = MessageBox.Show(
+                    $"Tem certeza que deseja excluir a o fornecedor '{fornecedores[currentIndex].Nome}'?",
+                    "Confirmar Exclusão",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                    return;
+
                 FornecedorRepository fornecedorRepository = new FornecedorRepository();
                 ProdutoFornecedorRepository produtoFornecedorRepository = new ProdutoFornecedorRepository();
 
