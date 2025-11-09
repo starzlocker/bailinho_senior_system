@@ -324,7 +324,6 @@ namespace bailinho_senior_system.views
                 FornecedorRepository fornecedorRepository = new FornecedorRepository();
                 ProdutoFornecedorRepository produtoFornecedorRepository = new ProdutoFornecedorRepository();
 
-                fornecedorRepository.DeleteFornecedor(fornecedores[currentIndex].Id);
                 produtoFornecedorRepository.DeleteAllProdutoFornecedor(fornecedores[currentIndex].Id);
                 fornecedorRepository.DeleteFornecedor(fornecedores[currentIndex].Id);
 
@@ -489,7 +488,7 @@ namespace bailinho_senior_system.views
                 }
 
                 int idProdutoSelecionado = (int)produtoBox.SelectedValue;
-                
+
                 if (editItem.Produtos.Any(pf => pf.IdProduto == idProdutoSelecionado))
                 {
                     MessageBox.Show("Este produto já está vinculado a este fornecedor.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -502,7 +501,7 @@ namespace bailinho_senior_system.views
                 p.IdFornecedor = editItem.Id;
 
                 editItem.Produtos.Add(p);
-                
+
                 DataTable dt = listProdutos.DataSource as DataTable;
                 if (dt == null)
                 {
@@ -511,16 +510,16 @@ namespace bailinho_senior_system.views
                     dt.Columns.Add("IdProduto");
                     dt.Columns.Add("Nome");
                 }
-                
+
                 // Adiciona a nova linha ao DataTable
                 var row = dt.NewRow();
                 row["Id"] = 0;
                 row["IdProduto"] = p.IdProduto;
                 row["Nome"] = p.NomeProduto;
                 dt.Rows.Add(row);
-                    
+
                 listProdutos.DataSource = dt;
-            
+
                 // Limpa a seleção do combobox
                 produtoBox.SelectedIndex = -1;
             }
