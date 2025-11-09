@@ -14,11 +14,6 @@ namespace bailinho_senior_system.views
 {
     public partial class CategoriasView : Form
     {
-        public CategoriasView()
-        {
-            InitializeComponent();
-        }
-
         List<Categoria> categorias = new List<Categoria>();
         int currentIndex = 0;
 
@@ -26,16 +21,28 @@ namespace bailinho_senior_system.views
         private ViewState state;
         private Categoria editItem = null;
 
+        public CategoriasView()
+        {
+            InitializeComponent();
+        }
+
         private void CategoriasView_Load(object sender, EventArgs e)
         {
             tabControl.Selecting += tabControl_Selecting;
 
             currentIndex = 0;
-            ReadCategorias();
 
-            if (categorias.Count > 0)
-                PopulateCategoria(categorias[currentIndex]);
+            try
+            {
+                ReadCategorias();
 
+                if (categorias.Count > 0)
+                    PopulateCategoria(categorias[currentIndex]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar dados iniciais: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             SetState(ViewState.Listing);
         }
@@ -48,7 +55,7 @@ namespace bailinho_senior_system.views
             else if (nomeBox.Text.Length > 150) errors.Add("Nome deve ter até 150 caracteres.");
 
             if (descricaoBox.Text.Length == 0) errors.Add("Descrição não pode estar vazio!");
-            else if (descricaoBox.Text.Length > 150) errors.Add("Descricao deve ter até 150 caracteres.");
+            else if (descricaoBox.Text.Length > 150) errors.Add("Descrição deve ter até 150 caracteres.");
 
             return errors;
         }
@@ -99,26 +106,35 @@ namespace bailinho_senior_system.views
 
         private void ReadCategorias()
         {
-            DataTable dataTable = new DataTable();
-
-            dataTable.Columns.Add("Id");
-            dataTable.Columns.Add("Nome");
-            dataTable.Columns.Add("Descrição");
-
-            CategoriaRepository categoriaRepository = new CategoriaRepository();
-            this.categorias = categoriaRepository.GetCategorias();
-            foreach (Categoria c in categorias)
+            try
             {
-                var row = dataTable.NewRow();
+                DataTable dataTable = new DataTable();
 
-                row["Id"] = c.Id;
-                row["Nome"] = c.Nome;
-                row["Descrição"] = c.Descricao;
+                dataTable.Columns.Add("Id");
+                dataTable.Columns.Add("Nome");
+                dataTable.Columns.Add("Descrição");
 
-                dataTable.Rows.Add(row);
+                CategoriaRepository categoriaRepository = new CategoriaRepository();
+                this.categorias = categoriaRepository.GetCategorias();
+
+                foreach (Categoria c in categorias)
+                {
+                    var row = dataTable.NewRow();
+
+                    row["Id"] = c.Id;
+                    row["Nome"] = c.Nome;
+                    row["Descrição"] = c.Descricao;
+
+                    dataTable.Rows.Add(row);
+                }
+
+                listTable.DataSource = dataTable;
             }
-
-            listTable.DataSource = dataTable;
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar categorias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
+            }
         }
 
 
@@ -184,31 +200,38 @@ namespace bailinho_senior_system.views
             List<string> errors = ValidateForm();
             if (errors.Count > 0)
             {
-                MessageBox.Show(string.Join("\n", errors), "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Join("\n", errors), "Erros de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            CategoriaRepository categoriaRepository = new CategoriaRepository();
-
-            editItem.Nome = nomeBox.Text.Trim();
-            editItem.Descricao = descricaoBox.Text.Trim();
-
-
-            if (state == ViewState.Creating)
+            try
             {
-                categoriaRepository.CreateCategoria(editItem);
-                ReadCategorias();
-                currentIndex = categorias.Count - 1;
+                CategoriaRepository categoriaRepository = new CategoriaRepository();
+
+                editItem.Nome = nomeBox.Text.Trim();
+                editItem.Descricao = descricaoBox.Text.Trim();
+
+
+                if (state == ViewState.Creating)
+                {
+                    categoriaRepository.CreateCategoria(editItem);
+                    ReadCategorias();
+                    currentIndex = categorias.Count - 1;
+                }
+                else if (state == ViewState.Editing)
+                {
+                    categoriaRepository.UpdateCategoria(editItem);
+                    ReadCategorias();
+                }
+
+
+                SetState(ViewState.Listing);
+                MessageBox.Show("Categoria salva com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else if (state == ViewState.Editing)
+            catch (Exception ex)
             {
-                categoriaRepository.UpdateCategoria(editItem);
-                ReadCategorias();
+                MessageBox.Show($"Erro ao salvar categoria: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
-            SetState(ViewState.Listing);
-            MessageBox.Show("Categoria salvo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
@@ -218,19 +241,40 @@ namespace bailinho_senior_system.views
                 return;
             }
 
-            CategoriaRepository categoriaRepository = new CategoriaRepository();
-            categoriaRepository.DeleteCategoria(categorias[currentIndex].Id);
+            var result = MessageBox.Show(
+                $"Tem certeza que deseja excluir a categoria '{categorias[currentIndex].Nome}'?",
+                "Confirmar Exclusão",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
 
-            ReadCategorias();
+            if (result == DialogResult.No)
+                return;
 
-            if (categorias.Count > 0)
+            try
             {
-                if (currentIndex > categorias.Count - 1) currentIndex--;
-            }
-            else currentIndex = 0;
+                CategoriaRepository categoriaRepository = new CategoriaRepository();
+                categoriaRepository.DeleteCategoria(categorias[currentIndex].Id);
 
-            editItem = null;
-            SetState(ViewState.Listing);
+                ReadCategorias();
+
+                if (categorias.Count > 0)
+                {
+                    if (currentIndex > categorias.Count - 1) currentIndex--;
+                }
+                else
+                {
+                    currentIndex = 0;
+                }
+
+                editItem = null;
+                SetState(ViewState.Listing);
+
+                MessageBox.Show("Categoria excluída com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao excluir categoria: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void exitBtn_Click(object sender, EventArgs e)
@@ -244,14 +288,9 @@ namespace bailinho_senior_system.views
                     MessageBoxIcon.Warning);
 
                 if (result == DialogResult.Cancel)
-                    return; // usuário cancelou — volta para o formulário
+                    return;
             }
             this.Close();
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
@@ -269,24 +308,34 @@ namespace bailinho_senior_system.views
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<Categoria> categoriasEncontrados = categorias;
-            if (searchBox.Text.Trim().Length > 0)
+            try
             {
-                string searchStr = searchBox.Text.Trim().ToLower();
+                List<Categoria> categoriasEncontradas = categorias;
 
-                if (int.TryParse(searchStr, out int id))
+                if (searchBox.Text.Trim().Length > 0)
                 {
-                    categoriasEncontrados = categorias.FindAll(p => p.Id == id);
+                    string searchStr = searchBox.Text.Trim().ToLower();
+
+                    if (int.TryParse(searchStr, out int id))
+                    {
+                        categoriasEncontradas = categorias.FindAll(c => c.Id == id);
+                    }
+                    else
+                    {
+                        categoriasEncontradas = categorias.FindAll(c => c.Nome.ToLower().Contains(searchStr));
+                    }
                 }
-                else
-                {
-                    categoriasEncontrados = categorias.FindAll(p => p.Nome.ToLower().Contains(searchStr));
-                }
+
+                if (categoriasEncontradas.Count > 0)
+                    currentIndex = categorias.FindIndex(c => c.Id == categoriasEncontradas[0].Id);
+
+                listTable.DataSource = categoriasEncontradas;
+                SetState(ViewState.Listing);
             }
-            if (categoriasEncontrados.Count > 0)
-                currentIndex = categorias.FindIndex(p => p.Id == categoriasEncontrados[0].Id);
-            listTable.DataSource = categoriasEncontrados;
-            SetState(ViewState.Listing);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao buscar categorias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void listTable_CellContentClick(object sender, DataGridViewCellEventArgs e)

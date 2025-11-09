@@ -62,8 +62,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro ao conectar com banco!");
                 Console.Write(ex.ToString());
+                throw;
             }
 
             return categorias;
@@ -113,8 +113,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro ao conectar com banco!");
                 Console.Write(ex.ToString());
+                throw;
 
             }
 
@@ -145,8 +145,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro de conexão com o banco", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.Write(ex.ToString());
+                throw;
 
             }
         }
@@ -176,8 +176,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro de conexão com o banco", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.Write(ex.ToString());
+                throw;
 
             }
 
@@ -204,8 +204,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Erro de conexão com o banco", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.Write(ex.ToString());
+                throw;
 
             }
         }
