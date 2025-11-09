@@ -348,7 +348,6 @@ namespace bailinho_senior_system.views
                 {
                     currentIndex = 0;
                 }
-                else currentIndex = 0;
 
                 editItem = null;
                 SetState(ViewState.Listing);
@@ -547,12 +546,12 @@ namespace bailinho_senior_system.views
         }
         private void listTable_SelectionChanged(object sender, EventArgs e)
         {
-            var cur = this.listTable.CurrentRow;
-            if (cur != null)
-                currentIndex = cur.Index;
+                var cur = this.listTable.CurrentRow;
+                if (cur != null)
+                    currentIndex = cur.Index;
 
-            SetState(ViewState.Listing);
-        }
+                SetState(ViewState.Listing);
+            }
 
         private void removeProdutoBtn_Click(object sender, EventArgs e)
         {

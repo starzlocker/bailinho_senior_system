@@ -180,7 +180,9 @@ namespace bailinho_senior_system.views
                     dataTable.Rows.Add(row);
                 }
 
+                listTable.SelectionChanged -= listTable_SelectionChanged;
                 listTable.DataSource = dataTable;
+                listTable.SelectionChanged += listTable_SelectionChanged;
             }
             catch (Exception ex)
             {
@@ -394,12 +396,20 @@ namespace bailinho_senior_system.views
 
                 if (produtos.Count > 0)
                 {
-                    if (currentIndex > produtos.Count - 1) currentIndex--;
+                    if (currentIndex >= produtos.Count)
+                    {
+                        currentIndex = produtos.Count - 1;
+                    }
                 }
-                else currentIndex = 0;
+                else
+                {
+                    currentIndex = 0;
+                }
 
                 editItem = null;
                 SetState(ViewState.Listing);
+
+                MessageBox.Show("Produto excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
