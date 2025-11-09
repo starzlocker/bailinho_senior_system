@@ -347,9 +347,17 @@ namespace bailinho_senior_system.views
             SetState(ViewState.Listing);
         }
 
+        private void listTable_SelectionChanged(object sender, EventArgs e)
+        {
+            var cur = this.listTable.CurrentRow;
+            if (cur != null)
+                currentIndex = cur.Index;
+
+            SetState(ViewState.Listing);
+        }
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (state != ViewState.Listing)
+            if (state != ViewState.Listing && tabControl.SelectedTab.Name != "tabPageCadastro")
             {
                 var result = MessageBox.Show(
                     "Se você sair, suas alterações serão perdidas. Deseja continuar?",
@@ -367,6 +375,5 @@ namespace bailinho_senior_system.views
                 SetState(ViewState.Listing);
             }
         }
-
     }
 }
