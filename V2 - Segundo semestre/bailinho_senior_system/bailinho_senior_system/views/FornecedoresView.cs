@@ -326,6 +326,7 @@ namespace bailinho_senior_system.views
 
                 fornecedorRepository.DeleteFornecedor(fornecedores[currentIndex].Id);
                 produtoFornecedorRepository.DeleteAllProdutoFornecedor(fornecedores[currentIndex].Id);
+                fornecedorRepository.DeleteFornecedor(fornecedores[currentIndex].Id);
 
                 ReadFornecedores();
 
