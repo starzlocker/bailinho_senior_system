@@ -134,7 +134,10 @@ namespace bailinho_senior_system.views
                     dataTable.Rows.Add(row);
                 }
 
+                listTable.SelectionChanged -= listTable_SelectionChanged;
                 listTable.DataSource = dataTable;
+                listTable.SelectionChanged += listTable_SelectionChanged;
+
             }
             catch (Exception ex)
             {
@@ -259,6 +262,11 @@ namespace bailinho_senior_system.views
 
                     try
                     {
+
+                        foreach (ProdutoFornecedor p in editItem.Produtos)
+                        {
+                            p.IdFornecedor = editItem.Id; 
+                        }
                         produtoFornecedorRepository.CreateFromListProdutoFornecedor(editItem.Produtos);
                     }
                     catch (Exception ex)
@@ -331,12 +339,21 @@ namespace bailinho_senior_system.views
 
                 if (fornecedores.Count > 0)
                 {
-                    if (currentIndex > fornecedores.Count - 1) currentIndex--;
+                    if (currentIndex >= fornecedores.Count)
+                    {
+                        currentIndex = fornecedores.Count - 1;
+                    }
+                }
+                else
+                {
+                    currentIndex = 0;
                 }
                 else currentIndex = 0;
 
                 editItem = null;
                 SetState(ViewState.Listing);
+
+                MessageBox.Show("Fornecedor excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
