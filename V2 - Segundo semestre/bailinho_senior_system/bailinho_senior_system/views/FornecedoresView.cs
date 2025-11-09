@@ -186,6 +186,9 @@ namespace bailinho_senior_system.views
             cnpjBox.Text = "";
             emailBox.Text = "";
             telefoneBox.Text = "";
+            produtoBox.SelectedValue = -1;
+            listProdutos.DataSource = null;
+
         }
 
         private void newBtn_Click(object sender, EventArgs e)
