@@ -122,7 +122,7 @@ namespace bailinho_senior_system.views
                 categoriaBox.SelectedIndex = -1;
             }
             catch (Exception ex)
-            {                 
+            {
                 MessageBox.Show("Erro ao carregar categorias: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -260,7 +260,7 @@ namespace bailinho_senior_system.views
             else
                 fornecedoresBox.SelectedValue = -1;
 
-         }
+        }
 
         private void CleanupFields()
         {
@@ -316,7 +316,7 @@ namespace bailinho_senior_system.views
                 else
                     editItem.IdCategoria = 0;
 
-                    if (fornecedoresBox.SelectedValue != null && int.TryParse(fornecedoresBox.SelectedValue.ToString(), out int forId))
+                if (fornecedoresBox.SelectedValue != null && int.TryParse(fornecedoresBox.SelectedValue.ToString(), out int forId))
                     editItem.IdFornecedor = forId;
                 else
                     editItem.IdFornecedor = 0;
@@ -467,7 +467,7 @@ namespace bailinho_senior_system.views
 
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (state != ViewState.Listing)
+            if (state != ViewState.Listing && tabControl.SelectedTab.Name != "tabPageCadastro")
             {
                 var result = MessageBox.Show(
                     "Se você sair, suas alterações serão perdidas. Deseja continuar?",
