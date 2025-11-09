@@ -32,6 +32,7 @@ namespace bailinho_senior_system.views
 
             currentIndex = 0;
             ReadCategorias();
+            ReadFornecedores();
             ReadProdutos();
             if (produtos.Count > 0)
                 PopulateProduto(produtos[currentIndex]);
@@ -54,7 +55,7 @@ namespace bailinho_senior_system.views
             if (precoBox.Value < 0) errors.Add("Preço não pode ser negativo.");
 
             //if (categoriaBox.Text.Trim().Length == 0) errors.Add("Escolha um fornecedor.");
-            
+
             return errors;
         }
 
@@ -108,47 +109,85 @@ namespace bailinho_senior_system.views
 
         private void ReadCategorias()
         {
-            CategoriaRepository repo = new CategoriaRepository();
-            List<Categoria> categorias = repo.GetCategorias();
+            try
+            {
+                CategoriaRepository repo = new CategoriaRepository();
+                List<Categoria> categorias = repo.GetCategorias();
 
-            if (categorias.Count == 0) { return; }
+                if (categorias.Count == 0) { return; }
 
-            categoriaBox.DisplayMember = "Nome";
-            categoriaBox.ValueMember = "Id";
-            categoriaBox.DataSource = categorias;
-            categoriaBox.SelectedIndex = -1;
+                categoriaBox.DisplayMember = "Nome";
+                categoriaBox.ValueMember = "Id";
+                categoriaBox.DataSource = categorias;
+                categoriaBox.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {                 
+                MessageBox.Show("Erro ao carregar categorias: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        private void ReadFornecedores()
+        {
+            try
+            {
+
+                FornecedorRepository frepo = new FornecedorRepository();
+                List<Fornecedor> fornecedores = frepo.GetFornecedores();
+
+                if (fornecedores.Count == 0) { return; }
+
+                fornecedoresBox.DisplayMember = "Nome";
+                fornecedoresBox.ValueMember = "Id";
+                fornecedoresBox.DataSource = fornecedores;
+                fornecedoresBox.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar fornecedores: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         private void ReadProdutos()
         {
-            DataTable dataTable = new DataTable();
-
-            dataTable.Columns.Add("Id");
-            dataTable.Columns.Add("Nome");
-            dataTable.Columns.Add("Descrição");
-            dataTable.Columns.Add("Qtd Estoque");
-            dataTable.Columns.Add("Preço");
-            dataTable.Columns.Add("Categoria");
-
-            ProdutoRepository produtoRepository = new ProdutoRepository();
-            this.produtos = produtoRepository.GetProdutos();
-            foreach (Produto p in produtos)
+            try
             {
-                var row = dataTable.NewRow();
+                DataTable dataTable = new DataTable();
 
-                row["Id"] = p.Id;
-                row["Nome"] = p.Nome;
-                row["Descrição"] = p.Descricao;
-                row["Qtd Estoque"] = p.QtdEstoque;
-                row["Preço"] = p.Preco;
-                row["Categoria"] = p.Categoria;
+                dataTable.Columns.Add("Id");
+                dataTable.Columns.Add("Nome");
+                dataTable.Columns.Add("Descrição");
+                dataTable.Columns.Add("Qtd Estoque");
+                dataTable.Columns.Add("Preço");
+                dataTable.Columns.Add("Categoria");
+                dataTable.Columns.Add("Fornecedor");
 
-                dataTable.Rows.Add(row);
+                ProdutoRepository produtoRepository = new ProdutoRepository();
+                this.produtos = produtoRepository.GetProdutos();
+                foreach (Produto p in produtos)
+                {
+                    var row = dataTable.NewRow();
+
+                    row["Id"] = p.Id;
+                    row["Nome"] = p.Nome;
+                    row["Descrição"] = p.Descricao;
+                    row["Qtd Estoque"] = p.QtdEstoque;
+                    row["Preço"] = p.Preco;
+                    row["Categoria"] = p.Categoria;
+                    row["Fornecedor"] = p.Fornecedor;
+
+                    dataTable.Rows.Add(row);
+                }
+
+                listTable.DataSource = dataTable;
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar produtos: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            listTable.DataSource = dataTable;
+            }
         }
-
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -215,12 +254,19 @@ namespace bailinho_senior_system.views
                 categoriaBox.SelectedValue = produto.IdCategoria;
             else
                 categoriaBox.SelectedValue = -1;
-        }
+
+            if (produto.IdFornecedor > 0)
+                fornecedoresBox.SelectedValue = produto.IdFornecedor;
+            else
+                fornecedoresBox.SelectedValue = -1;
+
+         }
 
         private void CleanupFields()
         {
             idBox.Text = "";
-            categoriaBox.Text = "";
+            categoriaBox.SelectedValue = -1;
+            fornecedoresBox.SelectedValue = -1;
             nomeBox.Text = "";
             descricaoBox.Text = "";
             qtdEstoqueBox.Value = 0;
@@ -248,67 +294,109 @@ namespace bailinho_senior_system.views
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            List<string> errors = ValidateForm();
-            if (errors.Count > 0)
+
+            try
             {
-                MessageBox.Show(string.Join("\n", errors), "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                List<string> errors = ValidateForm();
+                if (errors.Count > 0)
+                {
+                    MessageBox.Show(string.Join("\n", errors), "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                ProdutoRepository produtoRepository = new ProdutoRepository();
+
+                editItem.Nome = nomeBox.Text.Trim();
+                editItem.Descricao = descricaoBox.Text.Trim();
+                editItem.Preco = precoBox.Value;
+                editItem.QtdEstoque = (int)qtdEstoqueBox.Value;
+
+                if (categoriaBox.SelectedValue != null && int.TryParse(categoriaBox.SelectedValue.ToString(), out int catId))
+                    editItem.IdCategoria = catId;
+                else
+                    editItem.IdCategoria = 0;
+
+                    if (fornecedoresBox.SelectedValue != null && int.TryParse(fornecedoresBox.SelectedValue.ToString(), out int forId))
+                    editItem.IdFornecedor = forId;
+                else
+                    editItem.IdFornecedor = 0;
+
+                if (state == ViewState.Creating)
+                {
+                    produtoRepository.CreateProduto(editItem);
+                    if (editItem.IdFornecedor > 0)
+                    {
+                        VincularProdutoAoFornecedor(editItem.Id, editItem.IdFornecedor);
+                    }
+                    ReadProdutos();
+                    currentIndex = produtos.Count - 1;
+                }
+                else if (state == ViewState.Editing)
+                {
+                    produtoRepository.UpdateProduto(editItem);
+                    if (editItem.IdFornecedor > 0)
+                    {
+                        VincularProdutoAoFornecedor(editItem.Id, editItem.IdFornecedor);
+                    }
+                    ReadProdutos();
+                }
+
+
+                SetState(ViewState.Listing);
+                MessageBox.Show("Produto salvo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            ProdutoRepository produtoRepository = new ProdutoRepository();
-
-            editItem.Nome = nomeBox.Text.Trim();
-            editItem.Descricao = descricaoBox.Text.Trim();
-            editItem.Preco = precoBox.Value;
-            editItem.QtdEstoque = (int)qtdEstoqueBox.Value;
-
-            if (categoriaBox.SelectedValue != null && int.TryParse(categoriaBox.SelectedValue.ToString(), out int catId))
+            catch (Exception ex)
             {
-                editItem.IdCategoria = catId;
+                MessageBox.Show("Erro ao salvar: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else
+        }
+
+        private void VincularProdutoAoFornecedor(int produtoId, int fornecedorId)
+        {
+            try
             {
-                editItem.IdCategoria = 0;
+                ProdutoFornecedorRepository pfRepo = new ProdutoFornecedorRepository();
+                ProdutoFornecedor pf = new ProdutoFornecedor
+                {
+                    IdProduto = produtoId,
+                    IdFornecedor = fornecedorId
+                };
+                pfRepo.CreateProdutoFornecedor(pf);
             }
-
-
-            if (state == ViewState.Creating)
+            catch (Exception ex)
             {
-                produtoRepository.CreateProduto(editItem);
-                ReadProdutos();
-                currentIndex = produtos.Count - 1;
+                MessageBox.Show("Erro ao vincular produto ao fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (state == ViewState.Editing)
-            {
-                produtoRepository.UpdateProduto(editItem);
-                ReadProdutos();
-            }
-
-
-            SetState(ViewState.Listing);
-            MessageBox.Show("Produto salvo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-            if (produtos.Count == 0)
+            try
             {
-                return;
+                if (produtos.Count == 0)
+                {
+                    return;
+                }
+
+                ProdutoRepository produtoRepository = new ProdutoRepository();
+                produtoRepository.DeleteProduto(produtos[currentIndex].Id);
+
+                ReadProdutos();
+
+                if (produtos.Count > 0)
+                {
+                    if (currentIndex > produtos.Count - 1) currentIndex--;
+                }
+                else currentIndex = 0;
+
+                editItem = null;
+                SetState(ViewState.Listing);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao deletar produto: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            ProdutoRepository produtoRepository = new ProdutoRepository();
-            produtoRepository.DeleteProduto(produtos[currentIndex].Id);
-
-            ReadProdutos();
-
-            if (produtos.Count > 0)
-            {
-                if (currentIndex > produtos.Count - 1) currentIndex--;
-            }
-            else currentIndex = 0;
-
-            editItem = null;
-            SetState(ViewState.Listing);
         }
 
         private void exitBtn_Click(object sender, EventArgs e)
@@ -363,6 +451,7 @@ namespace bailinho_senior_system.views
             }
             if (produtosEncontrados.Count > 0)
                 currentIndex = produtos.FindIndex(p => p.Id == produtosEncontrados[0].Id);
+
             listTable.DataSource = produtosEncontrados;
             SetState(ViewState.Listing);
         }
