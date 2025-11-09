@@ -215,6 +215,12 @@ namespace bailinho_senior_system.views
         {
             try
             {
+                if (editItem == null)
+                {
+                    MessageBox.Show("Nenhum fornecedor selecionado para salvar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 List<string> errors = ValidateForm();
                 if (errors.Count > 0)
                 {
