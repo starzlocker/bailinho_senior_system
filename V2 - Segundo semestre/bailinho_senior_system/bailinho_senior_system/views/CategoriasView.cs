@@ -128,7 +128,9 @@ namespace bailinho_senior_system.views
                     dataTable.Rows.Add(row);
                 }
 
+                listTable.SelectionChanged -= listTable_SelectionChanged;
                 listTable.DataSource = dataTable;
+                listTable.SelectionChanged += listTable_SelectionChanged;
             }
             catch (Exception ex)
             {
@@ -259,7 +261,10 @@ namespace bailinho_senior_system.views
 
                 if (categorias.Count > 0)
                 {
-                    if (currentIndex > categorias.Count - 1) currentIndex--;
+                    if (currentIndex >= categorias.Count)
+                    {
+                        currentIndex = categorias.Count - 1;
+                    }
                 }
                 else
                 {
@@ -347,9 +352,17 @@ namespace bailinho_senior_system.views
             SetState(ViewState.Listing);
         }
 
+        private void listTable_SelectionChanged(object sender, EventArgs e)
+        {
+            var cur = this.listTable.CurrentRow;
+            if (cur != null)
+                currentIndex = cur.Index;
+
+            SetState(ViewState.Listing);
+        }
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (state != ViewState.Listing)
+            if (state != ViewState.Listing && tabControl.SelectedTab.Name != "tabPageCadastro")
             {
                 var result = MessageBox.Show(
                     "Se você sair, suas alterações serão perdidas. Deseja continuar?",
@@ -367,6 +380,5 @@ namespace bailinho_senior_system.views
                 SetState(ViewState.Listing);
             }
         }
-
     }
 }

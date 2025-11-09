@@ -134,7 +134,10 @@ namespace bailinho_senior_system.views
                     dataTable.Rows.Add(row);
                 }
 
+                listTable.SelectionChanged -= listTable_SelectionChanged;
                 listTable.DataSource = dataTable;
+                listTable.SelectionChanged += listTable_SelectionChanged;
+
             }
             catch (Exception ex)
             {
@@ -186,6 +189,9 @@ namespace bailinho_senior_system.views
             cnpjBox.Text = "";
             emailBox.Text = "";
             telefoneBox.Text = "";
+            produtoBox.SelectedValue = -1;
+            listProdutos.DataSource = null;
+
         }
 
         private void newBtn_Click(object sender, EventArgs e)
@@ -212,6 +218,12 @@ namespace bailinho_senior_system.views
         {
             try
             {
+                if (editItem == null)
+                {
+                    MessageBox.Show("Nenhum fornecedor selecionado para salvar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 List<string> errors = ValidateForm();
                 if (errors.Count > 0)
                 {
@@ -250,6 +262,11 @@ namespace bailinho_senior_system.views
 
                     try
                     {
+
+                        foreach (ProdutoFornecedor p in editItem.Produtos)
+                        {
+                            p.IdFornecedor = editItem.Id; 
+                        }
                         produtoFornecedorRepository.CreateFromListProdutoFornecedor(editItem.Produtos);
                     }
                     catch (Exception ex)
@@ -303,22 +320,39 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
+                var result = MessageBox.Show(
+                    $"Tem certeza que deseja excluir a o fornecedor '{fornecedores[currentIndex].Nome}'?",
+                    "Confirmar Exclusão",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                    return;
+
                 FornecedorRepository fornecedorRepository = new FornecedorRepository();
                 ProdutoFornecedorRepository produtoFornecedorRepository = new ProdutoFornecedorRepository();
 
-                fornecedorRepository.DeleteFornecedor(fornecedores[currentIndex].Id);
                 produtoFornecedorRepository.DeleteAllProdutoFornecedor(fornecedores[currentIndex].Id);
+                fornecedorRepository.DeleteFornecedor(fornecedores[currentIndex].Id);
 
                 ReadFornecedores();
 
                 if (fornecedores.Count > 0)
                 {
-                    if (currentIndex > fornecedores.Count - 1) currentIndex--;
+                    if (currentIndex >= fornecedores.Count)
+                    {
+                        currentIndex = fornecedores.Count - 1;
+                    }
                 }
-                else currentIndex = 0;
+                else
+                {
+                    currentIndex = 0;
+                }
 
                 editItem = null;
                 SetState(ViewState.Listing);
+
+                MessageBox.Show("Fornecedor excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -376,15 +410,6 @@ namespace bailinho_senior_system.views
             if (fornecedoresEncontrados.Count > 0)
                 currentIndex = fornecedores.FindIndex(f => f.Id == fornecedoresEncontrados[0].Id);
             listTable.DataSource = fornecedoresEncontrados;
-            SetState(ViewState.Listing);
-        }
-
-        private void fornecedoresTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var cur = this.listTable.CurrentRow;
-            if (cur != null)
-                currentIndex = cur.Index;
-
             SetState(ViewState.Listing);
         }
 
@@ -448,7 +473,7 @@ namespace bailinho_senior_system.views
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
 
-            if (state != ViewState.Listing)
+            if (state != ViewState.Listing && tabControl.SelectedTab.Name != "tabPageCadastro")
             {
                 var result = MessageBox.Show(
                     "Se você sair, suas alterações serão perdidas. Deseja continuar?",
@@ -479,7 +504,7 @@ namespace bailinho_senior_system.views
                 }
 
                 int idProdutoSelecionado = (int)produtoBox.SelectedValue;
-                
+
                 if (editItem.Produtos.Any(pf => pf.IdProduto == idProdutoSelecionado))
                 {
                     MessageBox.Show("Este produto já está vinculado a este fornecedor.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -492,7 +517,7 @@ namespace bailinho_senior_system.views
                 p.IdFornecedor = editItem.Id;
 
                 editItem.Produtos.Add(p);
-                
+
                 DataTable dt = listProdutos.DataSource as DataTable;
                 if (dt == null)
                 {
@@ -501,16 +526,16 @@ namespace bailinho_senior_system.views
                     dt.Columns.Add("IdProduto");
                     dt.Columns.Add("Nome");
                 }
-                
+
                 // Adiciona a nova linha ao DataTable
                 var row = dt.NewRow();
                 row["Id"] = 0;
                 row["IdProduto"] = p.IdProduto;
                 row["Nome"] = p.NomeProduto;
                 dt.Rows.Add(row);
-                    
+
                 listProdutos.DataSource = dt;
-            
+
                 // Limpa a seleção do combobox
                 produtoBox.SelectedIndex = -1;
             }
@@ -519,6 +544,14 @@ namespace bailinho_senior_system.views
                 MessageBox.Show("Erro ao vincular produto com fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void listTable_SelectionChanged(object sender, EventArgs e)
+        {
+                var cur = this.listTable.CurrentRow;
+                if (cur != null)
+                    currentIndex = cur.Index;
+
+                SetState(ViewState.Listing);
+            }
 
         private void removeProdutoBtn_Click(object sender, EventArgs e)
         {

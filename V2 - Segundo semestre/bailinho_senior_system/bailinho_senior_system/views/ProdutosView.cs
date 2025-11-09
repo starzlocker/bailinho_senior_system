@@ -122,7 +122,7 @@ namespace bailinho_senior_system.views
                 categoriaBox.SelectedIndex = -1;
             }
             catch (Exception ex)
-            {                 
+            {
                 MessageBox.Show("Erro ao carregar categorias: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -180,7 +180,9 @@ namespace bailinho_senior_system.views
                     dataTable.Rows.Add(row);
                 }
 
+                listTable.SelectionChanged -= listTable_SelectionChanged;
                 listTable.DataSource = dataTable;
+                listTable.SelectionChanged += listTable_SelectionChanged;
             }
             catch (Exception ex)
             {
@@ -260,7 +262,7 @@ namespace bailinho_senior_system.views
             else
                 fornecedoresBox.SelectedValue = -1;
 
-         }
+        }
 
         private void CleanupFields()
         {
@@ -316,7 +318,7 @@ namespace bailinho_senior_system.views
                 else
                     editItem.IdCategoria = 0;
 
-                    if (fornecedoresBox.SelectedValue != null && int.TryParse(fornecedoresBox.SelectedValue.ToString(), out int forId))
+                if (fornecedoresBox.SelectedValue != null && int.TryParse(fornecedoresBox.SelectedValue.ToString(), out int forId))
                     editItem.IdFornecedor = forId;
                 else
                     editItem.IdFornecedor = 0;
@@ -378,6 +380,15 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
+                var result = MessageBox.Show(
+                    $"Tem certeza que deseja excluir a o produto '{produtos[currentIndex].Nome}'?",
+                    "Confirmar Exclusão",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                    return;
+
                 ProdutoRepository produtoRepository = new ProdutoRepository();
                 produtoRepository.DeleteProduto(produtos[currentIndex].Id);
 
@@ -385,12 +396,20 @@ namespace bailinho_senior_system.views
 
                 if (produtos.Count > 0)
                 {
-                    if (currentIndex > produtos.Count - 1) currentIndex--;
+                    if (currentIndex >= produtos.Count)
+                    {
+                        currentIndex = produtos.Count - 1;
+                    }
                 }
-                else currentIndex = 0;
+                else
+                {
+                    currentIndex = 0;
+                }
 
                 editItem = null;
                 SetState(ViewState.Listing);
+
+                MessageBox.Show("Produto excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -456,18 +475,9 @@ namespace bailinho_senior_system.views
             SetState(ViewState.Listing);
         }
 
-        private void produtosTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var cur = this.listTable.CurrentRow;
-            if (cur != null)
-                currentIndex = cur.Index;
-
-            SetState(ViewState.Listing);
-        }
-
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (state != ViewState.Listing)
+            if (state != ViewState.Listing && tabControl.SelectedTab.Name != "tabPageCadastro")
             {
                 var result = MessageBox.Show(
                     "Se você sair, suas alterações serão perdidas. Deseja continuar?",
@@ -484,6 +494,14 @@ namespace bailinho_senior_system.views
                 editItem = null;
                 SetState(ViewState.Listing);
             }
+        }
+        private void listTable_SelectionChanged(object sender, EventArgs e)
+        {
+            var cur = this.listTable.CurrentRow;
+            if (cur != null)
+                currentIndex = cur.Index;
+
+            SetState(ViewState.Listing);
         }
     }
 }
