@@ -398,15 +398,6 @@ namespace bailinho_senior_system.views
             SetState(ViewState.Listing);
         }
 
-        private void fornecedoresTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var cur = this.listTable.CurrentRow;
-            if (cur != null)
-                currentIndex = cur.Index;
-
-            SetState(ViewState.Listing);
-        }
-
         private void ReadProdutos()
         {
             try
