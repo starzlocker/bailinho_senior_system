@@ -132,14 +132,19 @@ namespace bailinho_senior_system.repositories
 
                     string sql = "INSERT INTO Categoria " +
                                  "(nome, descricao) " +
-                                 "VALUES (@nome, @descricao);";
+                                 "VALUES (@nome, @descricao); " +
+                                 "SELECT LAST_INSERT_ID();";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@nome", categoria.Nome);
                         command.Parameters.AddWithValue("@descricao", categoria.Descricao);
 
-                        command.ExecuteNonQuery();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            categoria.Id = Convert.ToInt32(result);
+                        }
                     }
                 }
             }
