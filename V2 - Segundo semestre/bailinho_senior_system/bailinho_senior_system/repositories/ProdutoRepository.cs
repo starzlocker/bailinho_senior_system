@@ -212,7 +212,8 @@ namespace bailinho_senior_system.repositories
 
                     string sql = "INSERT INTO Produto " +
                                  "(nome, descricao, qtd_estoque, preco, id_categoria) " +
-                                 "VALUES (@nome, @descricao, @qtd_estoque, @preco, @id_categoria);";
+                                 "VALUES (@nome, @descricao, @qtd_estoque, @preco, @id_categoria); " +
+                                 "SELECT LAST_INSERT_ID(); ";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -222,7 +223,12 @@ namespace bailinho_senior_system.repositories
                         command.Parameters.AddWithValue("@preco", produto.Preco);
                         command.Parameters.AddWithValue("@id_categoria", produto.IdCategoria);
 
-                        command.ExecuteNonQuery();
+
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            produto.Id = Convert.ToInt32(result);
+                        }
                     }
                 }
             }
