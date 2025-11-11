@@ -47,27 +47,24 @@
             this.label1 = new System.Windows.Forms.Label();
             this.nomeBox = new System.Windows.Forms.TextBox();
             this.idBox = new System.Windows.Forms.TextBox();
-            this.descricaoBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.fornecedoresBox = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.categoriaLabel = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.qtdEstoqueBox = new System.Windows.Forms.NumericUpDown();
-            this.categoriaBox = new System.Windows.Forms.ComboBox();
-            this.precoBox = new System.Windows.Forms.NumericUpDown();
             this.tabPageLista = new System.Windows.Forms.TabPage();
             this.listTable = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.searchBox = new System.Windows.Forms.TextBox();
+            this.radioHomem = new System.Windows.Forms.RadioButton();
+            this.radioMulher = new System.Windows.Forms.RadioButton();
+            this.telefoneBox = new System.Windows.Forms.TextBox();
+            this.cpfBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.dataDeNascimento = new System.Windows.Forms.DateTimePicker();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageCadastro.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.precoBox)).BeginInit();
             this.tabPageLista.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listTable)).BeginInit();
             this.SuspendLayout();
@@ -263,12 +260,13 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.radioMulher);
+            this.groupBox1.Controls.Add(this.radioHomem);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.nomeBox);
             this.groupBox1.Controls.Add(this.idBox);
-            this.groupBox1.Controls.Add(this.descricaoBox);
             this.groupBox1.Location = new System.Drawing.Point(7, 7);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(843, 137);
@@ -279,13 +277,14 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(434, 31);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 18);
+            this.label3.Size = new System.Drawing.Size(58, 18);
             this.label3.TabIndex = 10;
-            this.label3.Text = "Descrição";
+            this.label3.Text = "Gênero";
             // 
             // label2
             // 
@@ -327,123 +326,23 @@
             this.idBox.Size = new System.Drawing.Size(386, 26);
             this.idBox.TabIndex = 1;
             // 
-            // descricaoBox
-            // 
-            this.descricaoBox.Location = new System.Drawing.Point(437, 53);
-            this.descricaoBox.Margin = new System.Windows.Forms.Padding(4);
-            this.descricaoBox.Name = "descricaoBox";
-            this.descricaoBox.Size = new System.Drawing.Size(386, 26);
-            this.descricaoBox.TabIndex = 3;
-            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.fornecedoresBox);
-            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.dataDeNascimento);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.categoriaLabel);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.qtdEstoqueBox);
-            this.groupBox2.Controls.Add(this.categoriaBox);
-            this.groupBox2.Controls.Add(this.precoBox);
+            this.groupBox2.Controls.Add(this.telefoneBox);
+            this.groupBox2.Controls.Add(this.cpfBox);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Location = new System.Drawing.Point(7, 150);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(843, 242);
+            this.groupBox2.Size = new System.Drawing.Size(843, 182);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Detalhes";
-            // 
-            // fornecedoresBox
-            // 
-            this.fornecedoresBox.FormattingEnabled = true;
-            this.fornecedoresBox.Location = new System.Drawing.Point(437, 46);
-            this.fornecedoresBox.Margin = new System.Windows.Forms.Padding(4);
-            this.fornecedoresBox.Name = "fornecedoresBox";
-            this.fornecedoresBox.Size = new System.Drawing.Size(387, 28);
-            this.fornecedoresBox.TabIndex = 16;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(434, 25);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(101, 18);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "Fornecedores";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(7, 26);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(167, 18);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Quantidade em Estoque";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // categoriaLabel
-            // 
-            this.categoriaLabel.AutoSize = true;
-            this.categoriaLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.categoriaLabel.Location = new System.Drawing.Point(7, 136);
-            this.categoriaLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.categoriaLabel.Name = "categoriaLabel";
-            this.categoriaLabel.Size = new System.Drawing.Size(72, 18);
-            this.categoriaLabel.TabIndex = 17;
-            this.categoriaLabel.Text = "Categoria";
-            this.categoriaLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(7, 80);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 18);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Preço";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // qtdEstoqueBox
-            // 
-            this.qtdEstoqueBox.Location = new System.Drawing.Point(10, 48);
-            this.qtdEstoqueBox.Margin = new System.Windows.Forms.Padding(4);
-            this.qtdEstoqueBox.Name = "qtdEstoqueBox";
-            this.qtdEstoqueBox.Size = new System.Drawing.Size(386, 26);
-            this.qtdEstoqueBox.TabIndex = 11;
-            this.qtdEstoqueBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // categoriaBox
-            // 
-            this.categoriaBox.FormattingEnabled = true;
-            this.categoriaBox.Location = new System.Drawing.Point(10, 158);
-            this.categoriaBox.Margin = new System.Windows.Forms.Padding(4);
-            this.categoriaBox.Name = "categoriaBox";
-            this.categoriaBox.Size = new System.Drawing.Size(386, 28);
-            this.categoriaBox.TabIndex = 15;
-            // 
-            // precoBox
-            // 
-            this.precoBox.DecimalPlaces = 2;
-            this.precoBox.Location = new System.Drawing.Point(10, 102);
-            this.precoBox.Margin = new System.Windows.Forms.Padding(4);
-            this.precoBox.Maximum = new decimal(new int[] {
-            32000,
-            0,
-            0,
-            0});
-            this.precoBox.Name = "precoBox";
-            this.precoBox.Size = new System.Drawing.Size(386, 26);
-            this.precoBox.TabIndex = 14;
-            this.precoBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tabPageLista
             // 
@@ -506,6 +405,89 @@
             this.searchBox.Size = new System.Drawing.Size(585, 26);
             this.searchBox.TabIndex = 16;
             // 
+            // radioHomem
+            // 
+            this.radioHomem.AutoSize = true;
+            this.radioHomem.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioHomem.Location = new System.Drawing.Point(437, 61);
+            this.radioHomem.Name = "radioHomem";
+            this.radioHomem.Size = new System.Drawing.Size(98, 29);
+            this.radioHomem.TabIndex = 11;
+            this.radioHomem.TabStop = true;
+            this.radioHomem.Text = "Homem";
+            this.radioHomem.UseVisualStyleBackColor = true;
+            // 
+            // radioMulher
+            // 
+            this.radioMulher.AutoSize = true;
+            this.radioMulher.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioMulher.Location = new System.Drawing.Point(437, 96);
+            this.radioMulher.Name = "radioMulher";
+            this.radioMulher.Size = new System.Drawing.Size(90, 29);
+            this.radioMulher.TabIndex = 12;
+            this.radioMulher.TabStop = true;
+            this.radioMulher.Text = "Mulher";
+            this.radioMulher.UseVisualStyleBackColor = true;
+            // 
+            // telefoneBox
+            // 
+            this.telefoneBox.Location = new System.Drawing.Point(11, 51);
+            this.telefoneBox.Margin = new System.Windows.Forms.Padding(4);
+            this.telefoneBox.Name = "telefoneBox";
+            this.telefoneBox.Size = new System.Drawing.Size(386, 26);
+            this.telefoneBox.TabIndex = 25;
+            // 
+            // cpfBox
+            // 
+            this.cpfBox.Location = new System.Drawing.Point(438, 51);
+            this.cpfBox.Margin = new System.Windows.Forms.Padding(4);
+            this.cpfBox.Name = "cpfBox";
+            this.cpfBox.Size = new System.Drawing.Size(386, 26);
+            this.cpfBox.TabIndex = 24;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(435, 26);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(38, 18);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "CPF";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(8, 27);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 18);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "Telefone";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // dataDeNascimento
+            // 
+            this.dataDeNascimento.Location = new System.Drawing.Point(11, 116);
+            this.dataDeNascimento.Name = "dataDeNascimento";
+            this.dataDeNascimento.Size = new System.Drawing.Size(813, 26);
+            this.dataDeNascimento.TabIndex = 27;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(7, 94);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(140, 18);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "Data de nascimento";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // ClientesView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -534,8 +516,6 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.qtdEstoqueBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.precoBox)).EndInit();
             this.tabPageLista.ResumeLayout(false);
             this.tabPageLista.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listTable)).EndInit();
@@ -563,20 +543,19 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox nomeBox;
         private System.Windows.Forms.TextBox idBox;
-        private System.Windows.Forms.TextBox descricaoBox;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ComboBox fornecedoresBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label categoriaLabel;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown qtdEstoqueBox;
-        private System.Windows.Forms.ComboBox categoriaBox;
-        private System.Windows.Forms.NumericUpDown precoBox;
         private System.Windows.Forms.TabPage tabPageLista;
         internal System.Windows.Forms.DataGridView listTable;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox searchBox;
+        private System.Windows.Forms.RadioButton radioMulher;
+        private System.Windows.Forms.RadioButton radioHomem;
+        private System.Windows.Forms.TextBox telefoneBox;
+        private System.Windows.Forms.TextBox cpfBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DateTimePicker dataDeNascimento;
+        private System.Windows.Forms.Label label4;
     }
 }
