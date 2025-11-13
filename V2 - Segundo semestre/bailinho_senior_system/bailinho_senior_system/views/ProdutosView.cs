@@ -470,8 +470,10 @@ namespace bailinho_senior_system.views
             }
             if (produtosEncontrados.Count > 0)
                 currentIndex = produtos.FindIndex(p => p.Id == produtosEncontrados[0].Id);
-
+            listTable.SelectionChanged -= listTable_SelectionChanged;
             listTable.DataSource = produtosEncontrados;
+            listTable.SelectionChanged += listTable_SelectionChanged;
+
             SetState(ViewState.Listing);
         }
 
