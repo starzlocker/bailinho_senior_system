@@ -54,11 +54,11 @@
             this.searchBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.newBtn = new System.Windows.Forms.ToolStripButton();
-            this.cancelBtn = new System.Windows.Forms.ToolStripButton();
+            this.deleteBtn = new System.Windows.Forms.ToolStripButton();
             this.editBtn = new System.Windows.Forms.ToolStripButton();
             this.saveBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.deleteBtn = new System.Windows.Forms.ToolStripButton();
+            this.cancelBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.exitBtn = new System.Windows.Forms.ToolStripButton();
             this.produtoBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -448,18 +448,18 @@
             this.newBtn.ToolTipText = "Iniciar a inclusão de novo registro";
             this.newBtn.Click += new System.EventHandler(this.newBtn_Click);
             // 
-            // cancelBtn
+            // deleteBtn
             // 
-            this.cancelBtn.AutoSize = false;
-            this.cancelBtn.Image = global::bailinho_senior_system.Properties.Resources.close_30;
-            this.cancelBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cancelBtn.Name = "cancelBtn";
-            this.cancelBtn.Size = new System.Drawing.Size(67, 62);
-            this.cancelBtn.Text = "Cancelar";
-            this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.cancelBtn.ToolTipText = "Cancela a operação atual";
-            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
+            this.deleteBtn.AutoSize = false;
+            this.deleteBtn.Image = global::bailinho_senior_system.Properties.Resources.trash_30;
+            this.deleteBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.deleteBtn.Name = "deleteBtn";
+            this.deleteBtn.Size = new System.Drawing.Size(67, 62);
+            this.deleteBtn.Text = "&Excluir";
+            this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.deleteBtn.ToolTipText = "Exclui o registro apresentado na tela";
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // editBtn
             // 
@@ -492,18 +492,18 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 65);
             // 
-            // deleteBtn
+            // cancelBtn
             // 
-            this.deleteBtn.AutoSize = false;
-            this.deleteBtn.Image = global::bailinho_senior_system.Properties.Resources.trash_30;
-            this.deleteBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(67, 62);
-            this.deleteBtn.Text = "&Excluir";
-            this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.deleteBtn.ToolTipText = "Exclui o registro apresentado na tela";
-            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
+            this.cancelBtn.AutoSize = false;
+            this.cancelBtn.Image = global::bailinho_senior_system.Properties.Resources.close_30;
+            this.cancelBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cancelBtn.Name = "cancelBtn";
+            this.cancelBtn.Size = new System.Drawing.Size(67, 62);
+            this.cancelBtn.Text = "Cancelar";
+            this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cancelBtn.ToolTipText = "Cancela a operação atual";
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // toolStripSeparator4
             // 
@@ -539,6 +539,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(789, 430);
             this.Name = "ProdutosView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Produtos";
             this.Load += new System.EventHandler(this.ProdutosView_Load);
             this.tabControl.ResumeLayout(false);

@@ -388,6 +388,7 @@ namespace bailinho_senior_system
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.MaximizeBox = false;
             this.Name = "FrmHome";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bailinho Senior System";
             ((System.ComponentModel.ISupportInitialize)(this.imgLogo)).EndInit();
             this.btnProdutos.ResumeLayout(false);

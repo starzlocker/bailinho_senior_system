@@ -31,6 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CategoriasView));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageCadastro = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.nomeBox = new System.Windows.Forms.TextBox();
+            this.idBox = new System.Windows.Forms.TextBox();
+            this.descricaoBox = new System.Windows.Forms.TextBox();
             this.tabPageLista = new System.Windows.Forms.TabPage();
             this.listTable = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
@@ -45,19 +51,13 @@
             this.searchBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.newBtn = new System.Windows.Forms.ToolStripButton();
-            this.cancelBtn = new System.Windows.Forms.ToolStripButton();
             this.editBtn = new System.Windows.Forms.ToolStripButton();
             this.saveBtn = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteBtn = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.cancelBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.exitBtn = new System.Windows.Forms.ToolStripButton();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.nomeBox = new System.Windows.Forms.TextBox();
-            this.idBox = new System.Windows.Forms.TextBox();
-            this.descricaoBox = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.tabPageCadastro.SuspendLayout();
             this.tabPageLista.SuspendLayout();
@@ -101,6 +101,66 @@
             this.tabPageCadastro.TabIndex = 0;
             this.tabPageCadastro.Text = "Cadastro";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(404, 16);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(85, 18);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Descrição";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(14, 72);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 18);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Nome";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(14, 25);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(24, 18);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "ID";
+            // 
+            // nomeBox
+            // 
+            this.nomeBox.Location = new System.Drawing.Point(71, 68);
+            this.nomeBox.Margin = new System.Windows.Forms.Padding(4);
+            this.nomeBox.Name = "nomeBox";
+            this.nomeBox.Size = new System.Drawing.Size(314, 26);
+            this.nomeBox.TabIndex = 12;
+            // 
+            // idBox
+            // 
+            this.idBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.idBox.Location = new System.Drawing.Point(71, 22);
+            this.idBox.Margin = new System.Windows.Forms.Padding(4);
+            this.idBox.Name = "idBox";
+            this.idBox.ReadOnly = true;
+            this.idBox.Size = new System.Drawing.Size(314, 26);
+            this.idBox.TabIndex = 11;
+            // 
+            // descricaoBox
+            // 
+            this.descricaoBox.Location = new System.Drawing.Point(407, 38);
+            this.descricaoBox.Margin = new System.Windows.Forms.Padding(4);
+            this.descricaoBox.Multiline = true;
+            this.descricaoBox.Name = "descricaoBox";
+            this.descricaoBox.Size = new System.Drawing.Size(386, 56);
+            this.descricaoBox.TabIndex = 13;
+            // 
             // tabPageLista
             // 
             this.tabPageLista.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -113,7 +173,7 @@
             this.tabPageLista.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageLista.Name = "tabPageLista";
             this.tabPageLista.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageLista.Size = new System.Drawing.Size(845, 243);
+            this.tabPageLista.Size = new System.Drawing.Size(845, 192);
             this.tabPageLista.TabIndex = 1;
             this.tabPageLista.Text = "Lista";
             // 
@@ -278,19 +338,6 @@
             this.newBtn.ToolTipText = "Iniciar a inclusão de novo registro";
             this.newBtn.Click += new System.EventHandler(this.newBtn_Click);
             // 
-            // cancelBtn
-            // 
-            this.cancelBtn.AutoSize = false;
-            this.cancelBtn.Image = global::bailinho_senior_system.Properties.Resources.close_30;
-            this.cancelBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cancelBtn.Name = "cancelBtn";
-            this.cancelBtn.Size = new System.Drawing.Size(67, 62);
-            this.cancelBtn.Text = "Cancelar";
-            this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.cancelBtn.ToolTipText = "Cancela a operação atual";
-            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
-            // 
             // editBtn
             // 
             this.editBtn.AutoSize = false;
@@ -317,11 +364,6 @@
             this.saveBtn.ToolTipText = "Salva o registro incluído ou modicado";
             this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 65);
-            // 
             // deleteBtn
             // 
             this.deleteBtn.AutoSize = false;
@@ -334,6 +376,24 @@
             this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.deleteBtn.ToolTipText = "Exclui o registro apresentado na tela";
             this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 65);
+            // 
+            // cancelBtn
+            // 
+            this.cancelBtn.AutoSize = false;
+            this.cancelBtn.Image = global::bailinho_senior_system.Properties.Resources.close_30;
+            this.cancelBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cancelBtn.Name = "cancelBtn";
+            this.cancelBtn.Size = new System.Drawing.Size(67, 62);
+            this.cancelBtn.Text = "Cancelar";
+            this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.cancelBtn.ToolTipText = "Cancela a operação atual";
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // toolStripSeparator4
             // 
@@ -353,66 +413,6 @@
             this.exitBtn.ToolTipText = "Termina a execução do programa e salva no disco todos os dados";
             this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(404, 16);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(85, 18);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "Descrição";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(14, 72);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 18);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Nome";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(14, 25);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(24, 18);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "ID";
-            // 
-            // nomeBox
-            // 
-            this.nomeBox.Location = new System.Drawing.Point(71, 68);
-            this.nomeBox.Margin = new System.Windows.Forms.Padding(4);
-            this.nomeBox.Name = "nomeBox";
-            this.nomeBox.Size = new System.Drawing.Size(314, 26);
-            this.nomeBox.TabIndex = 12;
-            // 
-            // idBox
-            // 
-            this.idBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.idBox.Location = new System.Drawing.Point(71, 22);
-            this.idBox.Margin = new System.Windows.Forms.Padding(4);
-            this.idBox.Name = "idBox";
-            this.idBox.ReadOnly = true;
-            this.idBox.Size = new System.Drawing.Size(314, 26);
-            this.idBox.TabIndex = 11;
-            // 
-            // descricaoBox
-            // 
-            this.descricaoBox.Location = new System.Drawing.Point(407, 38);
-            this.descricaoBox.Margin = new System.Windows.Forms.Padding(4);
-            this.descricaoBox.Multiline = true;
-            this.descricaoBox.Name = "descricaoBox";
-            this.descricaoBox.Size = new System.Drawing.Size(386, 56);
-            this.descricaoBox.TabIndex = 13;
-            // 
             // CategoriasView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -425,6 +425,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(900, 400);
             this.Name = "CategoriasView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Categorias";
             this.Load += new System.EventHandler(this.CategoriasView_Load);
             this.tabControl.ResumeLayout(false);

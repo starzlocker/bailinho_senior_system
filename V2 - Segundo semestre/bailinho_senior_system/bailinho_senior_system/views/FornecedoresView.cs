@@ -409,7 +409,11 @@ namespace bailinho_senior_system.views
             }
             if (fornecedoresEncontrados.Count > 0)
                 currentIndex = fornecedores.FindIndex(f => f.Id == fornecedoresEncontrados[0].Id);
+            listTable.SelectionChanged -= listTable_SelectionChanged;
+
             listTable.DataSource = fornecedoresEncontrados;
+            listTable.SelectionChanged += listTable_SelectionChanged;
+
             SetState(ViewState.Listing);
         }
 
