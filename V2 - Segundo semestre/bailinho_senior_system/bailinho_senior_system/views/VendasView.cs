@@ -51,5 +51,55 @@ namespace bailinho_senior_system.views
         {
 
         }
+
+        private void firstBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void previousBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void nextBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lastBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void editBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cancelBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
