@@ -71,13 +71,104 @@ namespace bailinho_senior_system
                 frmCategorias.Show();
             }
         }
-        private void panel1_Click(object sender, EventArgs e)
+
+        private void btnFornecedores_Click(object sender, EventArgs e)
         {
             if (frmFornecedores == null || frmFornecedores.IsDisposed)
             {
                 frmFornecedores = new FornecedoresView();
                 frmFornecedores.Show();
             }
+        }
+
+        private void imgProduto_Click(object sender, EventArgs e)
+        {
+            this.btnProdutos_Click(sender, e);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            this.btnProdutos_Click(sender, e);
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            this.btnProdutos_Click(sender, e);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            this.btnEventos_Click(sender, e);
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            this.btnEventos_Click(sender, e);
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            this.btnEventos_Click(sender, e);
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            btnParticipantes_Click(sender, e);
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+            btnParticipantes_Click(sender, e);
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            btnParticipantes_Click(sender, e);
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            btnCategorias_Click(sender, e);
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+            btnCategorias_Click(sender, e);
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+            btnCategorias_Click(sender, e);
+        }
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            btnFornecedores_Click(sender, e);
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+            btnFornecedores_Click(sender, e);
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+            btnFornecedores_Click(sender, e);
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            this.btnVendas_Click(sender, e);
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+            this.btnVendas_Click(sender, e);
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+            this.btnVendas_Click(sender, e);
         }
     }
 }

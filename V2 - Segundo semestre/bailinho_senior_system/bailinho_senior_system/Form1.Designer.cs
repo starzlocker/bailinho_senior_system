@@ -53,7 +53,7 @@ namespace bailinho_senior_system
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnFornecedores = new System.Windows.Forms.Panel();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
@@ -69,7 +69,7 @@ namespace bailinho_senior_system
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.btnCategorias.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.btnFornecedores.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,6 +107,7 @@ namespace bailinho_senior_system
             this.label2.Size = new System.Drawing.Size(138, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Gerenciamento de produtos";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
@@ -118,6 +119,7 @@ namespace bailinho_senior_system
             this.label1.Size = new System.Drawing.Size(87, 25);
             this.label1.TabIndex = 1;
             this.label1.Text = "Produto";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // imgProduto
             // 
@@ -129,6 +131,7 @@ namespace bailinho_senior_system
             this.imgProduto.Size = new System.Drawing.Size(35, 35);
             this.imgProduto.TabIndex = 0;
             this.imgProduto.TabStop = false;
+            this.imgProduto.Click += new System.EventHandler(this.imgProduto_Click);
             // 
             // panel2
             // 
@@ -164,6 +167,7 @@ namespace bailinho_senior_system
             this.label3.Size = new System.Drawing.Size(135, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Gerenciamento de eventos";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
@@ -175,6 +179,7 @@ namespace bailinho_senior_system
             this.label4.Size = new System.Drawing.Size(79, 25);
             this.label4.TabIndex = 1;
             this.label4.Text = "Evento";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // pictureBox1
             // 
@@ -186,6 +191,7 @@ namespace bailinho_senior_system
             this.pictureBox1.Size = new System.Drawing.Size(35, 35);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // btnParticipantes
             // 
@@ -210,6 +216,7 @@ namespace bailinho_senior_system
             this.label5.Size = new System.Drawing.Size(133, 13);
             this.label5.TabIndex = 2;
             this.label5.Text = "Gerenciamento de clientes";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label6
             // 
@@ -221,6 +228,7 @@ namespace bailinho_senior_system
             this.label6.Size = new System.Drawing.Size(80, 25);
             this.label6.TabIndex = 1;
             this.label6.Text = "Cliente";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // pictureBox2
             // 
@@ -232,6 +240,7 @@ namespace bailinho_senior_system
             this.pictureBox2.Size = new System.Drawing.Size(35, 35);
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // btnVendas
             // 
@@ -256,6 +265,7 @@ namespace bailinho_senior_system
             this.label7.Size = new System.Drawing.Size(132, 13);
             this.label7.TabIndex = 2;
             this.label7.Text = "Gerenciamento de vendas";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label8
             // 
@@ -267,6 +277,7 @@ namespace bailinho_senior_system
             this.label8.Size = new System.Drawing.Size(75, 25);
             this.label8.TabIndex = 1;
             this.label8.Text = "Venda";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // pictureBox3
             // 
@@ -278,6 +289,7 @@ namespace bailinho_senior_system
             this.pictureBox3.Size = new System.Drawing.Size(35, 35);
             this.pictureBox3.TabIndex = 0;
             this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // btnCategorias
             // 
@@ -302,6 +314,7 @@ namespace bailinho_senior_system
             this.label9.Size = new System.Drawing.Size(146, 13);
             this.label9.TabIndex = 2;
             this.label9.Text = "Gerenciamento de categorias";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // label10
             // 
@@ -313,6 +326,7 @@ namespace bailinho_senior_system
             this.label10.Size = new System.Drawing.Size(106, 25);
             this.label10.TabIndex = 1;
             this.label10.Text = "Categoria";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // pictureBox4
             // 
@@ -324,20 +338,21 @@ namespace bailinho_senior_system
             this.pictureBox4.Size = new System.Drawing.Size(35, 35);
             this.pictureBox4.TabIndex = 0;
             this.pictureBox4.TabStop = false;
+            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
-            // panel1
+            // btnFornecedores
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.label11);
-            this.panel1.Controls.Add(this.label12);
-            this.panel1.Controls.Add(this.pictureBox5);
-            this.panel1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panel1.Location = new System.Drawing.Point(381, 459);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 110);
-            this.panel1.TabIndex = 10;
-            this.panel1.Click += new System.EventHandler(this.panel1_Click);
+            this.btnFornecedores.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.btnFornecedores.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.btnFornecedores.Controls.Add(this.label11);
+            this.btnFornecedores.Controls.Add(this.label12);
+            this.btnFornecedores.Controls.Add(this.pictureBox5);
+            this.btnFornecedores.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFornecedores.Location = new System.Drawing.Point(381, 459);
+            this.btnFornecedores.Name = "btnFornecedores";
+            this.btnFornecedores.Size = new System.Drawing.Size(200, 110);
+            this.btnFornecedores.TabIndex = 10;
+            this.btnFornecedores.Click += new System.EventHandler(this.btnFornecedores_Click);
             // 
             // label11
             // 
@@ -348,6 +363,7 @@ namespace bailinho_senior_system
             this.label11.Size = new System.Drawing.Size(153, 13);
             this.label11.TabIndex = 2;
             this.label11.Text = "Gerenciamento de forncedores\r\n";
+            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // label12
             // 
@@ -359,6 +375,7 @@ namespace bailinho_senior_system
             this.label12.Size = new System.Drawing.Size(122, 25);
             this.label12.TabIndex = 1;
             this.label12.Text = "Fornecedor";
+            this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // pictureBox5
             // 
@@ -370,6 +387,7 @@ namespace bailinho_senior_system
             this.pictureBox5.Size = new System.Drawing.Size(35, 35);
             this.pictureBox5.TabIndex = 0;
             this.pictureBox5.TabStop = false;
+            this.pictureBox5.Click += new System.EventHandler(this.pictureBox5_Click);
             // 
             // FrmHome
             // 
@@ -378,7 +396,7 @@ namespace bailinho_senior_system
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1004, 591);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.btnFornecedores);
             this.Controls.Add(this.btnCategorias);
             this.Controls.Add(this.btnVendas);
             this.Controls.Add(this.btnParticipantes);
@@ -406,8 +424,8 @@ namespace bailinho_senior_system
             this.btnCategorias.ResumeLayout(false);
             this.btnCategorias.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.btnFornecedores.ResumeLayout(false);
+            this.btnFornecedores.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.ResumeLayout(false);
 
@@ -436,7 +454,7 @@ namespace bailinho_senior_system
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel btnFornecedores;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.PictureBox pictureBox5;
