@@ -334,7 +334,10 @@ namespace bailinho_senior_system.views
                 if (categoriasEncontradas.Count > 0)
                     currentIndex = categorias.FindIndex(c => c.Id == categoriasEncontradas[0].Id);
 
+                listTable.SelectionChanged -= listTable_SelectionChanged;
                 listTable.DataSource = categoriasEncontradas;
+                listTable.SelectionChanged += listTable_SelectionChanged;
+
                 SetState(ViewState.Listing);
             }
             catch (Exception ex)
