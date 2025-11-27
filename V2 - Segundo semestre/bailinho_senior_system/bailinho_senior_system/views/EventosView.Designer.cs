@@ -59,8 +59,7 @@
             this.idBox = new System.Windows.Forms.TextBox();
             this.tabPageLista = new System.Windows.Forms.TabPage();
             this.listTable = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
+            this.filtrarBtn = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.tsBotoes = new System.Windows.Forms.ToolStrip();
             this.firstBtn = new System.Windows.Forms.ToolStripButton();
@@ -409,10 +408,9 @@
             // 
             // tabPageLista
             // 
-            this.tabPageLista.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPageLista.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
             this.tabPageLista.Controls.Add(this.listTable);
-            this.tabPageLista.Controls.Add(this.button1);
-            this.tabPageLista.Controls.Add(this.label8);
+            this.tabPageLista.Controls.Add(this.filtrarBtn);
             this.tabPageLista.Controls.Add(this.searchBox);
             this.tabPageLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabPageLista.Location = new System.Drawing.Point(4, 34);
@@ -434,7 +432,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.listTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.listTable.Location = new System.Drawing.Point(10, 59);
+            this.listTable.Location = new System.Drawing.Point(7, 39);
             this.listTable.MultiSelect = false;
             this.listTable.Name = "listTable";
             this.listTable.ReadOnly = true;
@@ -442,28 +440,23 @@
             this.listTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.listTable.Size = new System.Drawing.Size(833, 333);
             this.listTable.TabIndex = 18;
+            this.listTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listTable_CellClick);
+            this.listTable.SelectionChanged += new System.EventHandler(this.listTable_SelectionChanged);
             // 
-            // button1
+            // filtrarBtn
             // 
-            this.button1.Location = new System.Drawing.Point(601, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 26);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "OK";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 4);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(153, 20);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "Buscar (nome ou Id)";
+            this.filtrarBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.filtrarBtn.Location = new System.Drawing.Point(598, 7);
+            this.filtrarBtn.Name = "filtrarBtn";
+            this.filtrarBtn.Size = new System.Drawing.Size(67, 26);
+            this.filtrarBtn.TabIndex = 17;
+            this.filtrarBtn.Text = "Buscar";
+            this.filtrarBtn.UseVisualStyleBackColor = true;
+            this.filtrarBtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // searchBox
             // 
-            this.searchBox.Location = new System.Drawing.Point(10, 27);
+            this.searchBox.Location = new System.Drawing.Point(7, 7);
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(585, 26);
             this.searchBox.TabIndex = 16;
@@ -505,6 +498,7 @@
             this.firstBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.firstBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.firstBtn.ToolTipText = "Vai ao primeiro registro";
+            this.firstBtn.Click += new System.EventHandler(this.firstBtn_Click);
             // 
             // previousBtn
             // 
@@ -517,6 +511,7 @@
             this.previousBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.previousBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.previousBtn.ToolTipText = "Vai ao registro anterior";
+            this.previousBtn.Click += new System.EventHandler(this.previousBtn_Click);
             // 
             // nextBtn
             // 
@@ -529,6 +524,7 @@
             this.nextBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.nextBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.nextBtn.ToolTipText = "Vai ao registro seguinte";
+            this.nextBtn.Click += new System.EventHandler(this.nextBtn_Click);
             // 
             // lastBtn
             // 
@@ -541,6 +537,7 @@
             this.lastBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.lastBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.lastBtn.ToolTipText = "Vai ao último registro";
+            this.lastBtn.Click += new System.EventHandler(this.lastBtn_Click);
             // 
             // toolStripSeparator1
             // 
@@ -558,6 +555,7 @@
             this.searchBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.searchBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.searchBtn.ToolTipText = "Busca registro pelo código";
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
             // 
             // toolStripSeparator2
             // 
@@ -575,6 +573,7 @@
             this.newBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.newBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.newBtn.ToolTipText = "Iniciar a inclusão de novo registro";
+            this.newBtn.Click += new System.EventHandler(this.newBtn_Click);
             // 
             // editBtn
             // 
@@ -586,6 +585,7 @@
             this.editBtn.Text = "Editar";
             this.editBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.editBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
             // 
             // saveBtn
             // 
@@ -599,6 +599,7 @@
             this.saveBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.saveBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.saveBtn.ToolTipText = "Salva o registro incluído ou modicado";
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // deleteBtn
             // 
@@ -611,6 +612,7 @@
             this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.deleteBtn.ToolTipText = "Exclui o registro apresentado na tela";
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // toolStripSeparator3
             // 
@@ -628,6 +630,7 @@
             this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.cancelBtn.ToolTipText = "Cancela a operação atual";
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // toolStripSeparator4
             // 
@@ -645,6 +648,7 @@
             this.exitBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.exitBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.exitBtn.ToolTipText = "Termina a execução do programa e salva no disco todos os dados";
+            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
             // 
             // EventosView
             // 
@@ -679,8 +683,7 @@
         private System.Windows.Forms.TabPage tabPageCadastro;
         private System.Windows.Forms.TabPage tabPageLista;
         internal System.Windows.Forms.DataGridView listTable;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button filtrarBtn;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.ToolStrip tsBotoes;
         private System.Windows.Forms.ToolStripButton firstBtn;
