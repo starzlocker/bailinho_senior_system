@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bailinho_senior_system
+namespace bailinho_senior_system.models
 {
-    internal class Cliente
+    public class Cliente
     {
         private string nome;
 
