@@ -148,7 +148,6 @@ namespace bailinho_senior_system.views
             }
         }
 
-
         private void ReadProdutos()
         {
             try
@@ -189,36 +188,6 @@ namespace bailinho_senior_system.views
                 MessageBox.Show("Erro ao carregar produtos: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void descricao_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void preco_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void previousBtn_Click(object sender, EventArgs e)
@@ -292,7 +261,6 @@ namespace bailinho_senior_system.views
             editItem = produtos[currentIndex];
             SetState(ViewState.Editing);
         }
-
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
@@ -432,11 +400,6 @@ namespace bailinho_senior_system.views
                     return; // usuário cancelou — volta para o formulário
             }
             this.Close();
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
