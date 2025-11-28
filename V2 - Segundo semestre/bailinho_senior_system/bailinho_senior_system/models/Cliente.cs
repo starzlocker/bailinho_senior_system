@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bailinho_senior_system
+namespace bailinho_senior_system.models
 {
-    internal class Cliente
+    public class Cliente
     {
+        private int id;
+
         private string nome;
 
         private DateTime dt_nascimento;
@@ -21,6 +23,7 @@ namespace bailinho_senior_system
         public Cliente() { }
 
         public Cliente(
+            int id,
             string nome,
             DateTime dataNascimento,
             char genero,
@@ -28,11 +31,17 @@ namespace bailinho_senior_system
             string telefone
         )
         {
+            setId(id);
             setNome(nome);
             setDt_nascimento(dataNascimento);
             setGenero(genero);
             setCPF(cpf);
             setTelefone(telefone);
+        }
+
+        public int getId()
+        {
+            return id;
         }
 
         public string getNome()
@@ -60,83 +69,77 @@ namespace bailinho_senior_system
             return telefone;
         }
 
-        public string setNome(string nome)
+        private void setId(int id)
+        {
+            this.id = id;
+        }
+
+        public void setNome(string nome)
         {
             string validacaoDeVazio = ValidadorHelper.VerificarVazio(nome, "nome");
 
-            if (validacaoDeVazio != null) return validacaoDeVazio;
+            if (validacaoDeVazio != null) throw new ArgumentException(validacaoDeVazio);
 
             if (nome.Length > 150)
             {
-                return "O nome não pode conter mais que 150 caracteres";
+                throw new ArgumentException("O nome não pode conter mais que 150 caracteres");
             }
 
             this.nome = nome;
-
-            return "sucesso";
         }
 
-        public string setDt_nascimento(DateTime dt_nascimento)
+        public void setDt_nascimento(DateTime dt_nascimento)
         {
             if (dt_nascimento == DateTime.MinValue)
-                return "O campo 'Data de Nascimento' não pode estar vazio.";
+                throw new ArgumentException("O campo 'Data de Nascimento' não pode estar vazio.");
 
             if (dt_nascimento > DateTime.Today)
-                return "A 'Data de Nascimento' não pode ser uma data futura.";
+                throw new ArgumentException("A 'Data de Nascimento' não pode ser uma data futura.");
 
             if (dt_nascimento.Year < 1900)
-                return "A 'Data de Nascimento' é inválida.";
+                throw new ArgumentException("A 'Data de Nascimento' é inválida.");
 
             this.dt_nascimento = dt_nascimento;
-
-            return "sucesso";
         }
 
-        public string setGenero(char genero)
+        public void setGenero(char genero)
         {
-            if (genero == '\0')
-                return "O campo 'Gênero' não pode estar vazio.";
-
             char generoUpper = char.ToUpper(genero);
 
             if (generoUpper != 'M' && generoUpper != 'F')
-                return "O campo 'Gênero' deve ser 'M', 'F' ou 'O'.";
+                throw new ArgumentException("O campo 'Gênero' deve ser 'M' ou 'F'.");
 
             this.genero = genero;
-
-            return "sucesso";
         }
 
-        public string setCPF(string cpf)
+        public void setCPF(string cpf)
         {
             string validacaoDeVazio = ValidadorHelper.VerificarVazio(cpf, "CPF");
 
-            if (validacaoDeVazio != null) return validacaoDeVazio;
+            if (validacaoDeVazio != null) throw new ArgumentException(validacaoDeVazio);
 
             string cpfNumeros = new string(cpf.Where(char.IsDigit).ToArray());
 
             if (cpfNumeros.Length != 11)
-                return "O CPF deve conter exatamente 11 dígitos.";
+                throw new ArgumentException("O CPF deve conter exatamente 11 dígitos.");
 
             if (!CpfValido(cpfNumeros))
-                return "O CPF informado é inválido.";
+                throw new ArgumentException("O CPF informado é inválido.");
 
             this.cpf = cpf;
-
-            return "sucesso";
         }
 
-        public string setTelefone(string telefone)
+        public void setTelefone(string telefone)
         {
             if (string.IsNullOrWhiteSpace(telefone))
-                return "O campo 'Telefone' não pode estar vazio.";
+                throw new ArgumentException("O campo 'Telefone' não pode estar vazio.");
 
             string numeros = new string(telefone.Where(char.IsDigit).ToArray());
 
             if (numeros.Length != 10 && numeros.Length != 11)
-                return "O telefone deve conter 10 ou 11 dígitos.";
+                throw new ArgumentException("O telefone deve conter 10 ou 11 dígitos.");
 
-            return "sucesso";
+            this.telefone = telefone;
         }
 
         private static bool CpfValido(string cpf)

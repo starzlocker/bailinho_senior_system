@@ -110,8 +110,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cliente.cs" />
     <Compile Include="config\DatabaseConfig.cs" />
+    <Compile Include="models\Cliente.cs" />
     <Compile Include="models\Endereco.cs" />
     <Compile Include="models\Evento.cs" />
     <Compile Include="models\Categoria.cs" />
@@ -121,6 +121,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="repositories\CategoriaRepository.cs" />
+    <Compile Include="repositories\ClientesRepository.cs" />
     <Compile Include="repositories\EnderecoRepository.cs" />
     <Compile Include="repositories\EventoRepository.cs" />
     <Compile Include="repositories\FornecedorRepository.cs" />
