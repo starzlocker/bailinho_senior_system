@@ -31,16 +31,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VendasView));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageCadastro = new System.Windows.Forms.TabPage();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.btnRemover = new System.Windows.Forms.Button();
+            this.txtTotal = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnAdicionar = new System.Windows.Forms.Button();
+            this.numQuantidade = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.dgvItensVendidos = new System.Windows.Forms.DataGridView();
+            this.cbEventos = new System.Windows.Forms.ComboBox();
+            this.cbPagamentos = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.cbClientes = new System.Windows.Forms.ComboBox();
             this.tabPageLista = new System.Windows.Forms.TabPage();
             this.listTable = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
@@ -64,7 +69,8 @@
             this.exitBtn = new System.Windows.Forms.ToolStripButton();
             this.tabControl.SuspendLayout();
             this.tabPageCadastro.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numQuantidade)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItensVendidos)).BeginInit();
             this.tabPageLista.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listTable)).BeginInit();
             this.tsBotoes.SuspendLayout();
@@ -82,7 +88,7 @@
             this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(855, 191);
+            this.tabControl.Size = new System.Drawing.Size(1132, 371);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 30;
             this.tabControl.Tag = "";
@@ -90,48 +96,137 @@
             // tabPageCadastro
             // 
             this.tabPageCadastro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
-            this.tabPageCadastro.Controls.Add(this.comboBox2);
+            this.tabPageCadastro.Controls.Add(this.btnRemover);
+            this.tabPageCadastro.Controls.Add(this.txtTotal);
+            this.tabPageCadastro.Controls.Add(this.label6);
+            this.tabPageCadastro.Controls.Add(this.btnAdicionar);
+            this.tabPageCadastro.Controls.Add(this.numQuantidade);
+            this.tabPageCadastro.Controls.Add(this.label4);
+            this.tabPageCadastro.Controls.Add(this.label3);
             this.tabPageCadastro.Controls.Add(this.comboBox1);
+            this.tabPageCadastro.Controls.Add(this.dgvItensVendidos);
+            this.tabPageCadastro.Controls.Add(this.cbEventos);
+            this.tabPageCadastro.Controls.Add(this.cbPagamentos);
             this.tabPageCadastro.Controls.Add(this.label1);
-            this.tabPageCadastro.Controls.Add(this.numericUpDown1);
             this.tabPageCadastro.Controls.Add(this.label2);
             this.tabPageCadastro.Controls.Add(this.label5);
-            this.tabPageCadastro.Controls.Add(this.comboBox3);
-            this.tabPageCadastro.Controls.Add(this.label7);
-            this.tabPageCadastro.Controls.Add(this.label9);
-            this.tabPageCadastro.Controls.Add(this.textBox1);
+            this.tabPageCadastro.Controls.Add(this.cbClientes);
             this.tabPageCadastro.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPageCadastro.Location = new System.Drawing.Point(4, 34);
             this.tabPageCadastro.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageCadastro.Name = "tabPageCadastro";
             this.tabPageCadastro.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageCadastro.Size = new System.Drawing.Size(847, 153);
+            this.tabPageCadastro.Size = new System.Drawing.Size(1124, 333);
             this.tabPageCadastro.TabIndex = 0;
             this.tabPageCadastro.Text = "Cadastro";
             // 
-            // comboBox2
+            // btnRemover
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(494, 60);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(328, 28);
-            this.comboBox2.TabIndex = 21;
+            this.btnRemover.Location = new System.Drawing.Point(305, 165);
+            this.btnRemover.Name = "btnRemover";
+            this.btnRemover.Size = new System.Drawing.Size(99, 28);
+            this.btnRemover.TabIndex = 35;
+            this.btnRemover.Text = "Remover";
+            this.btnRemover.UseVisualStyleBackColor = true;
+            // 
+            // txtTotal
+            // 
+            this.txtTotal.Enabled = false;
+            this.txtTotal.Location = new System.Drawing.Point(148, 211);
+            this.txtTotal.Name = "txtTotal";
+            this.txtTotal.Size = new System.Drawing.Size(256, 26);
+            this.txtTotal.TabIndex = 34;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(14, 214);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(107, 18);
+            this.label6.TabIndex = 33;
+            this.label6.Text = "Total a pagar";
+            // 
+            // btnAdicionar
+            // 
+            this.btnAdicionar.Location = new System.Drawing.Point(190, 165);
+            this.btnAdicionar.Name = "btnAdicionar";
+            this.btnAdicionar.Size = new System.Drawing.Size(99, 28);
+            this.btnAdicionar.TabIndex = 32;
+            this.btnAdicionar.Text = "Adicionar";
+            this.btnAdicionar.UseVisualStyleBackColor = true;
+            // 
+            // numQuantidade
+            // 
+            this.numQuantidade.Location = new System.Drawing.Point(107, 167);
+            this.numQuantidade.Name = "numQuantidade";
+            this.numQuantidade.Size = new System.Drawing.Size(67, 26);
+            this.numQuantidade.TabIndex = 31;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(14, 175);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(93, 18);
+            this.label4.TabIndex = 30;
+            this.label4.Text = "Quantidade";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(14, 126);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 18);
+            this.label3.TabIndex = 29;
+            this.label3.Text = "Produtos";
             // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(608, 12);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBox1.Location = new System.Drawing.Point(105, 122);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(214, 28);
-            this.comboBox1.TabIndex = 26;
+            this.comboBox1.Size = new System.Drawing.Size(299, 28);
+            this.comboBox1.TabIndex = 28;
+            // 
+            // dgvItensVendidos
+            // 
+            this.dgvItensVendidos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvItensVendidos.Location = new System.Drawing.Point(420, 20);
+            this.dgvItensVendidos.Name = "dgvItensVendidos";
+            this.dgvItensVendidos.Size = new System.Drawing.Size(669, 293);
+            this.dgvItensVendidos.TabIndex = 27;
+            this.dgvItensVendidos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItensVendidos_CellContentClick);
+            this.dgvItensVendidos.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItensVendidos_CellEndEdit);
+            // 
+            // cbEventos
+            // 
+            this.cbEventos.FormattingEnabled = true;
+            this.cbEventos.Location = new System.Drawing.Point(105, 68);
+            this.cbEventos.Margin = new System.Windows.Forms.Padding(4);
+            this.cbEventos.Name = "cbEventos";
+            this.cbEventos.Size = new System.Drawing.Size(299, 28);
+            this.cbEventos.TabIndex = 21;
+            // 
+            // cbPagamentos
+            // 
+            this.cbPagamentos.FormattingEnabled = true;
+            this.cbPagamentos.Location = new System.Drawing.Point(190, 257);
+            this.cbPagamentos.Margin = new System.Windows.Forms.Padding(4);
+            this.cbPagamentos.Name = "cbPagamentos";
+            this.cbPagamentos.Size = new System.Drawing.Size(214, 28);
+            this.cbPagamentos.TabIndex = 26;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(432, 64);
+            this.label1.Location = new System.Drawing.Point(14, 72);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 18);
@@ -139,26 +234,11 @@
             this.label1.Text = "Evento";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.DecimalPlaces = 2;
-            this.numericUpDown1.Location = new System.Drawing.Point(112, 56);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            32000,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(299, 26);
-            this.numericUpDown1.TabIndex = 25;
-            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(14, 97);
+            this.label2.Location = new System.Drawing.Point(16, 24);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 18);
@@ -170,57 +250,25 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(432, 16);
+            this.label5.Location = new System.Drawing.Point(14, 261);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(168, 18);
             this.label5.TabIndex = 24;
             this.label5.Text = "Forma de pagamento";
             // 
-            // comboBox3
+            // cbClientes
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(112, 97);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(299, 28);
-            this.comboBox3.TabIndex = 20;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(14, 59);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(90, 18);
-            this.label7.TabIndex = 23;
-            this.label7.Text = "Valor Total";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(14, 16);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(24, 18);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "ID";
-            // 
-            // textBox1
-            // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Location = new System.Drawing.Point(112, 13);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(299, 26);
-            this.textBox1.TabIndex = 21;
+            this.cbClientes.FormattingEnabled = true;
+            this.cbClientes.Location = new System.Drawing.Point(105, 20);
+            this.cbClientes.Margin = new System.Windows.Forms.Padding(4);
+            this.cbClientes.Name = "cbClientes";
+            this.cbClientes.Size = new System.Drawing.Size(299, 28);
+            this.cbClientes.TabIndex = 20;
             // 
             // tabPageLista
             // 
-            this.tabPageLista.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPageLista.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
             this.tabPageLista.Controls.Add(this.listTable);
             this.tabPageLista.Controls.Add(this.button1);
             this.tabPageLista.Controls.Add(this.label8);
@@ -230,7 +278,7 @@
             this.tabPageLista.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageLista.Name = "tabPageLista";
             this.tabPageLista.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageLista.Size = new System.Drawing.Size(847, 153);
+            this.tabPageLista.Size = new System.Drawing.Size(1124, 333);
             this.tabPageLista.TabIndex = 1;
             this.tabPageLista.Text = "Lista";
             // 
@@ -251,7 +299,7 @@
             this.listTable.ReadOnly = true;
             this.listTable.RowHeadersVisible = false;
             this.listTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.listTable.Size = new System.Drawing.Size(833, 87);
+            this.listTable.Size = new System.Drawing.Size(1107, 267);
             this.listTable.TabIndex = 18;
             // 
             // button1
@@ -301,7 +349,7 @@
             this.exitBtn});
             this.tsBotoes.Location = new System.Drawing.Point(0, 0);
             this.tsBotoes.Name = "tsBotoes";
-            this.tsBotoes.Size = new System.Drawing.Size(884, 65);
+            this.tsBotoes.Size = new System.Drawing.Size(1161, 65);
             this.tsBotoes.TabIndex = 31;
             this.tsBotoes.Text = "toolStrip1";
             // 
@@ -316,6 +364,7 @@
             this.firstBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.firstBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.firstBtn.ToolTipText = "Vai ao primeiro registro";
+            this.firstBtn.Click += new System.EventHandler(this.firstBtn_Click_1);
             // 
             // previousBtn
             // 
@@ -328,6 +377,7 @@
             this.previousBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.previousBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.previousBtn.ToolTipText = "Vai ao registro anterior";
+            this.previousBtn.Click += new System.EventHandler(this.previousBtn_Click);
             // 
             // nextBtn
             // 
@@ -340,6 +390,7 @@
             this.nextBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.nextBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.nextBtn.ToolTipText = "Vai ao registro seguinte";
+            this.nextBtn.Click += new System.EventHandler(this.nextBtn_Click);
             // 
             // lastBtn
             // 
@@ -352,6 +403,7 @@
             this.lastBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.lastBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.lastBtn.ToolTipText = "Vai ao último registro";
+            this.lastBtn.Click += new System.EventHandler(this.lastBtn_Click);
             // 
             // toolStripSeparator1
             // 
@@ -369,6 +421,7 @@
             this.searchBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.searchBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.searchBtn.ToolTipText = "Busca registro pelo código";
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
             // 
             // toolStripSeparator2
             // 
@@ -386,6 +439,7 @@
             this.newBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.newBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.newBtn.ToolTipText = "Iniciar a inclusão de novo registro";
+            this.newBtn.Click += new System.EventHandler(this.newBtn_Click);
             // 
             // deleteBtn
             // 
@@ -398,6 +452,7 @@
             this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.deleteBtn.ToolTipText = "Exclui o registro apresentado na tela";
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // editBtn
             // 
@@ -409,6 +464,7 @@
             this.editBtn.Text = "Editar";
             this.editBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.editBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
             // 
             // saveBtn
             // 
@@ -422,6 +478,7 @@
             this.saveBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.saveBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.saveBtn.ToolTipText = "Salva o registro incluído ou modicado";
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // toolStripSeparator3
             // 
@@ -439,6 +496,7 @@
             this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.cancelBtn.ToolTipText = "Cancela a operação atual";
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // toolStripSeparator4
             // 
@@ -456,13 +514,14 @@
             this.exitBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.exitBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.exitBtn.ToolTipText = "Termina a execução do programa e salva no disco todos os dados";
+            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
             // 
             // VendasView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
-            this.ClientSize = new System.Drawing.Size(884, 411);
+            this.ClientSize = new System.Drawing.Size(1161, 466);
             this.Controls.Add(this.tsBotoes);
             this.Controls.Add(this.tabControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -474,7 +533,8 @@
             this.tabControl.ResumeLayout(false);
             this.tabPageCadastro.ResumeLayout(false);
             this.tabPageCadastro.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numQuantidade)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItensVendidos)).EndInit();
             this.tabPageLista.ResumeLayout(false);
             this.tabPageLista.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listTable)).EndInit();
@@ -509,15 +569,20 @@
         private System.Windows.Forms.ToolStripButton cancelBtn;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton exitBtn;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbEventos;
+        private System.Windows.Forms.ComboBox cbPagamentos;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ComboBox cbClientes;
+        private System.Windows.Forms.DataGridView dgvItensVendidos;
+        private System.Windows.Forms.Button btnAdicionar;
+        private System.Windows.Forms.NumericUpDown numQuantidade;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox txtTotal;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnRemover;
     }
 }

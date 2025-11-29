@@ -9,8 +9,6 @@ using MySql.Data.MySqlClient;
 
 namespace bailinho_senior_system.views
 {
-    public enum ViewState { Listing, Editing, Creating }
-
     public partial class EventosView : Form
     {
         // --- Variáveis de Estado da View ---
