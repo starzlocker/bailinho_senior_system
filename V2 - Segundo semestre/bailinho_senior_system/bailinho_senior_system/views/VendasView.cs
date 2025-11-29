@@ -8,7 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-//using ZstdSharp.Unsafe;
+using ZstdSharp.Unsafe;
 
 namespace bailinho_senior_system.views
 {
