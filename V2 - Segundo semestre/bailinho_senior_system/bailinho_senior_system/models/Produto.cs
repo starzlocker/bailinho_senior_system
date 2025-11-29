@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -96,27 +94,12 @@ namespace bailinho_senior_system.models
             set { categoria = value; }
         }
 
-        private int id_fornecedor;
-        public int IdFornecedor
-        {
-            get { return id_fornecedor; }
-            set
-            {
-                id_fornecedor = value;
-            }
-        }
+        public List<ProdutoFornecedor> Fornecedores { get; set; } = new List<ProdutoFornecedor>();
 
-        private string fornecedor;
-        public string Fornecedor
-        {
-            get { return fornecedor; }
-            set 
-            {
-                fornecedor = value;
-            }
-        }
+        public List<ProdutoFornecedor> FornecedoresApagados { get; set; } = new List<ProdutoFornecedor>();
 
         public Produto() { }
+
         public Produto(
             string Nome,
             string Descricao,

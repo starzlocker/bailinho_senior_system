@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// NOTE: ValidadorHelper is assumed to exist elsewhere for methods like VerificarVazio.
+
 namespace bailinho_senior_system.models
 {
     public class Fornecedor
@@ -16,8 +18,8 @@ namespace bailinho_senior_system.models
         private List<ProdutoFornecedor> produtos;
         private List<ProdutoFornecedor> produtos_apagados;
 
-        public Fornecedor() 
-        { 
+        public Fornecedor()
+        {
             produtos = new List<ProdutoFornecedor>();
             produtos_apagados = new List<ProdutoFornecedor>();
         }
@@ -50,18 +52,22 @@ namespace bailinho_senior_system.models
             get { return cnpj; }
             set
             {
+                // A validação assume que ValidadorHelper.VerificarVazio existe.
                 string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "CNPJ");
                 if (validacaoDeVazio != null) throw new ArgumentException(validacaoDeVazio);
 
+                // 1. Limpa e verifica o tamanho
                 string cnpjNumeros = new string(value.Where(char.IsDigit).ToArray());
 
                 if (cnpjNumeros.Length != 14)
                     throw new ArgumentException("O CNPJ deve conter exatamente 14 dígitos.");
 
+                // 2. Chama a validação do dígito, passando a string limpa
                 if (!CnpjValido(cnpjNumeros))
-                    throw new ArgumentException("O CNPJ informado é inválido.");
+                    throw new ArgumentException("O CNPJ informado é inválido. " + cnpjNumeros);
 
-                cnpj = value;
+                // 3. Armazena APENAS o valor limpo e válido para consistência no banco de dados
+                cnpj = cnpjNumeros;
             }
         }
 
@@ -127,34 +133,44 @@ namespace bailinho_senior_system.models
             set { produtos_apagados = value; }
         }
 
-
+        // Método estático de validação de CNPJ
         private static bool CnpjValido(string cnpj)
         {
+            // O argumento 'cnpj' deve ser uma string de 14 dígitos numéricos limpos.
             if (cnpj.Distinct().Count() == 1) return false;
 
-            int[] multiplicador1 = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            // Multiplicadores Padrão do CNPJ
+            int[] multiplicador1 = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 }; // 12 elementos
+            int[] multiplicador2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 }; // 13 elementos
 
             string tempCnpj = cnpj.Substring(0, 12);
             int soma = 0;
+            int resto;
+            int digito1;
+            int digito2;
 
+            // CÁLCULO DO PRIMEIRO DÍGITO
             for (int i = 0; i < 12; i++)
-                soma += int.Parse(tempCnpj[i].ToString()) * multiplicador1[i];
+                soma += (int.Parse(tempCnpj[i].ToString()) * multiplicador1[i]);
 
-            int resto = soma % 11;
-            int digito1 = resto < 2 ? 0 : 11 - resto;
+            resto = soma % 11;
+            digito1 = resto < 2 ? 0 : 11 - resto;
 
-            tempCnpj += digito1;
+            // CÁLCULO DO SEGUNDO DÍGITO
+            tempCnpj += digito1; // Adiciona o primeiro dígito calculado
             soma = 0;
 
             for (int i = 0; i < 13; i++)
-                soma += int.Parse(tempCnpj[i].ToString()) * multiplicador2[i];
+                soma += (int.Parse(tempCnpj[i].ToString()) * multiplicador2[i]);
 
             resto = soma % 11;
-            int digito2 = resto < 2 ? 0 : 11 - resto;
+            digito2 = resto < 2 ? 0 : 11 - resto;
 
-            string cnpjCalculado = tempCnpj + digito2;
-            return cnpj.EndsWith(cnpjCalculado.Substring(12));
+            // VERIFICAÇÃO FINAL: Compara os dois dígitos de verificação.
+            string digitosVerificadoresOriginais = cnpj.Substring(12, 2);
+            string digitosVerificadoresCalculados = digito1.ToString() + digito2.ToString();
+
+            return digitosVerificadoresOriginais == digitosVerificadoresCalculados;
         }
     }
 }

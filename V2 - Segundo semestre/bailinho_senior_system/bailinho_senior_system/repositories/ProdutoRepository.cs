@@ -15,7 +15,6 @@ namespace bailinho_senior_system.repositories
     public class ProdutoRepository
     {
         private string ConnectionString => DatabaseConfig.ConnectionString;
-        //private string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
 
         public List<Produto> GetProdutos()
         {
@@ -29,19 +28,15 @@ namespace bailinho_senior_system.repositories
 
 
                     string sql = $"SELECT " +
-                                     $"tp.id, " +
-                                     $"tp.nome, " +
-                                     $"tp.descricao, " +
-                                     $"tp.qtd_estoque, " +
-                                     $"tp.preco, " +
-                                     $"tp.id_categoria, " +
-                                     $"tc.nome as categoria, " +
-                                     $"tf.id as id_fornecedor, " +
-                                     $"tf.nome as fornecedor " +
+                                 $"tp.id, " +
+                                 $"tp.nome, " +
+                                 $"tp.descricao, " +
+                                 $"tp.qtd_estoque, " +
+                                 $"tp.preco, " +
+                                 $"tp.id_categoria, " +
+                                 $"tc.nome as categoria " +
                                  $"FROM Produto tp " +
-                                 $"LEFT JOIN Categoria tc on tp.id_categoria = tc.id " +
-                                 $"LEFT JOIN produtofornecedor tpf on tpf.id_produto=tp.id " +
-                                 $"LEFT JOIN Fornecedor tf on tf.id=tpf.id_fornecedor;";
+                                 $"LEFT JOIN Categoria tc on tp.id_categoria = tc.id;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -54,8 +49,7 @@ namespace bailinho_senior_system.repositories
                             int idxPreco = reader.GetOrdinal("preco");
                             int idxIdCategoria = reader.GetOrdinal("id_categoria");
                             int idxCategoria = reader.GetOrdinal("categoria");
-                            int idxIdFornecedor = reader.GetOrdinal("id_fornecedor");
-                            int idxFornecedor = reader.GetOrdinal("fornecedor");
+                            // REMOVIDAS as colunas idxIdFornecedor e idxFornecedor
 
                             while (reader.Read())
                             {
@@ -82,15 +76,6 @@ namespace bailinho_senior_system.repositories
 
                                 if (!reader.IsDBNull(idxIdCategoria))
                                     produto.IdCategoria = reader.GetInt32(idxIdCategoria);
-
-                                if (!reader.IsDBNull(idxFornecedor))
-                                    produto.Fornecedor = reader.GetString(idxFornecedor);
-
-                                if (!reader.IsDBNull(idxIdFornecedor))
-                                    produto.IdFornecedor = reader.GetInt32(idxIdFornecedor);
-
-                                // Se precisar do Id e não houver propriedade pública, você pode adicionar uma propriedade Id no model.
-                                // Ex.: produto.Id = reader.GetInt32(idxId);
 
                                 products.Add(produto);
                             }
@@ -119,19 +104,15 @@ namespace bailinho_senior_system.repositories
 
 
                     string sql = $"SELECT " +
-                                     $"tp.id, " +
-                                     $"tp.nome, " +
-                                     $"tp.descricao, " +
-                                     $"tp.qtd_estoque, " +
-                                     $"tp.preco, " +
-                                     $"tp.id_categoria, " +
-                                     $"tc.nome as categoria, " +
-                                     $"tf.id as id_fornecedor, " +
-                                     $"tf.nome as fornecedor " +
+                                 $"tp.id, " +
+                                 $"tp.nome, " +
+                                 $"tp.descricao, " +
+                                 $"tp.qtd_estoque, " +
+                                 $"tp.preco, " +
+                                 $"tp.id_categoria, " +
+                                 $"tc.nome as categoria " +
                                  $"FROM Produto tp " +
-                                 $"LEFT JOIN Categoria tc on tp.id_categoria = tc.id " +
-                                 $"LEFT JOIN produtofornecedor tpf on tpf.id_produto=tp.id " +
-                                 $"LEFT JOIN Fornecedor tf on tf.id=tpf.id_fornecedor " +
+                                 $"LEFT JOIN Categoria tc on tp.id_categoria = tc.id " + // REMOVIDO JOIN DE PRODUTOFORNECEDOR/FORNECEDOR
                                  $"WHERE tp.id=@id;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
@@ -146,8 +127,6 @@ namespace bailinho_senior_system.repositories
                             int idxPreco = reader.GetOrdinal("preco");
                             int idxIdCategoria = reader.GetOrdinal("id_categoria");
                             int idxCategoria = reader.GetOrdinal("categoria");
-                            int idxIdFornecedor = reader.GetOrdinal("id_fornecedor");
-                            int idxFornecedor = reader.GetOrdinal("fornecedor");
 
                             if (reader.Read())
                             {
@@ -175,15 +154,6 @@ namespace bailinho_senior_system.repositories
                                 if (!reader.IsDBNull(idxIdCategoria))
                                     produto.IdCategoria = reader.GetInt32(idxIdCategoria);
 
-                                if (!reader.IsDBNull(idxFornecedor))
-                                    produto.Fornecedor = reader.GetString(idxFornecedor);
-
-                                if (!reader.IsDBNull(idxIdFornecedor))
-                                    produto.IdFornecedor = reader.GetInt32(idxIdFornecedor);
-
-                                // Se precisar do Id e não houver propriedade pública, você pode adicionar uma propriedade Id no model.
-                                // Ex.: produto.Id = reader.GetInt32(idxId);
-
                                 return produto;
                             }
                         }
@@ -193,14 +163,13 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                
                 Console.Write(ex.ToString());
                 throw;
             }
 
             return null;
         }
-      
+
         public void CreateProduto(Produto produto)
         {
             try

@@ -62,8 +62,8 @@ namespace bailinho_senior_system.models
             {
                 char generoUpper = char.ToUpper(value);
 
-                if (generoUpper != 'M' && generoUpper != 'F' && generoUpper != 'O') // Incluindo 'O'
-                    throw new ArgumentException("O campo 'Gênero' deve ser 'M', 'F' ou 'O'.");
+                if (generoUpper != 'M' && generoUpper != 'F')
+                    throw new ArgumentException("O campo 'Gênero' deve ser 'M' ou 'F'");
 
                 this.genero = generoUpper;
             }

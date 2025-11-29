@@ -8,7 +8,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using ZstdSharp.Unsafe;
 
 namespace bailinho_senior_system.views
 {
@@ -18,7 +17,7 @@ namespace bailinho_senior_system.views
     {
         // --- Variáveis de Estado da Venda ---
         private List<Venda> vendas = new List<Venda>();
-        private BindingList<ProdutoVenda> itensVenda = new BindingList<ProdutoVenda>(); // Lista temporária para a grade
+        private BindingList<ProdutoVenda> itensVenda = new BindingList<ProdutoVenda>();
         private List<Produto> produtosDisponiveis = new List<Produto>();
 
         private Venda editVenda = null;
@@ -34,28 +33,33 @@ namespace bailinho_senior_system.views
         private ProdutoVendaRepository produtoVendaRepository = new ProdutoVendaRepository();
 
 
+        // --- Inicialização e Setup ---
+
         public VendasView()
         {
             InitializeComponent();
-            this.Load += VendasView_Load;
-            this.tabControl.Selecting += tabControl_Selecting;
-            this.listTable.SelectionChanged += listTable_SelectionChanged;
+        }
 
-            // Adiciona o evento para o botão de Adicionar Item
-            this.btnAdicionar.Click += btnAdicionar_Click;
+        private void VendasView_Load(object sender, EventArgs e)
+        {
+            LoadLookups();
+            ConfigurarDgvItensVendidos();
+            ConfigurarListTable(listTable);
 
-            this.dgvItensVendidos.CellContentClick += dgvItensVendidos_CellContentClick;
-            this.dgvItensVendidos.CellEndEdit += dgvItensVendidos_CellEndEdit;
+            ReadVendas();
 
-            // NOVO: Intercepta o início da edição para controlar permissões
-            this.dgvItensVendidos.CellBeginEdit += dgvItensVendidos_CellBeginEdit;
+            dgvItensVendidos.DataSource = itensVenda;
+
+            if (vendas.Count > 0)
+                PopulateVenda(vendas[currentIndex]);
+
+            SetState(ViewState.Listing);
         }
 
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
             if (state == ViewState.Editing || state == ViewState.Creating)
             {
-
                 if (e.TabPage.Name != "tabPageCadastro")
                 {
                     var result = MessageBox.Show(
@@ -76,55 +80,87 @@ namespace bailinho_senior_system.views
             }
         }
 
+        // --- Configuração e Dados ---
 
-        private void VendasView_Load(object sender, EventArgs e)
+        private void ConfigurarListTable(DataGridView dgv)
         {
-            LoadLookups();
-            ReadVendas();
+            // Configuração da grade principal (listTable)
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgv.ColumnHeadersHeight = 30;
+            dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
 
-            ConfigurarDgvItensVendidos();
+            // Adição e Mapeamento das Colunas
+            dgv.AutoGenerateColumns = false;
+            dgv.Columns.Clear();
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
-            // Associa a lista temporária à grade de itens
-            dgvItensVendidos.DataSource = itensVenda;
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "ID",
+                DataPropertyName = "Id",
+                Name = "Id",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+            });
 
-            if (vendas.Count > 0)
-                PopulateVenda(vendas[currentIndex]);
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "Cliente",
+                DataPropertyName = "NomeCliente",
+                Name = "colNomeCliente",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
 
-            SetState(ViewState.Listing);
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "Evento",
+                DataPropertyName = "NomeEvento",
+                Name = "colNomeEvento",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "Pagamento",
+                DataPropertyName = "FormaPagamento",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+            });
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "Total",
+                DataPropertyName = "ValorTotal",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "C", Alignment = DataGridViewContentAlignment.MiddleRight }
+            });
+
+            dgv.Columns["colNomeCliente"].FillWeight = 40;
+            dgv.Columns["colNomeEvento"].FillWeight = 40;
         }
-
-        // --- MÉTODOS DE CONFIGURAÇÃO E DADOS ---
 
         private void ConfigurarDgvItensVendidos()
         {
-            dgvItensVendidos.Columns.Clear();
+            // Configurações visuais e de comportamento para a grade de itens
             dgvItensVendidos.AutoGenerateColumns = false;
-            dgvItensVendidos.ReadOnly = true;
+            dgvItensVendidos.ReadOnly = false;
             dgvItensVendidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvItensVendidos.AllowUserToAddRows = false;
             dgvItensVendidos.MultiSelect = false;
-            dgvItensVendidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvItensVendidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // --- Configurações de Aparência (Cores e Estilo) ---
-            dgvItensVendidos.EnableHeadersVisualStyles = false;
-            dgvItensVendidos.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
-            dgvItensVendidos.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.White;
-            dgvItensVendidos.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230); // Azul claro
-            dgvItensVendidos.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
-            dgvItensVendidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            // Estilos visuais
+            dgvItensVendidos.EnableHeadersVisualStyles = false;
+            dgvItensVendidos.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+            dgvItensVendidos.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230);
             dgvItensVendidos.ColumnHeadersHeight = 30;
 
-            // Ocultamos a autogeração para controle total das colunas
-            dgvItensVendidos.AutoGenerateColumns = false;
             dgvItensVendidos.Columns.Clear();
 
-            // ATENÇÃO: Mantemos ReadOnly = false para que a coluna QUANTIDADE possa ser editada.
-            dgvItensVendidos.ReadOnly = false;
-
-            dgvItensVendidos.AllowUserToAddRows = false;
-            dgvItensVendidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-            // --- 1. Coluna de Ação (Remover) ---
+            // 1. Coluna de Ação (Remover)
             dgvItensVendidos.Columns.Add(new DataGridViewButtonColumn()
             {
                 HeaderText = "Remover",
@@ -133,7 +169,7 @@ namespace bailinho_senior_system.views
                 Name = "colRemover",
                 Width = 60,
                 Resizable = DataGridViewTriState.False,
-                ReadOnly = false // Botão deve ser clicável
+                ReadOnly = false
             });
 
             // 2. Coluna ID do Produto (Oculta)
@@ -145,7 +181,8 @@ namespace bailinho_senior_system.views
                 Name = "colIdProduto",
                 ReadOnly = true
             });
-            // 3. Coluna Nome do Produto (FORÇADA A ReadOnly = TRUE)
+
+            // 3. Coluna Nome do Produto
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "NomeProduto",
@@ -153,7 +190,8 @@ namespace bailinho_senior_system.views
                 FillWeight = 150,
                 ReadOnly = true
             });
-            // 4. Coluna Preço Unitário (FORÇADA A ReadOnly = TRUE)
+
+            // 4. Coluna Preço Unitário
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "PrecoUnitario",
@@ -162,7 +200,8 @@ namespace bailinho_senior_system.views
                 Width = 90,
                 ReadOnly = true
             });
-            // 5. Coluna Quantidade (EDITÁVEL, ReadOnly = FALSE)
+
+            // 5. Coluna Quantidade (EDITÁVEL)
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "Quantidade",
@@ -171,7 +210,8 @@ namespace bailinho_senior_system.views
                 DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter },
                 ReadOnly = false
             });
-            // 6. Coluna Valor Total da Linha (Calculado) (ReadOnly = TRUE)
+
+            // 6. Coluna Valor Total da Linha (Calculado)
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "Valor",
@@ -180,8 +220,6 @@ namespace bailinho_senior_system.views
                 FillWeight = 100,
                 ReadOnly = true
             });
-
-            dgvItensVendidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void LoadLookups()
@@ -223,7 +261,7 @@ namespace bailinho_senior_system.views
             try
             {
                 this.vendas = vendaRepository.GetVendas();
-                // Assumindo que a grade principal de vendas (listTable) está configurada
+
                 listTable.DataSource = null;
                 listTable.DataSource = this.vendas;
             }
@@ -235,7 +273,6 @@ namespace bailinho_senior_system.views
 
         private List<ProdutoVenda> GetItensVenda(int vendaId)
         {
-            // Utiliza o ProdutoVendaRepository para buscar os itens da venda
             return produtoVendaRepository.GetItensByVendaId(vendaId);
         }
 
@@ -245,7 +282,6 @@ namespace bailinho_senior_system.views
             cbClientes.SelectedValue = venda.IdCliente;
             cbEventos.SelectedValue = venda.IdEvento;
             cbPagamentos.SelectedItem = venda.FormaPagamento;
-            // NOTA: totalBox.Text = venda.ValorTotal.ToString("C");
 
             // Carrega os itens da venda (apenas para Edição/Visualização)
             itensVenda.Clear();
@@ -260,14 +296,14 @@ namespace bailinho_senior_system.views
             cbEventos.SelectedIndex = -1;
             cbPagamentos.SelectedIndex = -1;
             itensVenda.Clear();
-            txtTotal.Text = "R$ 0,00";
+            txtTotal.Text = 0.ToString("C");
         }
 
         private void CalcularValorTotal()
         {
             decimal total = itensVenda.Sum(i => i.Valor);
 
-            // Atualiza o Label/TextBox que exibe o total (assumindo totalBox)
+            // Atualiza o Label/TextBox que exibe o total
             txtTotal.Text = total.ToString("C");
 
             if (editVenda != null)
@@ -280,19 +316,35 @@ namespace bailinho_senior_system.views
         {
             if (comboBox1.SelectedValue == null) return null;
             int produtoId = (int)comboBox1.SelectedValue;
-            // Busca o produto completo na lista de disponíveis
+
             return produtosDisponiveis.FirstOrDefault(p => p.Id == produtoId);
         }
+
+        private Produto GetProdutoById(int produtoId)
+        {
+            return produtosDisponiveis.FirstOrDefault(p => p.Id == produtoId);
+        }
+
+        private List<string> ValidateVenda()
+        {
+            List<string> errors = new List<string>();
+
+            if (cbClientes.SelectedValue == null) errors.Add("Selecione um cliente.");
+            if (cbEventos.SelectedValue == null) errors.Add("Selecione um evento.");
+            if (cbPagamentos.SelectedItem == null) errors.Add("Selecione a forma de pagamento.");
+            if (itensVenda.Count == 0) errors.Add("A venda deve conter itens.");
+
+            return errors;
+        }
+
+        // --- Navegação e Estado da View ---
 
         private void SwitchToTabByName(string tabName)
         {
             if (string.IsNullOrEmpty(tabName)) return;
-            // Assumindo um TabControl nomeado 'tabControl'
             var page = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
             if (page != null) tabControl.SelectedTab = page;
         }
-
-        // --- CONTROLE DE ESTADO E VALIDAÇÃO ---
 
         private void SetState(ViewState newState)
         {
@@ -303,7 +355,6 @@ namespace bailinho_senior_system.views
             int count = vendas.Count;
 
             // --- 1. CONTROLE DE NAVEGAÇÃO E CRUD (TOOLBAR) ---
-            // (Lógica de botões mantida)
             firstBtn.Enabled = listing && currentIndex > 0;
             previousBtn.Enabled = listing && currentIndex > 0;
             nextBtn.Enabled = listing && currentIndex < count - 1;
@@ -319,27 +370,27 @@ namespace bailinho_senior_system.views
 
             // --- 2. CONTROLE DOS CAMPOS DE ENTRADA (ABA CADASTRO) ---
 
-            // Comboboxes e Controles de Adição
+            // ComboBoxes e Controles de Adição
             cbClientes.Enabled = creatingOrEditing;
             cbEventos.Enabled = creatingOrEditing;
             cbPagamentos.Enabled = creatingOrEditing;
             comboBox1.Enabled = creatingOrEditing;
             numQuantidade.Enabled = creatingOrEditing;
             btnAdicionar.Enabled = creatingOrEditing;
+            btnRemover.Enabled = creatingOrEditing;
 
-            // --- CONTROLE DA GRADE DE ITENS (dgvItensVendidos) ---
+            // txtTotal é ReadOnly
+            txtTotal.ReadOnly = true;
 
-            // Habilita/Desabilita a Edição de Células (Quantidade)
-            // Se não estiver listando, a edição da grade é permitida.
-            if(creatingOrEditing)
+            // --- 3. CONTROLE DA GRADE DE ITENS (dgvItensVendidos) ---
+
+            if (creatingOrEditing)
             {
-                SwitchToTabByName("tabPageCadastro");    // Se estiver criando ou editando, forçamos a ir para a aba de cadastro
+                SwitchToTabByName("tabPageCadastro");
                 dgvItensVendidos.ReadOnly = false;
-                dgvItensVendidos.Enabled = true;
             }
             else
             {
-                dgvItensVendidos.Enabled = false;
                 dgvItensVendidos.ReadOnly = true;
                 dgvItensVendidos.ClearSelection();
             }
@@ -348,34 +399,289 @@ namespace bailinho_senior_system.views
             if (dgvItensVendidos.Columns.Contains("colRemover"))
             {
                 dgvItensVendidos.Columns["colRemover"].Visible = creatingOrEditing;
-            }       
+            }
 
-            // --- 3. CARREGAMENTO/LIMPEZA DE DADOS ---
-
+            // --- 4. CARREGAMENTO/SELEÇÃO DE DADOS ---
             if (state == ViewState.Creating || count == 0)
             {
                 CleanupFields();
                 itensVenda.Clear();
             }
-            else if (listing && count > 0)
+            else if (listing && count > 0 && currentIndex >= 0)
             {
                 PopulateVenda(vendas[currentIndex]);
+                UpdateDataGridViewSelection();
             }
         }
 
-        private List<string> ValidateVenda()
+        private void UpdateDataGridViewSelection()
         {
-            List<string> errors = new List<string>();
+            // Seleciona a venda atual no listTable e rola para visualização
+            if (listTable == null || vendas.Count == 0 || currentIndex < 0 || currentIndex >= vendas.Count)
+            {
+                return;
+            }
 
-            if (cbClientes.SelectedValue == null) errors.Add("Selecione um cliente.");
-            if (cbEventos.SelectedValue == null) errors.Add("Selecione um evento.");
-            if (cbPagamentos.SelectedItem == null) errors.Add("Selecione a forma de pagamento.");
-            if (itensVenda.Count == 0) errors.Add("A venda deve conter itens.");
+            Venda vendaAtual = vendas[currentIndex];
+            List<Venda> listaExibida = listTable.DataSource as List<Venda>;
 
-            return errors;
+            // Encontra o índice da venda atual na lista exibida (que pode ser filtrada)
+            int indexNaListaExibida = listaExibida?.FindIndex(v => v.Id == vendaAtual.Id) ?? -1;
+
+            if (indexNaListaExibida != -1)
+            {
+                // Limpa seleções anteriores e força a seleção usando o BindingContext
+                listTable.ClearSelection();
+
+                // Seleciona a linha pelo índice na lista exibida
+                listTable.Rows[indexNaListaExibida].Selected = true;
+
+                // Rola para a linha selecionada
+                listTable.FirstDisplayedScrollingRowIndex = indexNaListaExibida;
+            }
+            else
+            {
+                listTable.ClearSelection();
+            }
         }
 
-        // --- MANIPULADORES DE EVENTOS DE AÇÃO ---
+        // --- Eventos de Navegação e Lista ---
+
+        private void firstBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex > 0) currentIndex = 0;
+            ReadVendas();
+            SetState(ViewState.Listing);
+        }
+
+        private void previousBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex > 0) currentIndex--;
+            ReadVendas();
+            SetState(ViewState.Listing);
+        }
+
+        private void nextBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex < vendas.Count - 1) currentIndex++;
+            ReadVendas();
+            SetState(ViewState.Listing);
+        }
+
+        private void lastBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex < vendas.Count - 1) currentIndex = vendas.Count - 1;
+            ReadVendas();
+            SetState(ViewState.Listing);
+        }
+
+        private void listTable_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= listTable.Rows.Count) return;
+            if (state != ViewState.Listing) return;
+
+            Venda vendaSelecionada = listTable.Rows[e.RowIndex].DataBoundItem as Venda;
+
+            if (vendaSelecionada != null)
+            {
+                int novoIndex = vendas.FindIndex(v => v.Id == vendaSelecionada.Id);
+
+                if (novoIndex != -1)
+                {
+                    currentIndex = novoIndex;
+                }
+                SetState(ViewState.Listing);
+            }
+        }
+
+        private void makeSearch_Click(object sender, EventArgs e)
+        {
+            // Implementa a lógica de busca/filtro
+            string searchTerm = searchBox.Text.Trim().ToLower();
+            List<Venda> filteredVendas;
+            decimal totalBusca = -1;
+
+            // Tenta converter o termo de busca para valor monetário (total)
+            if (decimal.TryParse(searchTerm.Replace("r$", "").Replace(",", "").Replace(".", ""),
+                                 System.Globalization.NumberStyles.Currency,
+                                 System.Globalization.CultureInfo.InvariantCulture,
+                                 out totalBusca))
+            {
+                // Tenta ajustar o valor total se a entrada parecer um inteiro formatado como moeda (ex: 1200 -> 12.00)
+                if (totalBusca > 100 && !searchTerm.Contains(","))
+                {
+                    totalBusca /= 100;
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                // NOVO: Limpa o termo de busca de símbolos e pontuações para a comparação do Valor Total
+                string cleanSearchTerm = searchTerm.Replace("r$", "").Replace(" ", "").Replace(",", "").Replace(".", "");
+
+                filteredVendas = vendas.Where(venda =>
+                    // 1. Busca por ID (Igualdade Exata)
+                    (int.TryParse(searchTerm, out int id) && venda.Id == id) ||
+                    // 2. Busca por Nome de Cliente (Substring)
+                    (venda.NomeCliente != null && venda.NomeCliente.ToLower().Contains(searchTerm)) ||
+                    // 3. Busca por Nome de Evento (Substring)
+                    (venda.NomeEvento != null && venda.NomeEvento.ToLower().Contains(searchTerm)) ||
+                    // 4. Busca por Forma de Pagamento (Substring)
+                    (venda.FormaPagamento != null && venda.FormaPagamento.ToLower().Contains(searchTerm)) ||
+
+                    // 5. Busca por Valor Total (Igualdade Exata) - Se a conversão foi bem-sucedida
+                    (totalBusca >= 0 && venda.ValorTotal == totalBusca) ||
+
+                    // 6. Busca por Valor Total (Substring) - Robusta
+                    // Converte o valor para string neutra (ex: "307.00" -> "307"), remove o ponto, e verifica a substring.
+                    venda.ValorTotal.ToString(
+                        "0.##", // Omite zeros finais (R$ 307,00 -> "307"; R$ 12,50 -> "12.5")
+                        System.Globalization.CultureInfo.InvariantCulture
+                    ).Replace(".", "").Contains(cleanSearchTerm)
+
+                ).ToList();
+            }
+            else
+            {
+                // Se a busca estiver vazia, retorna a lista completa
+                filteredVendas = vendas;
+            }
+
+            // Atualiza o DataGridView com a lista filtrada
+            listTable.DataSource = null;
+            listTable.DataSource = filteredVendas;
+
+            // Atualiza o currentIndex e o estado com o primeiro item encontrado
+            if (filteredVendas.Count > 0)
+            {
+                int idPrimeiroItem = filteredVendas[0].Id;
+                // O currentIndex deve refletir a posição do item na lista COMPLETA (vendas)
+                currentIndex = vendas.FindIndex(venda => venda.Id == idPrimeiroItem);
+
+                // Popula com a venda encontrada na lista completa
+                PopulateVenda(vendas[currentIndex]);
+            }
+            else
+            {
+                currentIndex = -1;
+                CleanupFields();
+                MessageBox.Show("Nenhuma venda encontrada.", "Busca", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            SetState(ViewState.Listing);
+        }
+
+        // --- Eventos CRUD ---
+
+        private void newBtn_Click(object sender, EventArgs e)
+        {
+            editVenda = new Venda();
+            SetState(ViewState.Creating);
+        }
+
+        private void editBtn_Click(object sender, EventArgs e)
+        {
+            if (vendas.Count > 0)
+            {
+                editVenda = vendas[currentIndex];
+                SetState(ViewState.Editing);
+            }
+        }
+
+        private void cancelBtn_Click(object sender, EventArgs e)
+        {
+            editVenda = null;
+            SetState(ViewState.Listing);
+
+            numQuantidade.Value = 0;
+            comboBox1.SelectedIndex = -1;
+        }
+
+        private void saveBtn_Click(object sender, EventArgs e)
+        {
+            if (editVenda == null) return;
+
+            try
+            {
+                // 1. Validação final
+                List<string> errors = ValidateVenda();
+                if (errors.Count > 0)
+                {
+                    MessageBox.Show(string.Join("\n", errors), "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 2. Coleta final de dados
+                editVenda.IdCliente = (int)cbClientes.SelectedValue;
+                editVenda.IdEvento = (int)cbEventos.SelectedValue;
+                editVenda.FormaPagamento = cbPagamentos.SelectedItem.ToString();
+                CalcularValorTotal(); // Último cálculo antes de salvar
+
+                // 3. Persistência Transacional (criação/atualização e ajuste de estoque)
+                if (state == ViewState.Creating)
+                {
+                    vendaRepository.CreateVenda(editVenda, itensVenda.ToList());
+                }
+                else if (state == ViewState.Editing)
+                {
+                    vendaRepository.UpdateVenda(editVenda, itensVenda.ToList());
+                }
+
+                MessageBox.Show("Venda salva e estoque atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // 4. Resetar a View
+                ReadVendas();
+                currentIndex = vendas.FindIndex(v => v.Id == editVenda.Id); // Tenta focar no item salvo
+                if (currentIndex == -1) currentIndex = 0;
+
+                SetState(ViewState.Listing);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao finalizar venda: " + ex.Message, "Erro Transacional", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Limpar inputs de item após falha
+                comboBox1.SelectedIndex = -1;
+                numQuantidade.Value = 0;
+            }
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+            if (vendas.Count == 0 || currentIndex < 0) return;
+
+            try
+            {
+                int vendaIdParaExcluir = vendas[currentIndex].Id;
+                var result = MessageBox.Show($"Tem certeza que deseja excluir a venda ID {vendaIdParaExcluir}? O estoque será revertido.", "Confirmar Exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No) return;
+
+                vendaRepository.DeleteVenda(vendaIdParaExcluir);
+
+                MessageBox.Show("Venda excluída com sucesso! Estoque revertido.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Recarrega e ajusta o índice
+                ReadVendas();
+                if (vendas.Count > 0)
+                {
+                    currentIndex = Math.Max(0, currentIndex - 1);
+                }
+                else
+                {
+                    currentIndex = 0;
+                }
+
+                SetState(ViewState.Listing);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao deletar venda: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // --- Eventos de Adição/Remoção de Itens da Venda (dgvItensVendidos) ---
 
         private void btnAdicionar_Click(object sender, EventArgs e)
         {
@@ -427,269 +733,141 @@ namespace bailinho_senior_system.views
             comboBox1.SelectedIndex = -1; // Limpa a seleção do produto
         }
 
-        private void newBtn_Click(object sender, EventArgs e)
+        private void btnRemover_Click(object sender, EventArgs e)
         {
-            editVenda = new Venda();
-            CleanupFields();
-            SetState(ViewState.Creating);
-        }
+            if (state == ViewState.Listing) return;
 
-        private void saveBtn_Click(object sender, EventArgs e)
-        {
-            if (editVenda == null) return;
+            // Lógica para remover a quantidade do item selecionado nos ComboBoxes
 
-            try
+            Produto produto = GetProdutoSelecionado();
+            int quantidadeParaRemover = (int)numQuantidade.Value;
+
+            if (produto == null || quantidadeParaRemover <= 0)
             {
-                // 1. Validação final
-                List<string> errors = ValidateVenda();
-                if (errors.Count > 0)
+                MessageBox.Show("Selecione o produto no campo Produtos e a quantidade para remover.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var itemExistente = itensVenda.FirstOrDefault(i => i.IdProduto == produto.Id);
+
+            if (itemExistente != null)
+            {
+                if (itemExistente.Quantidade < quantidadeParaRemover)
                 {
-                    MessageBox.Show(string.Join("\n", errors), "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Não é possível remover {quantidadeParaRemover} itens. Apenas {itemExistente.Quantidade} estão no carrinho.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                // 2. Coleta final de dados
-                editVenda.IdCliente = (int)cbClientes.SelectedValue;
-                editVenda.IdEvento = (int)cbEventos.SelectedValue;
-                editVenda.FormaPagamento = cbPagamentos.SelectedItem.ToString();
-                CalcularValorTotal(); // Último cálculo antes de salvar
-
-                // 3. Persistência Transacional (inclui a atualização de estoque no banco)
-                if (state == ViewState.Creating)
+                // 1. Reverter Estoque (Memória - ADICIONAR DE VOLTA)
+                Produto produtoOriginal = GetProdutoById(itemExistente.IdProduto);
+                if (produtoOriginal != null)
                 {
-                    vendaRepository.CreateVenda(editVenda, itensVenda.ToList());
-                }
-                else if (state == ViewState.Editing)
-                {
-                    vendaRepository.UpdateVenda(editVenda, itensVenda.ToList());
+                    produtoOriginal.QtdEstoque += quantidadeParaRemover;
                 }
 
-                MessageBox.Show("Venda salva e estoque atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // 2. Reduz a quantidade na venda
+                itemExistente.Quantidade -= quantidadeParaRemover;
 
-                // 4. Resetar a View
-                ReadVendas();
-                SetState(ViewState.Listing);
-            }
-            catch (Exception ex)
-            {
-                // Se a transação falhar no Repository, o estoque em memória e no banco foram revertidos.
-                MessageBox.Show("Erro ao finalizar venda: " + ex.Message, "Erro Transacional", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // Limpar inputs de item após falha
-                comboBox1.SelectedIndex = -1;
-                numQuantidade.Value = 0;
-            }
-        }
-
-        private void deleteBtn_Click(object sender, EventArgs e)
-        {
-            if (vendas.Count == 0 || currentIndex < 0) return;
-
-            try
-            {
-                int vendaIdParaExcluir = vendas[currentIndex].Id;
-                var result = MessageBox.Show($"Tem certeza que deseja excluir a venda ID {vendaIdParaExcluir}?", "Confirmar Exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                if (result == DialogResult.No) return;
-
-                vendaRepository.DeleteVenda(vendaIdParaExcluir);
-
-                MessageBox.Show("Venda excluída com sucesso! Estoque revertido.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Recarrega e ajusta o índice
-                ReadVendas();
-                if (vendas.Count > 0)
+                if (itemExistente.Quantidade > 0)
                 {
-                    currentIndex = Math.Max(0, currentIndex - 1);
+                    // Atualiza o valor total do item e a grade
+                    itemExistente.Valor = itemExistente.Quantidade * itemExistente.PrecoUnitario;
+                    itensVenda.ResetBindings();
                 }
                 else
                 {
-                    currentIndex = 0;
+                    // Se a quantidade chegou a zero, remove o item da lista
+                    itensVenda.Remove(itemExistente);
                 }
 
-                SetState(ViewState.Listing);
+                // 3. Forçar Recálculo total da venda
+                CalcularValorTotal();
+
+                MessageBox.Show($"{quantidadeParaRemover} unidades de {produto.Nome} removidas.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Erro ao deletar venda: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("O produto selecionado não está no carrinho.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-        }
-
-        private void editBtn_Click(object sender, EventArgs e)
-        {
-            if (vendas.Count > 0)
-            {
-                editVenda = vendas[currentIndex];
-                SetState(ViewState.Editing);
-            }
-        }
-
-        private void cancelBtn_Click(object sender, EventArgs e)
-        {
-            editVenda = null;
-            SetState(ViewState.Listing);
-
-            numQuantidade.Value = 0;
-            comboBox1.SelectedIndex = -1; // Limpa a seleção do produto
-        }
-
-        // --- MANIPULADORES DE NAVEGAÇÃO E LISTA ---
-
-        private void listTable_SelectionChanged(object sender, EventArgs e)
-        {
-            if (listTable.CurrentRow == null) return;
-            if (state != ViewState.Listing) return;
-
-            try
-            {
-                // NOTA: A coluna ID deve ser mapeada no listTable.
-                int selectedId = (int)listTable.CurrentRow.Cells["Id"].Value;
-                int newIndex = vendas.FindIndex(v => v.Id == selectedId);
-
-                if (newIndex != -1)
-                {
-                    currentIndex = newIndex;
-                    PopulateVenda(vendas[currentIndex]);
-                    SetState(ViewState.Listing);
-                }
-            }
-            catch (Exception)
-            {
-                // Ignorar erro de re-vinculação
-            }
-        }
-
-        private void firstBtn_Click_1(object sender, EventArgs e)
-        {
-            if (vendas.Count > 0 && currentIndex > 0) currentIndex = 0;
-            PopulateVenda(vendas[currentIndex]);
-            SetState(ViewState.Listing);
-        }
-
-        private void previousBtn_Click(object sender, EventArgs e)
-        {
-            if (vendas.Count > 0 && currentIndex > 0) currentIndex--;
-            PopulateVenda(vendas[currentIndex]);
-            SetState(ViewState.Listing);
-        }
-
-        private void nextBtn_Click(object sender, EventArgs e)
-        {
-            if (vendas.Count > 0 && currentIndex < vendas.Count - 1) currentIndex++;
-            PopulateVenda(vendas[currentIndex]);
-            SetState(ViewState.Listing);
-        }
-
-        private void lastBtn_Click(object sender, EventArgs e)
-        {
-            if (vendas.Count > 0 && currentIndex < vendas.Count - 1) currentIndex = vendas.Count - 1;
-            PopulateVenda(vendas[currentIndex]);
-            SetState(ViewState.Listing);
-        }
-
-        private void searchBtn_Click(object sender, EventArgs e)
-        {
-            ReadVendas();
-            tabControl.SelectedTab = tabPageLista;
-            SetState(ViewState.Listing);
-        }
-
-        private void exitBtn_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private Produto GetProdutoById(int produtoId)
-        {
-            return produtosDisponiveis.FirstOrDefault(p => p.Id == produtoId);
         }
 
         private void dgvItensVendidos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Verifica se o clique foi na coluna de botão "Remover"
-            if (e.RowIndex >= 0 && dgvItensVendidos.Columns[e.ColumnIndex].Name == "colRemover")
+            // Lógica de remoção ao clicar no botão "X" da grade (remove item completo)
+            if (e.RowIndex >= 0 && dgvItensVendidos.Columns[e.ColumnIndex].Name == "colRemover" && state != ViewState.Listing)
             {
-                // Se a grade estiver ReadOnly (modo Listing), não deve permitir remover.
-                if (state == ViewState.Listing) return;
-                if(itensVenda.Count == 0) return;
-                if(e.RowIndex >= itensVenda.Count) return;
+                if (dgvItensVendidos.CurrentRow == null) return;
 
-                var itemParaRemover = itensVenda[e.RowIndex];
+                var itemParaRemover = dgvItensVendidos.CurrentRow.DataBoundItem as ProdutoVenda;
+                if (itemParaRemover == null) return;
 
-                var result = MessageBox.Show($"Deseja remover '{itemParaRemover.NomeProduto}' da venda?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = MessageBox.Show($"Deseja remover '{itemParaRemover.NomeProduto}' (item completo) da venda?", "Confirmar Remoção Completa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
-                    // 1. Reverter Estoque (Memória - ADICIONAR DE VOLTA)
+                    // 1. Reverter Estoque (Memória)
                     Produto produtoOriginal = GetProdutoById(itemParaRemover.IdProduto);
                     if (produtoOriginal != null)
                     {
-                        // Devolve a quantidade ao estoque em memória
+                        // Devolve a quantidade TOTAL ao estoque em memória
                         produtoOriginal.QtdEstoque += itemParaRemover.Quantidade;
                     }
 
                     // 2. Remover APENAS da BindingList (MEMÓRIA)
-                    itensVenda.RemoveAt(e.RowIndex);
+                    itensVenda.Remove(itemParaRemover);
 
                     // 3. Forçar Recálculo
                     CalcularValorTotal();
-
-                    MessageBox.Show("Item removido da lista temporária. Clique em Salvar para confirmar no banco.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
 
         private void dgvItensVendidos_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            // Esta verificação já é feita no SetState (ReadOnly da grade), 
-            // mas é bom ter uma camada de segurança.
+            // Permite edição APENAS se estiver em modo de edição/criação
             if (state == ViewState.Listing)
             {
                 e.Cancel = true;
                 return;
             }
 
-            // Obtém o nome da propriedade associada à coluna que está prestes a ser editada
+            // Permite edição APENAS na coluna Quantidade
             string columnName = dgvItensVendidos.Columns[e.ColumnIndex].DataPropertyName;
-
-            // Colunas permitidas para edição manual (além do botão de remoção)
             if (columnName != "Quantidade")
             {
-                // Se a coluna NÃO for a de Quantidade, CANCELA a edição.
                 e.Cancel = true;
-
-                // Opcional: Se quiser permitir editar a Quantidade APENAS se houver estoque
-                // (Isso já é checado no CellEndEdit, mas é um extra)
             }
         }
 
         private void dgvItensVendidos_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            // Assumindo que a coluna Quantidade é a de índice 4, mas é mais seguro usar o DataPropertyName
             if (dgvItensVendidos.Columns[e.ColumnIndex].DataPropertyName == "Quantidade")
             {
                 DataGridViewRow row = dgvItensVendidos.Rows[e.RowIndex];
                 var item = itensVenda[e.RowIndex];
 
-                // Tenta obter o novo valor digitado (e garante que é um número positivo)
+                // Salva a quantidade antiga antes de tentar a nova edição
+                int quantidadeAntiga = item.Quantidade;
+
                 if (int.TryParse(row.Cells[e.ColumnIndex].Value?.ToString(), out int novaQuantidade) && novaQuantidade > 0)
                 {
                     Produto produtoOriginal = GetProdutoById(item.IdProduto);
                     if (produtoOriginal == null) return;
 
-                    int diferenca = novaQuantidade - item.Quantidade; // Quanto foi aumentado (positivo) ou diminuído (negativo)
+                    int diferenca = novaQuantidade - quantidadeAntiga; // Quanto foi aumentado (+) ou diminuído (-)
 
                     // Validação de Estoque (Se a diferença for positiva)
                     if (diferenca > 0 && produtoOriginal.QtdEstoque < diferenca)
                     {
                         MessageBox.Show($"Estoque insuficiente para aumentar. Disponível: {produtoOriginal.QtdEstoque}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        // Reverte a célula para o valor original
-                        row.Cells[e.ColumnIndex].Value = item.Quantidade;
+
+                        // Reverte o valor da célula visualmente
+                        row.Cells[e.ColumnIndex].Value = quantidadeAntiga;
                         dgvItensVendidos.CancelEdit();
                         return;
                     }
 
-                    // 1. Atualiza Estoque em Memória (se diferenca > 0 subtrai, se < 0 soma)
+                    // 1. Atualiza Estoque em Memória
                     produtoOriginal.QtdEstoque -= diferenca;
 
                     // 2. Atualiza o objeto ProdutoVenda
@@ -704,8 +882,50 @@ namespace bailinho_senior_system.views
                 {
                     // Se o valor digitado for inválido (<= 0 ou não numérico)
                     MessageBox.Show("Quantidade inválida. Deve ser um número inteiro positivo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    // Reverte a edição (mas o valor original é mantido no item antes da edição)
+
+                    // Reverte a edição (o valor antigo persiste na lista item)
+                    row.Cells[e.ColumnIndex].Value = quantidadeAntiga;
                     dgvItensVendidos.CancelEdit();
+                }
+            }
+        }
+
+        // --- Eventos de Busca e Saída ---
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            ReadVendas();
+            SwitchToTabByName("tabPageLista");
+            searchBox.Focus();
+        }
+
+        private void exitBtn_Click(object sender, EventArgs e)
+        {
+            if (state == ViewState.Editing || state == ViewState.Creating)
+            {
+                var result = MessageBox.Show(
+                    "Se você sair, suas alterações serão perdidas. Deseja continuar?",
+                    "Confirmar",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Cancel) return;
+            }
+            this.Close();
+        }
+
+        private void VendasView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (state == ViewState.Editing || state == ViewState.Creating)
+            {
+                var result = MessageBox.Show(
+                    "Se você sair, suas alterações serão perdidas. Deseja continuar?",
+                    "Confirmar",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+                if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
                 }
             }
         }

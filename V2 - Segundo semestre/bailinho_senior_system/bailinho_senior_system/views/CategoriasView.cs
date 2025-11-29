@@ -6,20 +6,25 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace bailinho_senior_system.views
 {
     public partial class CategoriasView : Form
     {
-        List<Categoria> categorias = new List<Categoria>();
-        int currentIndex = 0;
-
         private enum ViewState { Listing, Editing, Creating }
+
+        // --- Variáveis de Estado da View ---
+        private List<Categoria> categorias = new List<Categoria>();
+        private int currentIndex = 0;
         private ViewState state;
         private Categoria editItem = null;
+
+        // --- Repositórios ---
+        private CategoriaRepository categoriaRepository = new CategoriaRepository();
+
+        // --- Inicialização e Setup ---
 
         public CategoriasView()
         {
@@ -28,140 +33,105 @@ namespace bailinho_senior_system.views
 
         private void CategoriasView_Load(object sender, EventArgs e)
         {
-            tabControl.Selecting += tabControl_Selecting;
+            ConfigurarDataGridView(listTable);
+            ReadCategorias();
 
-            currentIndex = 0;
-
-            try
-            {
-                ReadCategorias();
-
-                if (categorias.Count > 0)
-                    PopulateCategoria(categorias[currentIndex]);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao carregar dados iniciais: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            if (categorias.Count > 0)
+                PopulateCategoria(categorias[currentIndex]);
 
             SetState(ViewState.Listing);
         }
 
-        private List<string> ValidateForm()
+        private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            List<string> errors = new List<string>();
+            if (state == ViewState.Editing || state == ViewState.Creating)
+            {
+                if (e.TabPage.Name != "tabPageCadastro")
+                {
+                    var result = MessageBox.Show(
+                        "Se você sair, suas alterações serão perdidas. Deseja continuar?",
+                        "Confirmar",
+                        MessageBoxButtons.OKCancel,
+                        MessageBoxIcon.Warning);
 
-            if (nomeBox.Text.Length == 0) errors.Add("Nome não pode estar vazio!");
-            else if (nomeBox.Text.Length > 150) errors.Add("Nome deve ter até 150 caracteres.");
+                    if (result == DialogResult.Cancel)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
 
-            if (descricaoBox.Text.Length == 0) errors.Add("Descrição não pode estar vazio!");
-            else if (descricaoBox.Text.Length > 150) errors.Add("Descrição deve ter até 150 caracteres.");
-
-            return errors;
+                    editItem = null;
+                    SetState(ViewState.Listing);
+                }
+            }
         }
 
-        private void SetState(ViewState newState)
+        // --- Configuração e Leitura de Dados ---
+
+        private void ConfigurarDataGridView(DataGridView dgv)
         {
-            state = newState;
+            // Configurações visuais e de comportamento
+            dgv.AutoGenerateColumns = false;
+            dgv.ReadOnly = true;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.AllowUserToAddRows = false;
+            dgv.MultiSelect = false;
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            var creating = state == ViewState.Creating;
-            var editing = state == ViewState.Editing;
-            var listing = state == ViewState.Listing;
+            // Estilos visuais
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgv.ColumnHeadersHeight = 30;
+            dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
 
+            // Limpa colunas para redefinição programática
+            dgv.Columns.Clear();
 
-            string curTab = tabControl.SelectedTab?.Name ?? "";
-
-            if (creating || editing)
+            // Adição e Mapeamento das Colunas
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
             {
-                SwitchToTabByName("tabPageCadastro");
-            }
+                HeaderText = "Id",
+                DataPropertyName = "Id",
+                Name = "Id",
+                Visible = false,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
 
-
-            deleteBtn.Enabled = categorias.Count > 0 && listing;
-            editBtn.Enabled = categorias.Count > 0 && listing;
-            newBtn.Enabled = listing;
-            searchBtn.Enabled = categorias.Count > 0 && listing;
-
-            saveBtn.Enabled = editing || creating;
-            cancelBtn.Enabled = editing || creating;
-
-            nextBtn.Enabled = categorias.Count > 0 && listing && currentIndex < categorias.Count - 1;
-            lastBtn.Enabled = categorias.Count > 0 && listing && currentIndex < categorias.Count - 1;
-            firstBtn.Enabled = categorias.Count > 0 && listing && currentIndex > 0;
-            previousBtn.Enabled = categorias.Count > 0 && listing && currentIndex > 0;
-
-            nomeBox.ReadOnly = listing;
-            descricaoBox.ReadOnly = listing;
-
-            if (categorias.Count == 0 || creating)
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
             {
-                CleanupFields();
-            }
-            else if (listing)
-            {
-                PopulateCategoria(categorias[currentIndex]);
-            }
+                HeaderText = "Nome",
+                DataPropertyName = "Nome",
+            });
 
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "Descrição",
+                DataPropertyName = "Descricao",
+            });
+
+            // REMOVIDA A COLUNA EXTRA: O modo Fill é aplicado ao DGV inteiro,
+            // garantindo que Nome e Descrição compartilhem o espaço restante.
         }
 
         private void ReadCategorias()
         {
             try
             {
-                DataTable dataTable = new DataTable();
+                // Carrega todas as categorias do repositório
+                this.categorias = new CategoriaRepository().GetCategorias();
 
-                dataTable.Columns.Add("Id");
-                dataTable.Columns.Add("Nome");
-                dataTable.Columns.Add("Descrição");
-
-                CategoriaRepository categoriaRepository = new CategoriaRepository();
-                this.categorias = categoriaRepository.GetCategorias();
-
-                foreach (Categoria c in categorias)
-                {
-                    var row = dataTable.NewRow();
-
-                    row["Id"] = c.Id;
-                    row["Nome"] = c.Nome;
-                    row["Descrição"] = c.Descricao;
-
-                    dataTable.Rows.Add(row);
-                }
-
-                listTable.SelectionChanged -= listTable_SelectionChanged;
-                listTable.DataSource = dataTable;
-                listTable.SelectionChanged += listTable_SelectionChanged;
+                // Vincula a lista de objetos diretamente ao DataGridView
+                listTable.DataSource = null;
+                listTable.DataSource = this.categorias;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao carregar categorias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw;
             }
-        }
-
-
-        private void previousBtn_Click(object sender, EventArgs e)
-        {
-            if (currentIndex > 0) currentIndex--;
-            SetState(ViewState.Listing);
-        }
-
-        private void nextBtn_Click(object sender, EventArgs e)
-        {
-            if (currentIndex < categorias.Count - 1) currentIndex++;
-            SetState(ViewState.Listing);
-        }
-
-        private void firstBtn_Click(object sender, EventArgs e)
-        {
-            if (currentIndex > 0) currentIndex = 0;
-            SetState(ViewState.Listing);
-        }
-
-        private void lastBtn_Click(object sender, EventArgs e)
-        {
-            if (currentIndex < categorias.Count - 1) currentIndex = categorias.Count - 1;
-            SetState(ViewState.Listing);
         }
 
         private void PopulateCategoria(Categoria categoria)
@@ -178,6 +148,133 @@ namespace bailinho_senior_system.views
             descricaoBox.Text = "";
         }
 
+        private List<string> ValidateForm()
+        {
+            List<string> errors = new List<string>();
+
+            if (nomeBox.Text.Length == 0) errors.Add("Nome não pode estar vazio!");
+            else if (nomeBox.Text.Length > 150) errors.Add("Nome deve ter até 150 caracteres.");
+
+            if (descricaoBox.Text.Length == 0) errors.Add("Descrição não pode estar vazia!");
+            else if (descricaoBox.Text.Length > 150) errors.Add("Descrição deve ter até 150 caracteres.");
+
+            return errors;
+        }
+
+        // --- Navegação e Estado da View ---
+
+        private void SetState(ViewState newState)
+        {
+            state = newState;
+
+            bool creating = state == ViewState.Creating;
+            bool editing = state == ViewState.Editing;
+            bool listing = state == ViewState.Listing;
+            bool creatingOrEditing = creating || editing;
+
+            int count = categorias.Count;
+
+            if (creatingOrEditing)
+            {
+                SwitchToTabByName("tabPageCadastro");
+            }
+
+            // Habilita/Desabilita Botões CRUD e Navegação
+            deleteBtn.Enabled = count > 0 && listing;
+            editBtn.Enabled = count > 0 && listing;
+            newBtn.Enabled = listing;
+            searchBtn.Enabled = listing;
+
+            saveBtn.Enabled = creatingOrEditing;
+            cancelBtn.Enabled = creatingOrEditing;
+
+            nextBtn.Enabled = count > 0 && listing && currentIndex < count - 1;
+            lastBtn.Enabled = count > 0 && listing && currentIndex < count - 1;
+            firstBtn.Enabled = count > 0 && listing && currentIndex > 0;
+            previousBtn.Enabled = count > 0 && listing && currentIndex > 0;
+
+            // ReadOnly dos Campos
+            nomeBox.ReadOnly = listing;
+            descricaoBox.ReadOnly = listing;
+
+
+            if (count == 0 || creating)
+            {
+                CleanupFields();
+            }
+            else if (listing && currentIndex >= 0)
+            {
+                PopulateCategoria(categorias[currentIndex]);
+                UpdateDataGridViewSelection();
+            }
+        }
+
+        private void SwitchToTabByName(string tabName)
+        {
+            if (string.IsNullOrEmpty(tabName)) return;
+            // Assumindo um TabControl nomeado 'tabControl'
+            var page = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
+            if (page != null) tabControl.SelectedTab = page;
+        }
+
+        private void UpdateDataGridViewSelection()
+        {
+            // Seleciona a categoria atual no listTable e rola para visualização
+            if (listTable == null || categorias.Count == 0 || currentIndex < 0 || currentIndex >= categorias.Count)
+            {
+                listTable.ClearSelection();
+                return;
+            }
+
+            listTable.ClearSelection();
+
+            // Sincroniza a seleção visual
+            if (listTable.DataSource is List<Categoria> listaExibida)
+            {
+                Categoria itemAtual = categorias[currentIndex];
+                int indexNaListaExibida = listaExibida.FindIndex(c => c.Id == itemAtual.Id);
+
+                if (indexNaListaExibida != -1)
+                {
+                    listTable.Rows[indexNaListaExibida].Selected = true;
+                    listTable.FirstDisplayedScrollingRowIndex = indexNaListaExibida;
+                }
+            }
+        }
+
+        // --- Manipuladores de Eventos de Navegação ---
+
+        private void firstBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex > 0) currentIndex = 0;
+            ReadCategorias(); // Recarrega lista completa
+            SetState(ViewState.Listing);
+        }
+
+        private void previousBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex > 0) currentIndex--;
+            ReadCategorias(); // Recarrega lista completa
+            SetState(ViewState.Listing);
+        }
+
+        private void nextBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex < categorias.Count - 1) currentIndex++;
+            ReadCategorias(); // Recarrega lista completa
+            SetState(ViewState.Listing);
+        }
+
+        private void lastBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex < categorias.Count - 1) currentIndex = categorias.Count - 1;
+            ReadCategorias(); // Recarrega lista completa
+            SetState(ViewState.Listing);
+        }
+
+
+        // --- Eventos CRUD ---
+
         private void newBtn_Click(object sender, EventArgs e)
         {
             editItem = new Categoria();
@@ -192,6 +289,7 @@ namespace bailinho_senior_system.views
 
         private void editBtn_Click(object sender, EventArgs e)
         {
+            if (categorias.Count == 0) return;
             editItem = categorias[currentIndex];
             SetState(ViewState.Editing);
         }
@@ -199,6 +297,8 @@ namespace bailinho_senior_system.views
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
+            if (editItem == null) return;
+
             List<string> errors = ValidateForm();
             if (errors.Count > 0)
             {
@@ -238,10 +338,7 @@ namespace bailinho_senior_system.views
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-            if (categorias.Count == 0)
-            {
-                return;
-            }
+            if (categorias.Count == 0) return;
 
             var result = MessageBox.Show(
                 $"Tem certeza que deseja excluir a categoria '{categorias[currentIndex].Nome}'?",
@@ -249,22 +346,17 @@ namespace bailinho_senior_system.views
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
 
-            if (result == DialogResult.No)
-                return;
+            if (result == DialogResult.No) return;
 
             try
             {
-                CategoriaRepository categoriaRepository = new CategoriaRepository();
-                categoriaRepository.DeleteCategoria(categorias[currentIndex].Id);
+                new CategoriaRepository().DeleteCategoria(categorias[currentIndex].Id);
 
                 ReadCategorias();
 
                 if (categorias.Count > 0)
                 {
-                    if (currentIndex >= categorias.Count)
-                    {
-                        currentIndex = categorias.Count - 1;
-                    }
+                    currentIndex = Math.Max(0, currentIndex - 1);
                 }
                 else
                 {
@@ -276,11 +368,17 @@ namespace bailinho_senior_system.views
 
                 MessageBox.Show("Categoria excluída com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            catch (MySqlException mysex) when (mysex.Number == 1451)
+            {
+                MessageBox.Show("Não foi possível excluir a Categoria, pois ela possui produtos vinculados.", "Erro de Chave Estrangeira", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao excluir categoria: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        // --- Eventos de Busca e Saída ---
 
         private void exitBtn_Click(object sender, EventArgs e)
         {
@@ -292,94 +390,71 @@ namespace bailinho_senior_system.views
                     MessageBoxButtons.OKCancel,
                     MessageBoxIcon.Warning);
 
-                if (result == DialogResult.Cancel)
-                    return;
+                if (result == DialogResult.Cancel) return;
             }
             this.Close();
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
         {
+            ReadCategorias(); // Garante que a lista completa esteja vinculada
             SwitchToTabByName("tabPageLista");
             searchBox.Focus();
         }
 
-        private void SwitchToTabByName(string tabName)
+        private void makeSearch_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(tabName)) return;
-            var page = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
-            if (page != null) tabControl.SelectedTab = page;
-        }
+            string searchTerm = searchBox.Text.Trim().ToLower();
+            List<Categoria> filteredCategorias;
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                List<Categoria> categoriasEncontradas = categorias;
-
-                if (searchBox.Text.Trim().Length > 0)
-                {
-                    string searchStr = searchBox.Text.Trim().ToLower();
-
-                    if (int.TryParse(searchStr, out int id))
-                    {
-                        categoriasEncontradas = categorias.FindAll(c => c.Id == id);
-                    }
-                    else
-                    {
-                        categoriasEncontradas = categorias.FindAll(c => c.Nome.ToLower().Contains(searchStr));
-                    }
-                }
-
-                if (categoriasEncontradas.Count > 0)
-                    currentIndex = categorias.FindIndex(c => c.Id == categoriasEncontradas[0].Id);
-
-                listTable.SelectionChanged -= listTable_SelectionChanged;
-                listTable.DataSource = categoriasEncontradas;
-                listTable.SelectionChanged += listTable_SelectionChanged;
-
-                SetState(ViewState.Listing);
+                filteredCategorias = categorias.Where(c =>
+                    (int.TryParse(searchTerm, out int id) && c.Id == id) ||
+                    (c.Nome != null && c.Nome.ToLower().Contains(searchTerm)) ||
+                    (c.Descricao != null && c.Descricao.ToLower().Contains(searchTerm))
+                ).ToList();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Erro ao buscar categorias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Se a busca estiver vazia, retorna a lista completa
+                filteredCategorias = categorias;
             }
-        }
 
-        private void listTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var cur = this.listTable.CurrentRow;
-            if (cur != null)
-                currentIndex = cur.Index;
+            listTable.DataSource = null;
+            listTable.DataSource = filteredCategorias;
+
+            if (filteredCategorias.Count > 0)
+            {
+                // Sincroniza o currentIndex com o primeiro item encontrado na lista original
+                currentIndex = categorias.FindIndex(c => c.Id == filteredCategorias[0].Id);
+                PopulateCategoria(filteredCategorias[0]);
+            }
+            else
+            {
+                currentIndex = -1;
+                CleanupFields();
+                MessageBox.Show("Nenhuma categoria encontrada.", "Busca", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
             SetState(ViewState.Listing);
         }
 
-        private void listTable_SelectionChanged(object sender, EventArgs e)
+        private void listTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            var cur = this.listTable.CurrentRow;
-            if (cur != null)
-                currentIndex = cur.Index;
+            if (e.RowIndex < 0 || e.RowIndex >= listTable.Rows.Count) return;
+            if (state != ViewState.Listing) return;
 
-            SetState(ViewState.Listing);
-        }
-        private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-            if (state != ViewState.Listing && tabControl.SelectedTab.Name != "tabPageCadastro")
+            Categoria categoriaSelecionada = listTable.Rows[e.RowIndex].DataBoundItem as Categoria;
+
+            if (categoriaSelecionada != null)
             {
-                var result = MessageBox.Show(
-                    "Se você sair, suas alterações serão perdidas. Deseja continuar?",
-                    "Confirmar",
-                    MessageBoxButtons.OKCancel,
-                    MessageBoxIcon.Warning);
+                int novoIndex = categorias.FindIndex(c => c.Id == categoriaSelecionada.Id);
 
-                if (result == DialogResult.Cancel)
+                if (novoIndex != -1)
                 {
-                    e.Cancel = true;
-                    return;
+                    currentIndex = novoIndex;
                 }
-
-                editItem = null;
                 SetState(ViewState.Listing);
             }
         }

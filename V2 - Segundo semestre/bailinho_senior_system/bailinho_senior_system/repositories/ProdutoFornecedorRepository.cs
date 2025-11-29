@@ -152,6 +152,66 @@ namespace bailinho_senior_system.repositories
             return products;
         }
 
+        public List<ProdutoFornecedor> GetFornecedoresPorProduto(int id_produto)
+        {
+            var fornecedores = new List<ProdutoFornecedor>();
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(DatabaseConfig.ConnectionString))
+                {
+                    connection.Open();
+
+                    // Consulta que busca TODOS os fornecedores vinculados a um produto específico (id_produto)
+                    string sql = $"SELECT " +
+                                 $"tpf.id, tpf.id_produto, tpf.id_fornecedor, tf.nome as nome_fornecedor " +
+                                 $"FROM produtofornecedor tpf " +
+                                 $"INNER JOIN Fornecedor tf on tf.id=tpf.id_fornecedor " +
+                                 $"WHERE tpf.id_produto=@id_produto;";
+
+                    using (MySqlCommand command = new MySqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@id_produto", id_produto);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            int idxId = reader.GetOrdinal("id");
+                            int idxNomeFornecedor = reader.GetOrdinal("nome_fornecedor");
+                            int idxIdProduto = reader.GetOrdinal("id_produto");
+                            int idxIdFornecedor = reader.GetOrdinal("id_fornecedor");
+
+                            while (reader.Read())
+                            {
+                                var pf = new ProdutoFornecedor();
+
+                                if (!reader.IsDBNull(idxId))
+                                    pf.Id = reader.GetInt32(idxId);
+
+                                if (!reader.IsDBNull(idxNomeFornecedor))
+                                    pf.NomeFornecedor = reader.GetString(idxNomeFornecedor);
+
+                                if (!reader.IsDBNull(idxIdFornecedor))
+                                    pf.IdFornecedor = reader.GetInt32(idxIdFornecedor);
+
+                                if (!reader.IsDBNull(idxIdProduto))
+                                    pf.IdProduto = reader.GetInt32(idxIdProduto);
+
+                                fornecedores.Add(pf);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.ToString());
+                throw;
+            }
+
+            return fornecedores;
+        }
+
+
         public void CreateProdutoFornecedor(ProdutoFornecedor p)
         {
             try
