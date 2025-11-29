@@ -97,6 +97,23 @@ namespace bailinho_senior_system.views
 
         private void ConfigurarDgvItensVendidos()
         {
+            dgvItensVendidos.Columns.Clear();
+            dgvItensVendidos.AutoGenerateColumns = false;
+            dgvItensVendidos.ReadOnly = true;
+            dgvItensVendidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvItensVendidos.AllowUserToAddRows = false;
+            dgvItensVendidos.MultiSelect = false;
+            dgvItensVendidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+            // --- Configurações de Aparência (Cores e Estilo) ---
+            dgvItensVendidos.EnableHeadersVisualStyles = false;
+            dgvItensVendidos.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            dgvItensVendidos.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.White;
+            dgvItensVendidos.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230); // Azul claro
+            dgvItensVendidos.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            dgvItensVendidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvItensVendidos.ColumnHeadersHeight = 30;
+
             // Ocultamos a autogeração para controle total das colunas
             dgvItensVendidos.AutoGenerateColumns = false;
             dgvItensVendidos.Columns.Clear();
@@ -322,7 +339,6 @@ namespace bailinho_senior_system.views
             }
             else
             {
-                MessageBox.Show("Visualizando venda. A edição está desabilitada.", "Modo Visualização", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 dgvItensVendidos.Enabled = false;
                 dgvItensVendidos.ReadOnly = true;
                 dgvItensVendidos.ClearSelection();
@@ -596,6 +612,7 @@ namespace bailinho_senior_system.views
                 // Se a grade estiver ReadOnly (modo Listing), não deve permitir remover.
                 if (state == ViewState.Listing) return;
                 if(itensVenda.Count == 0) return;
+                if(e.RowIndex >= itensVenda.Count) return;
 
                 var itemParaRemover = itensVenda[e.RowIndex];
 
