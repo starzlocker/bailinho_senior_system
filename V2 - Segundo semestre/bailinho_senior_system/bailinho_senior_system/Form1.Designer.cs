@@ -57,6 +57,7 @@ namespace bailinho_senior_system
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.btnRelatorio = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imgLogo)).BeginInit();
             this.btnProdutos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgProduto)).BeginInit();
@@ -389,6 +390,16 @@ namespace bailinho_senior_system
             this.pictureBox5.TabStop = false;
             this.pictureBox5.Click += new System.EventHandler(this.pictureBox5_Click);
             // 
+            // btnRelatorio
+            // 
+            this.btnRelatorio.Location = new System.Drawing.Point(63, 65);
+            this.btnRelatorio.Name = "btnRelatorio";
+            this.btnRelatorio.Size = new System.Drawing.Size(191, 168);
+            this.btnRelatorio.TabIndex = 11;
+            this.btnRelatorio.Text = "Relatórios";
+            this.btnRelatorio.UseVisualStyleBackColor = true;
+            this.btnRelatorio.Click += new System.EventHandler(this.btnRelatorio_Click);
+            // 
             // FrmHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -396,6 +407,7 @@ namespace bailinho_senior_system
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1004, 591);
+            this.Controls.Add(this.btnRelatorio);
             this.Controls.Add(this.btnFornecedores);
             this.Controls.Add(this.btnCategorias);
             this.Controls.Add(this.btnVendas);
@@ -459,6 +471,7 @@ namespace bailinho_senior_system
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.Button btnRelatorio;
     }
 }
 
