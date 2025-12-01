@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bailinho_senior_system.models
 {
@@ -25,13 +21,57 @@ namespace bailinho_senior_system.models
 
         public int Id
         {
-            get { return id; } 
-            set { id = value; }
+            get { return id; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Id não pode ser negativo.", nameof(value));
+                id = value;
+            }
         }
-        public int IdProduto { get { return id_produto; } set { id_produto = value; } }
-        public int IdFornecedor { get { return id_fornecedor; } set { id_fornecedor = value; } }
 
-        public string NomeProduto { get { return nome_produto; } set { nome_produto = value; } }
-        public string NomeFornecedor { get { return nome_fornecedor; } set { nome_fornecedor = value; } }
+        public int IdProduto { 
+            get { return id_produto; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Id não pode ser negativo.", nameof(value));
+                id_produto = value;
+            }
+        }
+
+        public int IdFornecedor { 
+            get { return id_fornecedor; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Id não pode ser negativo.", nameof(value));
+                id_fornecedor = value;
+            }
+        }
+
+        public string NomeProduto { 
+            get { return nome_produto; } 
+            set 
+            {
+                string validacao = ValidadorHelper.VerificarVazio(value, "Nome do Produto");
+                if (validacao != null)
+                    throw new ArgumentException(validacao);
+
+                nome_produto = value; 
+            } 
+        }
+
+        public string NomeFornecedor {
+            get { return nome_fornecedor; }
+            set
+            {
+                string validacao = ValidadorHelper.VerificarVazio(value, "Nome do Forncedor");
+                if (validacao != null)
+                    throw new ArgumentException(validacao);
+
+                nome_fornecedor = value;
+            }
+        }
     }
 }

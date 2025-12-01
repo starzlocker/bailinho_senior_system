@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
-using bailinho_senior_system.models; // Assumindo que este é o namespace correto para o modelo
 
 namespace bailinho_senior_system.models
 {
-    public class Cliente // Marcada como public
+    public class Cliente
     {
+        public Cliente() { }
+        public Cliente(int id, string nome, DateTime dataNascimento, char genero, string cpf, string telefone)
+        {
+            this.Id = id;
+            this.Nome = nome;
+            this.DtNascimento = dataNascimento;
+            this.Genero = genero;
+            this.Cpf = cpf;
+            this.Telefone = telefone;
+        }
+
         private int id;
         public int Id
         {
@@ -25,8 +34,10 @@ namespace bailinho_senior_system.models
             get { return nome; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Nome não pode estar vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Nome");
+
+                if (validacaoDeVazio != null) 
+                    throw new ArgumentException(validacaoDeVazio);
 
                 if (value.Length > 150)
                     throw new ArgumentException("O nome não pode conter mais que 150 caracteres");
@@ -36,7 +47,7 @@ namespace bailinho_senior_system.models
         }
 
         private DateTime dt_nascimento;
-        public DateTime DtNascimento // Propriedade em PascalCase
+        public DateTime DtNascimento
         {
             get { return dt_nascimento; }
             set
@@ -60,6 +71,11 @@ namespace bailinho_senior_system.models
             get { return genero; }
             set
             {
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value.ToString(), "Gênero");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
+
                 char generoUpper = char.ToUpper(value);
 
                 if (generoUpper != 'M' && generoUpper != 'F')
@@ -75,8 +91,10 @@ namespace bailinho_senior_system.models
             get { return cpf; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("CPF não pode estar vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "CPF");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
 
                 string cpfNumeros = new string(value.Where(char.IsDigit).ToArray());
 
@@ -86,7 +104,7 @@ namespace bailinho_senior_system.models
                 if (!CpfValido(cpfNumeros))
                     throw new ArgumentException("O CPF informado é inválido. " + cpfNumeros);
 
-                this.cpf = cpfNumeros; // Armazena apenas os números
+                this.cpf = cpfNumeros;
             }
         }
 
@@ -96,39 +114,20 @@ namespace bailinho_senior_system.models
             get { return telefone; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("O campo 'Telefone' não pode estar vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Telefone");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
 
                 string numeros = new string(value.Where(char.IsDigit).ToArray());
 
                 if (numeros.Length != 10 && numeros.Length != 11)
                     throw new ArgumentException("O telefone deve conter 10 ou 11 dígitos.");
 
-                this.telefone = numeros; // Armazena apenas os números
+                this.telefone = numeros;
             }
         }
 
-        // Construtor padrão e construtor de inicialização (ajustado para usar Propriedades)
-        public Cliente() { }
-
-        public Cliente(
-            int id,
-            string nome,
-            DateTime dataNascimento,
-            char genero,
-            string cpf,
-            string telefone
-        )
-        {
-            this.Id = id;
-            this.Nome = nome;
-            this.DtNascimento = dataNascimento;
-            this.Genero = genero;
-            this.Cpf = cpf;
-            this.Telefone = telefone;
-        }
-
-        // Método estático de validação de CPF (mantido da sua implementação)
         private static bool CpfValido(string cpf)
         {
             if (cpf.Distinct().Count() == 1) return false;

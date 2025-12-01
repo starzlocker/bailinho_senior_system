@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bailinho_senior_system.models
 {
     public class Categoria
     {
         public Categoria() { }
-        public Categoria
-            (
-                int id,
-                string nome,
-                string descricao
-            )
+        public Categoria(int id, string nome, string descricao)
         {
             Id = id;
             Nome = nome;
@@ -25,8 +16,14 @@ namespace bailinho_senior_system.models
         public int Id
         {
             get { return id; }
-            set { id = value; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Id não pode ser negativo.", nameof(value));
+                id = value;
+            }
         }
+
         private string nome;
         public string Nome
         {

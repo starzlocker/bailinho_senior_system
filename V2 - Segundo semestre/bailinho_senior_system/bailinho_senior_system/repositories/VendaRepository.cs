@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using bailinho_senior_system.models;
 using bailinho_senior_system.config;
-using System.ComponentModel;
 
 namespace bailinho_senior_system.repositories
 {
@@ -25,11 +24,10 @@ namespace bailinho_senior_system.repositories
 
                 try
                 {
-                    // 1. INSERIR NA TABELA VENDA E OBTER O ID
-                    string sqlVenda = @"
-                        INSERT INTO Venda (valor_total, forma_pagamento, id_cliente, id_evento) 
-                        VALUES (@valor_total, @forma_pagamento, @id_cliente, @id_evento); 
-                        SELECT LAST_INSERT_ID();";
+                    string sqlVenda =
+                        "INSERT INTO Venda (valor_total, forma_pagamento, id_cliente, id_evento) " +
+                        "VALUES (@valor_total, @forma_pagamento, @id_cliente, @id_evento); " +
+                        "SELECT LAST_INSERT_ID();";
 
                     using (MySqlCommand cmdVenda = new MySqlCommand(sqlVenda, connection, transaction))
                     {
@@ -39,13 +37,18 @@ namespace bailinho_senior_system.repositories
                         cmdVenda.Parameters.AddWithValue("@id_evento", venda.IdEvento);
 
                         object result = cmdVenda.ExecuteScalar();
-                        if (result == null) throw new Exception("Falha ao obter o ID da nova venda.");
+                        if (result == null) 
+                            throw new Exception("Falha ao obter ID da venda.");
+
                         venda.Id = Convert.ToInt32(result);
                     }
 
-                    // 2. INSERIR ITENS (ProdutoVenda) E ATUALIZAR ESTOQUE
-                    string sqlItem = "INSERT INTO ProdutoVenda (id_produto, id_venda, quantidade, valor) VALUES (@id_produto, @id_venda, @quantidade, @valor);";
-                    string sqlEstoque = "UPDATE Produto SET qtd_estoque = qtd_estoque - @quantidade WHERE id = @id_produto;";
+                    string sqlItem =
+                        "INSERT INTO ProdutoVenda (id_produto, id_venda, quantidade, valor) " +
+                        "VALUES (@id_produto, @id_venda, @quantidade, @valor);";
+
+                    string sqlEstoque =
+                        "UPDATE Produto SET qtd_estoque = qtd_estoque - @quantidade WHERE id = @id_produto;";
 
                     foreach (var item in itensVenda)
                     {
@@ -72,7 +75,6 @@ namespace bailinho_senior_system.repositories
                         }
                     }
 
-                    // 3. CONFIRMA A TRANSAÇÃO
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -83,30 +85,23 @@ namespace bailinho_senior_system.repositories
             }
         }
 
-        // ====================================================================
-        // READ (Leitura)
-        // ====================================================================
-
-        /// <summary>
-        /// Retorna uma venda específica pelo ID.
-        /// </summary>
         public Venda GetVenda(int id)
         {
             Venda venda = null;
+
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
 
-                    string sql = @"
-                        SELECT 
-                            tv.id, tv.valor_total, tv.forma_pagamento, tv.id_cliente, tv.id_evento,
-                            tc.nome AS NomeCliente, te.nome AS NomeEvento
-                        FROM Venda tv
-                        INNER JOIN Cliente tc ON tv.id_cliente = tc.id
-                        INNER JOIN Evento te ON tv.id_evento = te.id
-                        WHERE tv.id = @id;";
+                    string sql =
+                        "SELECT tv.id, tv.valor_total, tv.forma_pagamento, tv.id_cliente, tv.id_evento, " +
+                        "tc.nome AS NomeCliente, te.nome AS NomeEvento " +
+                        "FROM Venda tv " +
+                        "INNER JOIN Cliente tc ON tv.id_cliente = tc.id " +
+                        "INNER JOIN Evento te ON tv.id_evento = te.id " +
+                        "WHERE tv.id = @id;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -115,16 +110,16 @@ namespace bailinho_senior_system.repositories
                         {
                             if (reader.Read())
                             {
-                                venda = new Venda
-                                {
-                                    Id = reader.GetInt32("id"),
-                                    ValorTotal = reader.GetDecimal("valor_total"),
-                                    FormaPagamento = reader.GetString("forma_pagamento"),
-                                    IdCliente = reader.GetInt32("id_cliente"),
-                                    IdEvento = reader.GetInt32("id_evento"),
-                                    NomeCliente = reader.GetString("NomeCliente"),
-                                    NomeEvento = reader.GetString("NomeEvento")
-                                };
+                                venda = new Venda(
+                                    reader.GetInt32("id"),
+                                    reader.GetDecimal("valor_total"),
+                                    reader.GetString("forma_pagamento"),
+                                    reader.GetInt32("id_cliente"),
+                                    reader.GetInt32("id_evento"),
+                                    DateTime.Now,
+                                    reader.GetString("NomeCliente"),
+                                    reader.GetString("NomeEvento")
+                                );
                             }
                         }
                     }
@@ -132,65 +127,59 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao buscar venda por ID.", ex);
+                throw new Exception("Erro ao buscar venda.", ex);
             }
+
             return venda;
         }
 
-        /// <summary>
-        /// Retorna todas as vendas com os nomes do Cliente e Evento.
-        /// </summary>
         public List<Venda> GetVendas()
         {
             var vendas = new List<Venda>();
+
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
 
-                    string sql = @"
-                        SELECT 
-                            tv.id, tv.valor_total, tv.forma_pagamento, tv.id_cliente, tv.id_evento,
-                            tc.nome AS NomeCliente, te.nome AS NomeEvento
-                        FROM Venda tv
-                        INNER JOIN Cliente tc ON tv.id_cliente = tc.id
-                        INNER JOIN Evento te ON tv.id_evento = te.id
-                        ORDER BY tv.id DESC;";
+                    string sql =
+                        "SELECT tv.id, tv.valor_total, tv.forma_pagamento, tv.id_cliente, tv.id_evento, " +
+                        "tc.nome AS NomeCliente, te.nome AS NomeEvento, tv.data_venda AS DataEvento " +
+                        "FROM Venda tv " +
+                        "INNER JOIN Cliente tc ON tv.id_cliente = tc.id " +
+                        "INNER JOIN Evento te ON tv.id_evento = te.id " +
+                        "ORDER BY tv.id DESC;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     using (MySqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            vendas.Add(new Venda
-                            {
-                                Id = reader.GetInt32("id"),
-                                ValorTotal = reader.GetDecimal("valor_total"),
-                                FormaPagamento = reader.GetString("forma_pagamento"),
-                                IdCliente = reader.GetInt32("id_cliente"),
-                                IdEvento = reader.GetInt32("id_evento"),
-                                NomeCliente = reader.GetString("NomeCliente"),
-                                NomeEvento = reader.GetString("NomeEvento")
-                            });
+                            Venda venda = new Venda(
+                                reader.GetInt32("id"),
+                                reader.GetDecimal("valor_total"),
+                                reader.GetString("forma_pagamento"),
+                                reader.GetInt32("id_cliente"),
+                                reader.GetInt32("id_evento"),
+                                reader.GetDateTime("DataEvento"),
+                                reader.GetString("NomeCliente"),
+                                reader.GetString("NomeEvento")
+                            );
+
+                            vendas.Add(venda);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao buscar todas as vendas.", ex);
+                throw new Exception("Erro ao buscar todas as vendas. " + ex, ex);
             }
+
             return vendas;
         }
 
-        // ====================================================================
-        // UPDATE (Transacional)
-        // ====================================================================
-
-        /// <summary>
-        /// Atualiza uma venda existente, revertendo o estoque antigo e aplicando o novo.
-        /// </summary>
         public void UpdateVenda(Venda venda, List<ProdutoVenda> novosItens)
         {
             if (venda.Id <= 0) throw new ArgumentException("ID da venda inválido.");
@@ -202,8 +191,7 @@ namespace bailinho_senior_system.repositories
 
                 try
                 {
-                    // 1. Reverter Estoque e Excluir Itens Antigos
-                    ReverterEstoque(venda.Id, connection, transaction, adicionar: true);
+                    ReverterEstoque(venda.Id, connection, transaction, true);
 
                     string sqlDeleteItens = "DELETE FROM ProdutoVenda WHERE id_venda = @id_venda;";
                     using (MySqlCommand cmdDeleteItens = new MySqlCommand(sqlDeleteItens, connection, transaction))
@@ -212,7 +200,6 @@ namespace bailinho_senior_system.repositories
                         cmdDeleteItens.ExecuteNonQuery();
                     }
 
-                    // 2. Atualizar a Tabela Venda (Cabeçalho)
                     string sqlUpdateVenda = @"
                         UPDATE Venda 
                         SET valor_total = @valor_total, forma_pagamento = @forma_pagamento, 
@@ -229,7 +216,6 @@ namespace bailinho_senior_system.repositories
                         cmdUpdateVenda.ExecuteNonQuery();
                     }
 
-                    // 3. Inserir os Novos Itens e Subtrair o Estoque
                     string sqlItem = "INSERT INTO ProdutoVenda (id_produto, id_venda, quantidade, valor) VALUES (@id_produto, @id_venda, @quantidade, @valor);";
                     string sqlEstoque = "UPDATE Produto SET qtd_estoque = qtd_estoque - @quantidade WHERE id = @id_produto;";
 
@@ -267,13 +253,6 @@ namespace bailinho_senior_system.repositories
             }
         }
 
-        // ====================================================================
-        // DELETE (Transacional)
-        // ====================================================================
-
-        /// <summary>
-        /// Deleta uma venda, itens associados e reverte o estoque.
-        /// </summary>
         public void DeleteVenda(int vendaId)
         {
             if (vendaId <= 0) return;
@@ -285,10 +264,8 @@ namespace bailinho_senior_system.repositories
 
                 try
                 {
-                    // 1. Reverter o Estoque (Adicionar de volta)
-                    ReverterEstoque(vendaId, connection, transaction, adicionar: true);
+                    ReverterEstoque(vendaId, connection, transaction, true);
 
-                    // 2. Excluir os Itens da ProdutoVenda
                     string sqlDeleteItens = "DELETE FROM ProdutoVenda WHERE id_venda = @id_venda;";
                     using (MySqlCommand cmdDeleteItens = new MySqlCommand(sqlDeleteItens, connection, transaction))
                     {
@@ -296,9 +273,7 @@ namespace bailinho_senior_system.repositories
                         cmdDeleteItens.ExecuteNonQuery();
                     }
 
-                    // 3. Excluir o Cabeçalho da Venda
-                    string sqlDeleteVenda = "DELETE FROM Venda WHERE id = @id;";
-                    using (MySqlCommand cmdDeleteVenda = new MySqlCommand(sqlDeleteVenda, connection, transaction))
+                    using (MySqlCommand cmdDeleteVenda = new MySqlCommand("DELETE FROM Venda WHERE id=@id;", connection, transaction))
                     {
                         cmdDeleteVenda.Parameters.AddWithValue("@id", vendaId);
                         cmdDeleteVenda.ExecuteNonQuery();
@@ -314,13 +289,6 @@ namespace bailinho_senior_system.repositories
             }
         }
 
-        // ====================================================================
-        // MÉTODO AUXILIAR PARA ESTOQUE
-        // ====================================================================
-
-        /// <summary>
-        /// Reverte (adiciona) o estoque dos produtos de uma venda que foi deletada ou atualizada.
-        /// </summary>
         private void ReverterEstoque(int vendaId, MySqlConnection connection, MySqlTransaction transaction, bool adicionar)
         {
             string sqlItens = "SELECT id_produto, quantidade FROM ProdutoVenda WHERE id_venda = @id_venda;";

@@ -67,6 +67,8 @@
             this.cancelBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.exitBtn = new System.Windows.Forms.ToolStripButton();
+            this.dtDataVenda = new System.Windows.Forms.DateTimePicker();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageCadastro.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -79,7 +81,7 @@
             // 
             // tabControl
             // 
-            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tabPageCadastro);
             this.tabControl.Controls.Add(this.tabPageLista);
@@ -89,15 +91,17 @@
             this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1132, 371);
+            this.tabControl.Size = new System.Drawing.Size(1132, 412);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 30;
             this.tabControl.Tag = "";
-            this.tabControl.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Selecting); // Evento tabControl_Selecting_1
+            this.tabControl.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Selecting);
             // 
             // tabPageCadastro
             // 
             this.tabPageCadastro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
+            this.tabPageCadastro.Controls.Add(this.dtDataVenda);
+            this.tabPageCadastro.Controls.Add(this.label7);
             this.tabPageCadastro.Controls.Add(this.groupBox1);
             this.tabPageCadastro.Controls.Add(this.txtTotal);
             this.tabPageCadastro.Controls.Add(this.label6);
@@ -113,7 +117,7 @@
             this.tabPageCadastro.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageCadastro.Name = "tabPageCadastro";
             this.tabPageCadastro.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageCadastro.Size = new System.Drawing.Size(1124, 333);
+            this.tabPageCadastro.Size = new System.Drawing.Size(1124, 374);
             this.tabPageCadastro.TabIndex = 0;
             this.tabPageCadastro.Text = "Cadastro";
             // 
@@ -126,7 +130,7 @@
             this.groupBox1.Controls.Add(this.numQuantidade);
             this.groupBox1.Controls.Add(this.btnAdicionar);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(17, 103);
+            this.groupBox1.Location = new System.Drawing.Point(19, 136);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(386, 147);
             this.groupBox1.TabIndex = 36;
@@ -151,7 +155,7 @@
             this.btnRemover.TabIndex = 35;
             this.btnRemover.Text = "Remover";
             this.btnRemover.UseVisualStyleBackColor = true;
-            this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click); // Evento btnRemover_Click_1
+            this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
             // 
             // label3
             // 
@@ -192,12 +196,12 @@
             this.btnAdicionar.TabIndex = 32;
             this.btnAdicionar.Text = "Adicionar";
             this.btnAdicionar.UseVisualStyleBackColor = true;
-            this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click); // Evento btnAdicionar_Click
+            this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click);
             // 
             // txtTotal
             // 
             this.txtTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotal.Location = new System.Drawing.Point(190, 292);
+            this.txtTotal.Location = new System.Drawing.Point(192, 325);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.Size = new System.Drawing.Size(214, 24);
             this.txtTotal.TabIndex = 34;
@@ -206,7 +210,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(14, 295);
+            this.label6.Location = new System.Drawing.Point(16, 328);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(94, 18);
@@ -218,11 +222,11 @@
             this.dgvItensVendidos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItensVendidos.Location = new System.Drawing.Point(420, 20);
             this.dgvItensVendidos.Name = "dgvItensVendidos";
-            this.dgvItensVendidos.Size = new System.Drawing.Size(669, 293);
+            this.dgvItensVendidos.Size = new System.Drawing.Size(669, 331);
             this.dgvItensVendidos.TabIndex = 27;
-            this.dgvItensVendidos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItensVendidos_CellContentClick); // Evento dgvItensVendidos_CellContentClick
-            this.dgvItensVendidos.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvItensVendidos_CellBeginEdit); // Evento dgvItensVendidos_CellBeginEdit (ADICIONADO)
-            this.dgvItensVendidos.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItensVendidos_CellEndEdit);   // Evento dgvItensVendidos_CellEndEdit
+            this.dgvItensVendidos.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvItensVendidos_CellBeginEdit);
+            this.dgvItensVendidos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItensVendidos_CellContentClick);
+            this.dgvItensVendidos.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItensVendidos_CellEndEdit);
             // 
             // cbEventos
             // 
@@ -233,12 +237,13 @@
             this.cbEventos.Name = "cbEventos";
             this.cbEventos.Size = new System.Drawing.Size(299, 26);
             this.cbEventos.TabIndex = 21;
+            this.cbEventos.SelectedIndexChanged += new System.EventHandler(this.cbEventos_SelectedIndexChanged_1);
             // 
             // cbPagamentos
             // 
             this.cbPagamentos.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbPagamentos.FormattingEnabled = true;
-            this.cbPagamentos.Location = new System.Drawing.Point(190, 257);
+            this.cbPagamentos.Location = new System.Drawing.Point(192, 290);
             this.cbPagamentos.Margin = new System.Windows.Forms.Padding(4);
             this.cbPagamentos.Name = "cbPagamentos";
             this.cbPagamentos.Size = new System.Drawing.Size(214, 26);
@@ -272,7 +277,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(14, 261);
+            this.label5.Location = new System.Drawing.Point(16, 294);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(150, 18);
@@ -310,8 +315,8 @@
             this.listTable.AllowUserToDeleteRows = false;
             this.listTable.AllowUserToResizeColumns = false;
             this.listTable.AllowUserToResizeRows = false;
-            this.listTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.listTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.listTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -323,7 +328,7 @@
             this.listTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.listTable.Size = new System.Drawing.Size(1107, 267);
             this.listTable.TabIndex = 18;
-            this.listTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listTable_CellClick); // Evento listTable_CellClick (ADICIONADO)
+            this.listTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listTable_CellClick);
             // 
             // btnBuscar
             // 
@@ -333,7 +338,7 @@
             this.btnBuscar.TabIndex = 17;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
-            this.btnBuscar.Click += new System.EventHandler(this.makeSearch_Click); // Evento makeSearch_Click (ADICIONADO)
+            this.btnBuscar.Click += new System.EventHandler(this.makeSearch_Click);
             // 
             // searchBox
             // 
@@ -379,7 +384,7 @@
             this.firstBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.firstBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.firstBtn.ToolTipText = "Vai ao primeiro registro";
-            this.firstBtn.Click += new System.EventHandler(this.firstBtn_Click); // Evento firstBtn_Click
+            this.firstBtn.Click += new System.EventHandler(this.firstBtn_Click);
             // 
             // previousBtn
             // 
@@ -392,7 +397,7 @@
             this.previousBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.previousBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.previousBtn.ToolTipText = "Vai ao registro anterior";
-            this.previousBtn.Click += new System.EventHandler(this.previousBtn_Click); // Evento previousBtn_Click
+            this.previousBtn.Click += new System.EventHandler(this.previousBtn_Click);
             // 
             // nextBtn
             // 
@@ -405,7 +410,7 @@
             this.nextBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.nextBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.nextBtn.ToolTipText = "Vai ao registro seguinte";
-            this.nextBtn.Click += new System.EventHandler(this.nextBtn_Click); // Evento nextBtn_Click
+            this.nextBtn.Click += new System.EventHandler(this.nextBtn_Click);
             // 
             // lastBtn
             // 
@@ -418,7 +423,7 @@
             this.lastBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.lastBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.lastBtn.ToolTipText = "Vai ao último registro";
-            this.lastBtn.Click += new System.EventHandler(this.lastBtn_Click); // Evento lastBtn_Click
+            this.lastBtn.Click += new System.EventHandler(this.lastBtn_Click);
             // 
             // toolStripSeparator1
             // 
@@ -436,7 +441,7 @@
             this.searchBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.searchBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.searchBtn.ToolTipText = "Busca registro pelo código";
-            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click); // Evento searchBtn_Click
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
             // 
             // toolStripSeparator2
             // 
@@ -454,7 +459,7 @@
             this.newBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.newBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.newBtn.ToolTipText = "Iniciar a inclusão de novo registro";
-            this.newBtn.Click += new System.EventHandler(this.newBtn_Click); // Evento newBtn_Click
+            this.newBtn.Click += new System.EventHandler(this.newBtn_Click);
             // 
             // deleteBtn
             // 
@@ -467,7 +472,7 @@
             this.deleteBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.deleteBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.deleteBtn.ToolTipText = "Exclui o registro apresentado na tela";
-            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click); // Evento deleteBtn_Click
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // editBtn
             // 
@@ -479,7 +484,7 @@
             this.editBtn.Text = "Editar";
             this.editBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.editBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.editBtn.Click += new System.EventHandler(this.editBtn_Click); // Evento editBtn_Click
+            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
             // 
             // saveBtn
             // 
@@ -493,7 +498,7 @@
             this.saveBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.saveBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.saveBtn.ToolTipText = "Salva o registro incluído ou modicado";
-            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click); // Evento saveBtn_Click
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // toolStripSeparator3
             // 
@@ -511,7 +516,7 @@
             this.cancelBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.cancelBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.cancelBtn.ToolTipText = "Cancela a operação atual";
-            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click); // Evento cancelBtn_Click
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // toolStripSeparator4
             // 
@@ -529,14 +534,37 @@
             this.exitBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.exitBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.exitBtn.ToolTipText = "Termina a execução do programa e salva no disco todos os dados";
-            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click); // Evento exitBtn_Click
+            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
+            // 
+            // dtDataVenda
+            // 
+            this.dtDataVenda.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.dtDataVenda.Enabled = false;
+            this.dtDataVenda.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtDataVenda.Location = new System.Drawing.Point(105, 91);
+            this.dtDataVenda.Name = "dtDataVenda";
+            this.dtDataVenda.Size = new System.Drawing.Size(300, 24);
+            this.dtDataVenda.TabIndex = 42;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(17, 91);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(39, 18);
+            this.label7.TabIndex = 41;
+            this.label7.Text = "Data";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // VendasView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
-            this.ClientSize = new System.Drawing.Size(1161, 466);
+            this.ClientSize = new System.Drawing.Size(1161, 511);
             this.Controls.Add(this.tsBotoes);
             this.Controls.Add(this.tabControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -545,8 +573,8 @@
             this.Name = "VendasView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Vendas";
-            this.Load += new System.EventHandler(this.VendasView_Load); // Evento VendasView_Load_1
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VendasView_FormClosing); // Evento FormClosing (ADICIONADO)
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VendasView_FormClosing);
+            this.Load += new System.EventHandler(this.VendasView_Load);
             this.tabControl.ResumeLayout(false);
             this.tabPageCadastro.ResumeLayout(false);
             this.tabPageCadastro.PerformLayout();
@@ -603,5 +631,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnRemover;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DateTimePicker dtDataVenda;
+        private System.Windows.Forms.Label label7;
     }
 }

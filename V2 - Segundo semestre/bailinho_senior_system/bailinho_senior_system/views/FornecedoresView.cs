@@ -15,19 +15,14 @@ namespace bailinho_senior_system.views
     {
         private enum ViewState { Listing, Editing, Creating }
 
-        // --- Variáveis de Estado da View ---
         private List<Fornecedor> fornecedores = new List<Fornecedor>();
         private int currentIndex = 0;
         private ViewState state;
         private Fornecedor editItem = null;
 
-        // --- Repositórios ---
         private FornecedorRepository fornecedorRepository = new FornecedorRepository();
         private ProdutoRepository produtoRepository = new ProdutoRepository();
         private ProdutoFornecedorRepository produtoFornecedorRepository = new ProdutoFornecedorRepository();
-
-
-        // --- Inicialização e Setup ---
 
         public FornecedoresView()
         {
@@ -88,8 +83,6 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Configuração e Leitura de Dados ---
-
         private void ConfigurarDataGridView(DataGridView dgv)
         {
             // Configurações visuais e de comportamento (listTable - Fornecedores)
@@ -108,8 +101,6 @@ namespace bailinho_senior_system.views
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv.ColumnHeadersHeight = 30;
             dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
-
-            // Limpa colunas para redefinição programática
             dgv.Columns.Clear();
 
             // Adição e Mapeamento das Colunas
@@ -164,11 +155,9 @@ namespace bailinho_senior_system.views
             dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230);
             dgv.ColumnHeadersHeight = 30;
             dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
-
-            // Limpa colunas para redefinição programática
             dgv.Columns.Clear();
 
-            // 1. Coluna de Ação (Remover)
+            // Coluna de Ação (Remover)
             dgv.Columns.Add(new DataGridViewButtonColumn()
             {
                 HeaderText = "Remover",
@@ -180,7 +169,6 @@ namespace bailinho_senior_system.views
                 ReadOnly = false
             });
 
-            // 2. Coluna ID do Produto (VISÍVEL)
             dgv.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "ID Prod.",
@@ -190,7 +178,6 @@ namespace bailinho_senior_system.views
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             });
 
-            // 3. Coluna ID de Vínculo (Oculta)
             dgv.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "ID",
@@ -199,7 +186,6 @@ namespace bailinho_senior_system.views
                 Visible = false
             });
 
-            // 4. Nome do Produto (Preenchimento)
             dgv.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Produto",
@@ -214,10 +200,8 @@ namespace bailinho_senior_system.views
         {
             try
             {
-                // Carrega todos os fornecedores do repositório
+                // Carrega todos os fornecedores
                 this.fornecedores = fornecedorRepository.GetFornecedores();
-
-                // Vincula a lista de objetos diretamente ao DataGridView
                 listTable.DataSource = null;
                 listTable.DataSource = this.fornecedores;
             }
@@ -253,7 +237,7 @@ namespace bailinho_senior_system.views
                 // Busca produtos vinculados ao fornecedor
                 var produtosPorFornecedor = produtoFornecedorRepository.GetProdutosPorFornecedor(fornecedor.Id);
 
-                // Limpa e repopula a lista interna do objeto editItem
+                // Limpa e repopula a lista de produtos fornecidos
                 fornecedor.Produtos.Clear();
                 foreach (var p in produtosPorFornecedor)
                 {
@@ -264,7 +248,6 @@ namespace bailinho_senior_system.views
                     }
                 }
 
-                // Vincula a lista de produtos (ProdutoFornecedor) ao listProdutos
                 listProdutos.DataSource = null;
                 listProdutos.DataSource = fornecedor.Produtos;
             }
@@ -282,7 +265,7 @@ namespace bailinho_senior_system.views
             emailBox.Text = fornecedor.Email ?? "";
             telefoneBox.Text = fornecedor.Telefone ?? "";
 
-            // Recarrega a grade de produtos vinculados
+            // Recarrega a grade de produtos fornecidos
             ReadProdutosFornecedor(fornecedor);
         }
 
@@ -321,8 +304,6 @@ namespace bailinho_senior_system.views
             return errors;
         }
 
-        // --- Navegação e Estado da View ---
-
         private void SetState(ViewState newState)
         {
             state = newState;
@@ -339,15 +320,15 @@ namespace bailinho_senior_system.views
                 SwitchToTabByName("tabPageCadastro");
             }
 
-            // Habilita/Desabilita Botões CRUD e Navegação
+            // CRUD
             deleteBtn.Enabled = count > 0 && listing;
             editBtn.Enabled = count > 0 && listing;
             newBtn.Enabled = listing;
             searchBtn.Enabled = listing;
-
             saveBtn.Enabled = creatingOrEditing;
             cancelBtn.Enabled = creatingOrEditing;
 
+            // Navegação
             nextBtn.Enabled = listing && currentIndex < count - 1;
             lastBtn.Enabled = listing && currentIndex < count - 1;
             firstBtn.Enabled = listing && currentIndex > 0;
@@ -359,10 +340,9 @@ namespace bailinho_senior_system.views
             emailBox.ReadOnly = listing;
             telefoneBox.ReadOnly = listing;
 
-            // Controles de Produto
+            // Desabilita controle de inclusão de produtos em modo de listagem
             produtoBox.Enabled = !listing;
             addProdutoBtn.Enabled = !listing;
-
 
             if (count == 0 || creating)
             {
@@ -374,7 +354,7 @@ namespace bailinho_senior_system.views
                 UpdateDataGridViewSelection();
             }
 
-            // Controle de visibilidade do botão 'X' (Remover Item) na grade listProdutos
+            // Controle de visibilidade do botão 'X' (Remover Item)
             if (listProdutos.Columns.Contains("colRemoverItem"))
             {
                 listProdutos.Columns["colRemoverItem"].Visible = creatingOrEditing;
@@ -390,7 +370,7 @@ namespace bailinho_senior_system.views
 
         private void UpdateDataGridViewSelection()
         {
-            // Seleciona o fornecedor atual no listTable e rola para visualização
+            // Seleciona o fornecedor atual e rola para visualização
             if (listTable == null || fornecedores.Count == 0 || currentIndex < 0 || currentIndex >= fornecedores.Count)
             {
                 listTable.ClearSelection();
@@ -412,33 +392,31 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Manipuladores de Eventos de Navegação ---
-
         private void firstBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex > 0) currentIndex = 0;
-            ReadFornecedores(); // Recarrega lista completa
+            ReadFornecedores();
             SetState(ViewState.Listing);
         }
 
         private void previousBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex > 0) currentIndex--;
-            ReadFornecedores(); // Recarrega lista completa
+            ReadFornecedores();
             SetState(ViewState.Listing);
         }
 
         private void nextBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex < fornecedores.Count - 1) currentIndex++;
-            ReadFornecedores(); // Recarrega lista completa
+            ReadFornecedores();
             SetState(ViewState.Listing);
         }
 
         private void lastBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex < fornecedores.Count - 1) currentIndex = fornecedores.Count - 1;
-            ReadFornecedores(); // Recarrega lista completa
+            ReadFornecedores();
             SetState(ViewState.Listing);
         }
 
@@ -460,8 +438,6 @@ namespace bailinho_senior_system.views
                 SetState(ViewState.Listing);
             }
         }
-
-        // --- Eventos CRUD ---
 
         private void newBtn_Click(object sender, EventArgs e)
         {
@@ -497,7 +473,6 @@ namespace bailinho_senior_system.views
 
             try
             {
-                // 1. Coleta dados e valida as propriedades
                 try
                 {
                     editItem.Nome = nomeBox.Text.Trim();
@@ -511,12 +486,11 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
-                // 2. Persistência
                 if (state == ViewState.Creating)
                 {
                     fornecedorRepository.CreateFornecedor(editItem);
 
-                    // Vincula produtos após a criação do fornecedor (agora editItem.Id está preenchido)
+                    // Vincula produtos após a criação do fornecedor
                     foreach (ProdutoFornecedor p in editItem.Produtos)
                     {
                         p.IdFornecedor = editItem.Id;
@@ -593,8 +567,6 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Eventos de Busca e Saída ---
-
         private void exitBtn_Click(object sender, EventArgs e)
         {
             if (state == ViewState.Editing || state == ViewState.Creating)
@@ -612,18 +584,20 @@ namespace bailinho_senior_system.views
 
         private void searchBtn_Click(object sender, EventArgs e)
         {
-            ReadFornecedores(); // Garante que a lista completa esteja vinculada
+            ReadFornecedores();
             SwitchToTabByName("tabPageLista");
             searchBox.Focus();
         }
 
         private void makeSearch_Click(object sender, EventArgs e)
         {
+            // Implementa a lógica de busca
             string searchTerm = searchBox.Text.Trim().ToLower();
             List<Fornecedor> filteredFornecedores;
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
+                // Filtra a lista de fornecedores por ID (se for numérico) OU por Nome/CNPJ/E-mail
                 filteredFornecedores = fornecedores.Where(f =>
                     (int.TryParse(searchTerm, out int id) && f.Id == id) ||
                     (f.Nome.ToLower().Contains(searchTerm)) ||
@@ -656,8 +630,6 @@ namespace bailinho_senior_system.views
             SetState(ViewState.Listing);
         }
 
-        // --- Manipuladores de Produtos Vinculados ---
-
         private void addProdutoBtn_Click(object sender, EventArgs e)
         {
             try
@@ -686,12 +658,9 @@ namespace bailinho_senior_system.views
 
                 editItem.Produtos.Add(p);
 
-                // Força a atualização do BindingSource
+                // Atualiza o dgv de produtos fornecidos
                 listProdutos.DataSource = null;
                 listProdutos.DataSource = editItem.Produtos;
-
-                // MANTÉM a seleção do ComboBox para evitar aviso de "nenhum produto selecionado"
-                // Apenas limpa o valor (que é o que o SelectedIndex = -1 fazia)
                 produtoBox.SelectedIndex = -1;
             }
             catch (Exception ex)
@@ -700,7 +669,7 @@ namespace bailinho_senior_system.views
             }
         }
 
-        private void removeProdutoBtn_Click(object sender, EventArgs e)
+        private void removeProdutoBtn(object sender, EventArgs e)
         {
             try
             {
@@ -727,10 +696,8 @@ namespace bailinho_senior_system.views
                     editItem.ProdutosApagados.Add(itemSelecionado);
                 }
 
-                // Remove da lista interna (que é o DataSource)
+                // Remove da lista interna
                 editItem.Produtos.Remove(itemSelecionado);
-
-                // Força a atualização do BindingSource
                 listProdutos.DataSource = null;
                 listProdutos.DataSource = editItem.Produtos;
             }
@@ -748,15 +715,9 @@ namespace bailinho_senior_system.views
                 // Verifica se o modo não é Listagem (permitindo ação apenas em edição/criação)
                 if (state != ViewState.Listing && e.RowIndex < listProdutos.Rows.Count)
                 {
-                    // A lógica do removeProdutoBtn_Click usa listProdutos.CurrentRow.
-                    // Para evitar a dupla confirmação, chamamos a lógica de remoção
-                    // SÓ DEPOIS que o clique já está processado pelo DGV (impedindo recursão)
-
                     // Garante que a linha clicada seja a linha atual
                     listProdutos.Rows[e.RowIndex].Selected = true;
-
-                    // Executa a lógica de confirmação e remoção
-                    removeProdutoBtn_Click(sender, EventArgs.Empty);
+                    removeProdutoBtn(sender, EventArgs.Empty);
                 }
             }
         }

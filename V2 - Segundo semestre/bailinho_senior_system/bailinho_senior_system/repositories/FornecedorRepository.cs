@@ -2,11 +2,6 @@
 using bailinho_senior_system.config;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
 namespace bailinho_senior_system.repositories
@@ -14,9 +9,6 @@ namespace bailinho_senior_system.repositories
     internal class FornecedorRepository
     {
         private string ConnectionString => DatabaseConfig.ConnectionString;
-
-        // private readonly string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
-
 
         public List<Fornecedor> GetFornecedores()
         {
@@ -35,32 +27,15 @@ namespace bailinho_senior_system.repositories
                     {
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            int idxId = reader.GetOrdinal("id");
-                            int idxNome = reader.GetOrdinal("nome");
-                            int idxCnpj = reader.GetOrdinal("cnpj");
-                            int idxEmail = reader.GetOrdinal("email");
-                            int idxTelefone = reader.GetOrdinal("telefone");
-
-
                             while (reader.Read())
                             {
-                                var fornecedor = new Fornecedor();
-
-                                // Só atribui quando o valor não for nulo no banco
-                                if (!reader.IsDBNull(idxId))
-                                    fornecedor.Id = reader.GetInt32(idxId);
-
-                                if (!reader.IsDBNull(idxNome))
-                                    fornecedor.Nome = reader.GetString(idxNome);
-
-                                if (!reader.IsDBNull(idxCnpj))
-                                    fornecedor.Cnpj = reader.GetString(idxCnpj);
-
-                                if (!reader.IsDBNull(idxEmail))
-                                    fornecedor.Email = reader.GetString(idxEmail);
-
-                                if (!reader.IsDBNull(idxTelefone))
-                                    fornecedor.Telefone = reader.GetString(idxTelefone);
+                                Fornecedor fornecedor = new Fornecedor(
+                                    reader.GetString("cnpj"),
+                                    reader.GetString("nome"),
+                                    reader.GetString("email"),
+                                    reader.GetString("telefone"),
+                                    reader.GetInt32("id")
+                                );
 
                                 fornecedores.Add(fornecedor);
                             }
@@ -96,31 +71,15 @@ namespace bailinho_senior_system.repositories
                         command.Parameters.AddWithValue("@id", id);
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            int idxId = reader.GetOrdinal("id");
-                            int idxNome = reader.GetOrdinal("nome");
-                            int idxCnpj = reader.GetOrdinal("cnpj");
-                            int idxEmail = reader.GetOrdinal("email");
-                            int idxTelefone = reader.GetOrdinal("telefone");
-
                             if (reader.Read())
                             {
-                                var fornecedor = new Fornecedor();
-
-                                // Só atribui quando o valor não for nulo no banco
-                                if (!reader.IsDBNull(idxId))
-                                    fornecedor.Id = reader.GetInt32(idxId);
-
-                                if (!reader.IsDBNull(idxNome))
-                                    fornecedor.Nome = reader.GetString(idxNome);
-
-                                if (!reader.IsDBNull(idxCnpj))
-                                    fornecedor.Cnpj = reader.GetString(idxCnpj);
-
-                                if (!reader.IsDBNull(idxEmail))
-                                    fornecedor.Email = reader.GetString(idxEmail);
-
-                                if (!reader.IsDBNull(idxTelefone))
-                                    fornecedor.Telefone = reader.GetString(idxTelefone);
+                                Fornecedor fornecedor = new Fornecedor(
+                                    reader.GetString("cnpj"),
+                                    reader.GetString("nome"),
+                                    reader.GetString("email"),
+                                    reader.GetString("telefone"),
+                                    reader.GetInt32("id")
+                                );
 
                                 return fornecedor;
                             }
@@ -204,9 +163,8 @@ namespace bailinho_senior_system.repositories
             }
             catch (Exception ex)
             {
-                throw;
                 Console.Write(ex.ToString());
-
+                throw;
             }
 
         }

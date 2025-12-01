@@ -2,11 +2,6 @@
 using bailinho_senior_system.config;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
 namespace bailinho_senior_system.repositories
@@ -14,9 +9,6 @@ namespace bailinho_senior_system.repositories
     internal class CategoriaRepository
     {
         private string ConnectionString => DatabaseConfig.ConnectionString;
-
-        // private readonly string ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\adolfo\\Documents\\bailinho_senior_system2\\bailinho_senior_system\\V2 - Segundo semestre\\bailinho_senior_system\\bailinho_senior_system\\data\\Database1.mdf\";Integrated Security=True";
-
 
         public List<Categoria> GetCategorias()
         {
@@ -35,23 +27,13 @@ namespace bailinho_senior_system.repositories
                     {
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            int idxId = reader.GetOrdinal("id");
-                            int idxNome = reader.GetOrdinal("nome");
-                            int idxDescricao = reader.GetOrdinal("descricao");
-
                             while (reader.Read())
                             {
-                                var categoria = new Categoria();
-
-                                // Só atribui quando o valor não for nulo no banco
-                                if (!reader.IsDBNull(idxId))
-                                    categoria.Id = reader.GetInt32(idxId);
-
-                                if (!reader.IsDBNull(idxNome))
-                                    categoria.Nome = reader.GetString(idxNome);
-
-                                if (!reader.IsDBNull(idxDescricao))
-                                    categoria.Descricao = reader.GetString(idxDescricao);
+                                Categoria categoria = new Categoria(
+                                    reader.GetInt32("id"),
+                                    reader.GetString("nome"),
+                                    reader.GetString("descricao")
+                                );
 
                                 categorias.Add(categoria);
                             }
@@ -86,23 +68,13 @@ namespace bailinho_senior_system.repositories
                         command.Parameters.AddWithValue("@id", id);
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            int idxId = reader.GetOrdinal("id");
-                            int idxNome = reader.GetOrdinal("nome");
-                            int idxDescricao = reader.GetOrdinal("descricao");
-
                             if (reader.Read())
                             {
-                                var categoria = new Categoria();
-
-                                // Só atribui quando o valor não for nulo no banco
-                                if (!reader.IsDBNull(idxId))
-                                    categoria.Id = reader.GetInt32(idxId);
-
-                                if (!reader.IsDBNull(idxNome))
-                                    categoria.Nome = reader.GetString(idxNome);
-
-                                if (!reader.IsDBNull(idxDescricao))
-                                    categoria.Descricao = reader.GetString(idxDescricao);
+                                Categoria categoria = new Categoria(
+                                    reader.GetInt32("id"),
+                                    reader.GetString("nome"),
+                                    reader.GetString("descricao")
+                                );
 
                                 return categoria;
                             }

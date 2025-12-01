@@ -15,21 +15,15 @@ namespace bailinho_senior_system.views
     {
         private enum ViewState { Listing, Editing, Creating }
 
-        // --- Variáveis de Estado da View ---
         private List<Produto> produtos = new List<Produto>();
         private int currentIndex = 0;
         private ViewState state;
         private Produto editItem = null;
 
-        // --- Repositórios ---
         private ProdutoRepository produtoRepository = new ProdutoRepository();
         private CategoriaRepository categoriaRepository = new CategoriaRepository();
         private FornecedorRepository fornecedorRepository = new FornecedorRepository();
         private ProdutoFornecedorRepository produtoFornecedorRepository = new ProdutoFornecedorRepository();
-
-
-
-        // --- Inicialização e Setup ---
 
         public ProdutosView()
         {
@@ -86,11 +80,9 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Configuração e Leitura de Dados ---
-
         private void ConfigurarDataGridView(DataGridView dgv)
         {
-            // Configurações visuais e de comportamento (Grade principal)
+            // Configurações visuais e de comportamento
             dgv.AutoGenerateColumns = false;
             dgv.ReadOnly = true;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -106,13 +98,9 @@ namespace bailinho_senior_system.views
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv.ColumnHeadersHeight = 30;
             dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
-
-            // Limpa colunas para redefinição programática
             dgv.Columns.Clear();
 
             // Adição e Mapeamento das Colunas
-
-            // ID TORNADO VISÍVEL
             dgv.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "ID",
@@ -173,10 +161,8 @@ namespace bailinho_senior_system.views
         {
             try
             {
-                // Carrega todos os produtos do repositório
+                // Carrega todos os produtos
                 this.produtos = produtoRepository.GetProdutos();
-
-                // Vincula a lista de objetos diretamente ao DataGridView
                 listTable.DataSource = null;
                 listTable.DataSource = this.produtos;
             }
@@ -188,10 +174,9 @@ namespace bailinho_senior_system.views
 
         private void ReadFornecedoresProduto(Produto produto)
         {
-            // Busca e vincula a lista de ProdutoFornecedor para o produto atual
+            // Busca e vincula a lista de fornecedores para o produto atual
             try
             {
-                // Esta linha busca apenas os fornecedores relacionados ao ID do produto. CORRETO.
                 var fornecedoresPorProduto = produtoFornecedorRepository.GetFornecedoresPorProduto(produto.Id);
 
                 // Limpa e repopula a lista interna do objeto produto (ou editItem)
@@ -244,11 +229,7 @@ namespace bailinho_senior_system.views
             descricaoBox.Text = "";
             qtdEstoqueBox.Value = 0;
             precoBox.Value = 0;
-
-            // ************ ADICIONADO AQUI ************
-            // Limpa o ListBox
             lbFornecedores.DataSource = null;
-            // ************ FIM NOVO CÓDIGO ************
 
             if (editItem != null)
             {
@@ -275,8 +256,6 @@ namespace bailinho_senior_system.views
             return errors;
         }
 
-        // --- Navegação e Estado da View ---
-
         private void SetState(ViewState newState)
         {
             state = newState;
@@ -293,15 +272,15 @@ namespace bailinho_senior_system.views
                 SwitchToTabByName("tabPageCadastro");
             }
 
-            // Habilita/Desabilita Botões CRUD e Navegação
+            // CRUD
             deleteBtn.Enabled = count > 0 && listing;
             editBtn.Enabled = count > 0 && listing;
             newBtn.Enabled = listing;
             searchBtn.Enabled = listing;
-
             saveBtn.Enabled = creatingOrEditing;
             cancelBtn.Enabled = creatingOrEditing;
 
+            // Navegação
             nextBtn.Enabled = count > 0 && listing && currentIndex < count - 1;
             lastBtn.Enabled = count > 0 && listing && currentIndex < count - 1;
             firstBtn.Enabled = count > 0 && listing && currentIndex > 0;
@@ -357,11 +336,9 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Manipuladores de Eventos de Navegação ---
-
         private void firstBtn_Click(object sender, EventArgs e)
         {
-            if (currentIndex > 0) currentIndex = 0;
+            currentIndex = 0;
             ReadProdutos();
             SetState(ViewState.Listing);
         }
@@ -382,7 +359,7 @@ namespace bailinho_senior_system.views
 
         private void lastBtn_Click(object sender, EventArgs e)
         {
-            if (currentIndex < produtos.Count - 1) currentIndex = produtos.Count - 1;
+            currentIndex = produtos.Count - 1;
             ReadProdutos();
             SetState(ViewState.Listing);
         }
@@ -405,8 +382,6 @@ namespace bailinho_senior_system.views
                 SetState(ViewState.Listing);
             }
         }
-
-        // --- Eventos CRUD ---
 
         private void newBtn_Click(object sender, EventArgs e)
         {
@@ -443,21 +418,16 @@ namespace bailinho_senior_system.views
             {
                 ProdutoRepository produtoRepository = new ProdutoRepository();
 
-                // 1. Coleta e validação
                 editItem.Nome = nomeBox.Text.Trim();
                 editItem.Descricao = descricaoBox.Text.Trim();
                 editItem.Preco = precoBox.Value;
                 editItem.QtdEstoque = (int)qtdEstoqueBox.Value;
-
-                // Captura IDs dos ComboBoxes
                 editItem.IdCategoria = categoriaBox.SelectedValue != null ? (int)categoriaBox.SelectedValue : 0;
 
-                // 2. Persistência e Vinculação
                 if (state == ViewState.Creating)
                 {
                     produtoRepository.CreateProduto(editItem);
 
-                    // Cria vinculações de fornecedores
                     foreach (ProdutoFornecedor pf in editItem.Fornecedores)
                     {
                         pf.IdProduto = editItem.Id;
@@ -534,8 +504,6 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Eventos de Busca e Saída ---
-
         private void exitBtn_Click(object sender, EventArgs e)
         {
             if (state == ViewState.Editing || state == ViewState.Creating)
@@ -553,7 +521,7 @@ namespace bailinho_senior_system.views
 
         private void searchBtn_Click(object sender, EventArgs e)
         {
-            ReadProdutos(); // Garante que a lista completa esteja vinculada
+            ReadProdutos();
             SwitchToTabByName("tabPageLista");
             searchBox.Focus();
         }
@@ -571,7 +539,6 @@ namespace bailinho_senior_system.views
                     (p.Nome != null && p.Nome.ToLower().Contains(searchTerm)) ||
                     (p.Descricao != null && p.Descricao.ToLower().Contains(searchTerm)) ||
                     (p.Categoria != null && p.Categoria.ToLower().Contains(searchTerm))
-                // REMOVIDO: Busca por Fornecedor (pois a coluna não existe mais)
                 ).ToList();
             }
             else

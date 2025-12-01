@@ -1,17 +1,80 @@
 ﻿using bailinho_senior_system.config;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace bailinho_senior_system.repositories
 {
-    // Classe de serviço/repositório para executar consultas de relatórios complexos.
     public class RelatoriosRepository
     {
         private string connectionString => DatabaseConfig.ConnectionString;
 
-        // Método genérico para executar qualquer consulta e retornar um DataTable
+        private string GetDateFilter(DateTime? startDate, DateTime? endDate, string dateColumnName)
+        {
+            string filter = "";
+
+            if (startDate.HasValue)
+                filter += $" AND {dateColumnName} >= '{startDate.Value:yyyy-MM-dd}'";
+
+            if (endDate.HasValue)
+                filter += $" AND {dateColumnName} <= '{endDate.Value:yyyy-MM-dd}'";
+
+            if (!string.IsNullOrEmpty(filter))
+                return $" WHERE {filter.Substring(5)}";
+
+            return "";
+        }
+
+        private int ExecuteScalarInt(string sqlQuery)
+        {
+            int total = 0;
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (var command = new MySqlCommand(sqlQuery, connection))
+                    {
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && int.TryParse(result.ToString(), out int count))
+                            total = count;
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Erro ao executar escalar INT: {ex.Message}");
+                    throw new Exception("Erro de banco de dados ao executar o relatório.", ex);
+                }
+            }
+            return total;
+        }
+
+        private float ExecuteScalarFloat(string sqlQuery)
+        {
+            float total = 0;
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (var command = new MySqlCommand(sqlQuery, connection))
+                    {
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && float.TryParse(result.ToString(), out float value))
+                            total = value;
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Erro ao executar escalar FLOAT: {ex.Message}");
+                    throw new Exception("Erro de banco de dados ao executar o relatório.", ex);
+                }
+            }
+            return total;
+        }
+
         private DataTable ExecuteQuery(string sqlQuery)
         {
             DataTable dataTable = new DataTable();
@@ -28,8 +91,6 @@ namespace bailinho_senior_system.repositories
                 }
                 catch (MySqlException ex)
                 {
-                    // Lidar com exceções do MySQL (conexão, sintaxe, etc.)
-                    // Em um app real, você faria um log aqui.
                     System.Diagnostics.Debug.WriteLine($"Erro ao executar relatório: {ex.Message}");
                     throw new Exception("Erro de banco de dados ao executar o relatório.", ex);
                 }
@@ -37,10 +98,18 @@ namespace bailinho_senior_system.repositories
             return dataTable;
         }
 
-        // 1º Relatório: Produtos mais vendidos
-        public DataTable GetProdutosMaisVendidos()
+        public DataTable GetProdutosMaisVendidos(DateTime? startDate = null, DateTime? endDate = null)
         {
-            string sql = @"
+            string dateFilterJoin = "";
+            if (startDate.HasValue || endDate.HasValue)
+            {
+                string internalFilter = GetDateFilter(startDate, endDate, "v.data_venda").Replace("WHERE", "AND");
+                dateFilterJoin = $@"
+                    INNER JOIN venda v ON v.id = pv.id_venda
+                    {internalFilter}";
+            }
+
+            string sql = $@"
                 SELECT 
                     p.nome AS Nome_Produto, 
                     SUM(pv.quantidade) AS Quantidade_Vendida
@@ -48,6 +117,7 @@ namespace bailinho_senior_system.repositories
                     produto p
                 LEFT JOIN 
                     produtoVenda pv ON p.id = pv.id_produto
+                {dateFilterJoin}
                 GROUP BY 
                     p.nome
                 ORDER BY 
@@ -55,10 +125,11 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 2º Relatório: Número de vendas por cliente
-        public DataTable GetVendasPorCliente()
+        public DataTable GetVendasPorCliente(DateTime? startDate = null, DateTime? endDate = null)
         {
-            string sql = @"
+            string dateFilterWhere = GetDateFilter(startDate, endDate, "v.data_venda");
+
+            string sql = $@"
                 SELECT 
                     c.nome AS Nome_Cliente, 
                     COUNT(v.id) AS Total_Vendas
@@ -66,6 +137,7 @@ namespace bailinho_senior_system.repositories
                     cliente c
                 LEFT JOIN 
                     venda v ON c.id = v.id_cliente
+                {dateFilterWhere}
                 GROUP BY 
                     c.nome
                 ORDER BY
@@ -73,17 +145,18 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 3º Relatório: Itens vendidos por evento
-        public DataTable GetProdutosVendidosPorEvento()
+        public DataTable GetProdutosVendidosPorEvento(DateTime? startDate = null, DateTime? endDate = null)
         {
-            string sql = @"
+            string joinFilter = GetDateFilter(startDate, endDate, "v.data_venda").Replace("WHERE", "AND");
+
+            string sql = $@"
                 SELECT 
                     e.nome AS Nome_Evento, 
                     SUM(pv.quantidade) AS Total_Itens_Vendidos
                 FROM 
                     evento e
                 INNER JOIN 
-                    venda v ON e.id = v.id_evento
+                    venda v ON e.id = v.id_evento {joinFilter}
                 INNER JOIN 
                     produtovenda pv ON v.id = pv.id_venda
                 GROUP BY 
@@ -93,7 +166,6 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 4º Relatório: Produtos diferentes por fornecedor
         public DataTable GetProdutosPorFornecedor()
         {
             string sql = @"
@@ -111,10 +183,18 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 5º Relatório: Itens vendidos por categoria
-        public DataTable GetItensVendidosPorCategoria()
+        public DataTable GetItensVendidosPorCategoria(DateTime? startDate = null, DateTime? endDate = null)
         {
-            string sql = @"
+            string dateFilterJoin = "";
+            if (startDate.HasValue || endDate.HasValue)
+            {
+                string internalFilter = GetDateFilter(startDate, endDate, "v.data_venda").Replace("WHERE", "AND");
+                dateFilterJoin = $@"
+                    INNER JOIN venda v ON v.id = pv.id_venda
+                    {internalFilter}";
+            }
+
+            string sql = $@"
                 SELECT 
                     c.nome AS Nome_Categoria, 
                     SUM(pv.quantidade) AS Quantidade_Vendida_Categoria
@@ -124,6 +204,7 @@ namespace bailinho_senior_system.repositories
                     produto p ON c.id = p.id_categoria
                 INNER JOIN 
                     produtovenda pv ON p.id = pv.id_produto
+                {dateFilterJoin}
                 GROUP BY 
                     c.nome
                 ORDER BY
@@ -131,17 +212,18 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 6º Relatório: Faturamento Total por Evento
-        public DataTable GetFaturamentoTotalPorEvento()
+        public DataTable GetFaturamentoTotalPorEvento(DateTime? startDate = null, DateTime? endDate = null)
         {
-            string sql = @"
+            string joinFilter = GetDateFilter(startDate, endDate, "v.data_venda").Replace("WHERE", "AND");
+
+            string sql = $@"
                 SELECT
                     e.nome AS Nome_Evento,
                     ROUND((COUNT(DISTINCT v.id) * e.valor_entrada) + SUM(v.valor_total), 2) AS Faturamento_Total
                 FROM
                     Evento e
                 INNER JOIN
-                    Venda v ON e.id = v.id_evento
+                    Venda v ON e.id = v.id_evento {joinFilter}
                 GROUP BY
                     e.nome, e.valor_entrada
                 ORDER BY
@@ -149,16 +231,18 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 7º Relatório: Forma de Pagamento Mais Utilizada
-        public DataTable GetFormaPagamentoMaisUtilizada()
+        public DataTable GetFormaPagamentoMaisUtilizada(DateTime? startDate = null, DateTime? endDate = null)
         {
-            string sql = @"
+            string dateFilterWhere = GetDateFilter(startDate, endDate, "data_venda");
+
+            string sql = $@"
                 SELECT
                     forma_pagamento AS Forma_de_Pagamento,
                     COUNT(*) AS Total_Vendas,
                     ROUND(SUM(valor_total), 2) AS Valor_Transacionado
                 FROM
                     Venda
+                {dateFilterWhere}
                 GROUP BY
                     forma_pagamento
                 ORDER BY
@@ -166,7 +250,6 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 8º Relatório: Produtos com Baixo Estoque (Limite < 20)
         public DataTable GetProdutosBaixoEstoque(int limite = 20)
         {
             string sql = $@"
@@ -185,10 +268,11 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 9º Relatório: Cliente que Mais Gastou (Top 5)
-        public DataTable GetTop5ClientesMaisGastaram()
+        public DataTable GetTop5ClientesMaisGastaram(DateTime? startDate = null, DateTime? endDate = null)
         {
-            string sql = @"
+            string dateFilterWhere = GetDateFilter(startDate, endDate, "v.data_venda");
+
+            string sql = $@"
                 SELECT
                     c.nome AS Nome_Cliente,
                     COUNT(v.id) AS Total_de_Compras,
@@ -197,6 +281,7 @@ namespace bailinho_senior_system.repositories
                     Cliente c
                 INNER JOIN
                     Venda v ON c.id = v.id_cliente
+                {dateFilterWhere}
                 GROUP BY
                     c.nome
                 ORDER BY
@@ -205,7 +290,6 @@ namespace bailinho_senior_system.repositories
             return ExecuteQuery(sql);
         }
 
-        // 10º Relatório: Média de Preço dos Produtos por Categoria
         public DataTable GetPrecoMedioPorCategoria()
         {
             string sql = @"
@@ -222,6 +306,74 @@ namespace bailinho_senior_system.repositories
                 ORDER BY
                     Preco_Medio_Categoria DESC;";
             return ExecuteQuery(sql);
+        }
+
+        public int GetTotalVendas(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            string dateFilter = GetDateFilter(startDate, endDate, "data_venda");
+            string sql = $"SELECT COUNT(*) FROM venda {dateFilter};";
+            return ExecuteScalarInt(sql);
+        }
+
+        public float getTotalVendido(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            string dateFilter = GetDateFilter(startDate, endDate, "data_venda");
+            string sql = $"SELECT SUM(valor_total) FROM venda {dateFilter};";
+            return ExecuteScalarFloat(sql);
+        }
+
+        public float getTicketMedio(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            string dateFilter = GetDateFilter(startDate, endDate, "data_venda");
+            string sql = $"SELECT AVG(valor_total) FROM venda {dateFilter};";
+            return ExecuteScalarFloat(sql);
+        }
+
+        public int getEventosRealizados(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            string filter = "";
+            if (startDate.HasValue) filter += $" AND `data` >= '{startDate.Value:yyyy-MM-dd}'";
+            if (endDate.HasValue) filter += $" AND `data` <= '{endDate.Value:yyyy-MM-dd}'";
+
+            string sql = $"SELECT COUNT(*) FROM evento WHERE `data` < CURDATE() {filter};";
+
+            return ExecuteScalarInt(sql);
+        }
+
+        public int getFornecedoresCadastrados()
+        {
+            return ExecuteScalarInt("SELECT COUNT(*) FROM fornecedor;");
+        }
+
+        public int getClientesCadastrados()
+        {
+            return ExecuteScalarInt("SELECT COUNT(*) FROM cliente;");
+        }
+
+        public int getEstoqueTotalProdutos()
+        {
+            return ExecuteScalarInt("SELECT SUM(qtd_estoque) FROM produto;");
+        }
+
+        public int getProdutosVendidos(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            string internalFilter = GetDateFilter(startDate, endDate, "data_venda");
+            string dateFilter = "";
+
+            if (!string.IsNullOrEmpty(internalFilter))
+            {
+                dateFilter = $@"
+                    WHERE pv.id_venda IN (
+                        SELECT id FROM venda {internalFilter}
+                    )";
+            }
+            string sql = $"SELECT SUM(pv.quantidade) FROM produtovenda pv {dateFilter};";
+            return ExecuteScalarInt(sql);
+        }
+
+        public int getProdutosCadastrados()
+        {
+            return ExecuteScalarInt("SELECT COUNT(*) FROM produto;");
         }
     }
 }

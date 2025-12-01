@@ -117,7 +117,7 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(28, 60);
+            this.label2.Location = new System.Drawing.Point(28, 74);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 18);
@@ -127,20 +127,20 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Enabled = false;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(174, 133);
+            this.label1.Location = new System.Drawing.Point(28, 29);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(24, 18);
             this.label1.TabIndex = 14;
             this.label1.Text = "ID";
-            this.label1.Visible = false;
             // 
             // nomeBox
             // 
             this.nomeBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nomeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nomeBox.Location = new System.Drawing.Point(85, 56);
+            this.nomeBox.Location = new System.Drawing.Point(85, 70);
             this.nomeBox.Margin = new System.Windows.Forms.Padding(4);
             this.nomeBox.Name = "nomeBox";
             this.nomeBox.Size = new System.Drawing.Size(314, 24);
@@ -149,13 +149,13 @@
             // idBox
             // 
             this.idBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.idBox.Location = new System.Drawing.Point(231, 130);
+            this.idBox.Enabled = false;
+            this.idBox.Location = new System.Drawing.Point(85, 26);
             this.idBox.Margin = new System.Windows.Forms.Padding(4);
             this.idBox.Name = "idBox";
             this.idBox.ReadOnly = true;
             this.idBox.Size = new System.Drawing.Size(314, 24);
             this.idBox.TabIndex = 11;
-            this.idBox.Visible = false;
             // 
             // descricaoBox
             // 

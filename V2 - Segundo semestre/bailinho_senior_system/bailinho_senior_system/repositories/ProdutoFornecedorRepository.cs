@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using bailinho_senior_system.models;
 using MySql.Data.MySqlClient;
 using bailinho_senior_system.config;
+
 namespace bailinho_senior_system.repositories
 {
     internal class ProdutoFornecedorRepository
@@ -20,12 +18,12 @@ namespace bailinho_senior_system.repositories
                 {
                     connection.Open();
 
-                    string sql =    $"SELECT " +
-                                    $"tpf.id, tpf.id_produto, tpf.id_fornecedor, tp.nome as nome_produto, tf.nome as nome_fornecedor " +
-                                    $"FROM produtofornecedor tpf " +
-                                    $"INNER JOIN Produto tp on tp.id=tpf.id_produto " +
-                                    $"INNER JOIN Fornecedor tf on tf.id=tpf.id_fornecedor " +
-                                    $"WHERE tpf.id_fornecedor=@id_fornecedor;";
+                    string sql =
+                        $"SELECT tpf.id, tpf.id_produto, tpf.id_fornecedor, tp.nome AS nome_produto, tf.nome AS nome_fornecedor " +
+                        $"FROM produtofornecedor tpf " +
+                        $"INNER JOIN Produto tp ON tp.id = tpf.id_produto " +
+                        $"INNER JOIN Fornecedor tf ON tf.id = tpf.id_fornecedor " +
+                        $"WHERE tpf.id_fornecedor = @id_fornecedor;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -33,46 +31,25 @@ namespace bailinho_senior_system.repositories
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            int idxId = reader.GetOrdinal("id");
-                            int idxNomeProduto = reader.GetOrdinal("nome_produto");
-                            int idxNomeFornecedor = reader.GetOrdinal("nome_fornecedor");
-                            int idxIdProduto = reader.GetOrdinal("id_produto");
-                            int idxIdFornecedor = reader.GetOrdinal("id_fornecedor");
-
                             while (reader.Read())
                             {
-                                var produto = new ProdutoFornecedor();
+                                var produto = new ProdutoFornecedor(
+                                    reader.GetInt32("id"),
+                                    reader.GetInt32("id_produto"),
+                                    reader.GetInt32("id_fornecedor")
+                                );
 
-                                // Só atribui quando o valor não for nulo no banco
-                                if (!reader.IsDBNull(idxId))
-                                    produto.Id = reader.GetInt32(idxId);
-
-                                if (!reader.IsDBNull(idxNomeProduto))
-                                    produto.NomeProduto = reader.GetString(idxNomeProduto);
-
-                                if (!reader.IsDBNull(idxNomeFornecedor))
-                                    produto.NomeFornecedor = reader.GetString(idxNomeFornecedor);
-
-                                if (!reader.IsDBNull(idxIdFornecedor))
-                                    produto.IdFornecedor = reader.GetInt32(idxIdFornecedor);
-
-                                if (!reader.IsDBNull(idxIdProduto))
-                                    produto.IdProduto = reader.GetInt32(idxIdProduto);
-
-
-                                // Se precisar do Id e não houver propriedade pública, você pode adicionar uma propriedade Id no model.
-                                // Ex.: produto.Id = reader.GetInt32(idxId);
+                                produto.NomeProduto = reader.GetString("nome_produto");
+                                produto.NomeFornecedor = reader.GetString("nome_fornecedor");
 
                                 products.Add(produto);
                             }
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
-
                 Console.Write(ex.ToString());
                 throw;
             }
@@ -90,14 +67,12 @@ namespace bailinho_senior_system.repositories
                 {
                     connection.Open();
 
-
-
-                    string sql = $"SELECT " +
-                                    $"tpf.id, tpf.id_produto, tpf.id_fornecedor, tp.nome as nome_produto, tf.nome as nome_fornecedor " +
-                                    $"FROM produtofornecedor tpf " +
-                                    $"INNER JOIN Produto tp on tp.id=tpf.id_produto " +
-                                    $"INNER JOIN Fornecedor tf on tf.id=tpf.id_fornecedor " +
-                                    $"WHERE tpf.id_produto=@id_produto;";
+                    string sql =
+                        $"SELECT tpf.id, tpf.id_produto, tpf.id_fornecedor, tp.nome AS nome_produto, tf.nome AS nome_fornecedor " +
+                        $"FROM produtofornecedor tpf " +
+                        $"INNER JOIN Produto tp ON tp.id = tpf.id_produto " +
+                        $"INNER JOIN Fornecedor tf ON tf.id = tpf.id_fornecedor " +
+                        $"WHERE tpf.id_produto = @id_produto;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -105,46 +80,25 @@ namespace bailinho_senior_system.repositories
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            int idxId = reader.GetOrdinal("id");
-                            int idxNomeProduto = reader.GetOrdinal("nome_produto");
-                            int idxNomeFornecedor = reader.GetOrdinal("nome_fornecedor");
-                            int idxIdProduto = reader.GetOrdinal("id_produto");
-                            int idxIdFornecedor = reader.GetOrdinal("id_fornecedor");
-
                             while (reader.Read())
                             {
-                                var produto = new ProdutoFornecedor();
+                                var produto = new ProdutoFornecedor(
+                                    reader.GetInt32("id"),
+                                    reader.GetInt32("id_produto"),
+                                    reader.GetInt32("id_fornecedor")
+                                );
 
-                                // Só atribui quando o valor não for nulo no banco
-                                if (!reader.IsDBNull(idxId))
-                                    produto.Id = reader.GetInt32(idxId);
-
-                                if (!reader.IsDBNull(idxNomeProduto))
-                                    produto.NomeProduto = reader.GetString(idxNomeProduto);
-
-                                if (!reader.IsDBNull(idxNomeFornecedor))
-                                    produto.NomeFornecedor = reader.GetString(idxNomeFornecedor);
-
-                                if (!reader.IsDBNull(idxIdFornecedor))
-                                    produto.IdFornecedor = reader.GetInt32(idxIdFornecedor);
-
-                                if (!reader.IsDBNull(idxIdProduto))
-                                    produto.IdProduto = reader.GetInt32(idxIdProduto);
-
-
-                                // Se precisar do Id e não houver propriedade pública, você pode adicionar uma propriedade Id no model.
-                                // Ex.: produto.Id = reader.GetInt32(idxId);
+                                produto.NomeProduto = reader.GetString("nome_produto");
+                                produto.NomeFornecedor = reader.GetString("nome_fornecedor");
 
                                 products.Add(produto);
                             }
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
-
                 Console.Write(ex.ToString());
                 throw;
             }
@@ -162,12 +116,11 @@ namespace bailinho_senior_system.repositories
                 {
                     connection.Open();
 
-                    // Consulta que busca TODOS os fornecedores vinculados a um produto específico (id_produto)
-                    string sql = $"SELECT " +
-                                 $"tpf.id, tpf.id_produto, tpf.id_fornecedor, tf.nome as nome_fornecedor " +
-                                 $"FROM produtofornecedor tpf " +
-                                 $"INNER JOIN Fornecedor tf on tf.id=tpf.id_fornecedor " +
-                                 $"WHERE tpf.id_produto=@id_produto;";
+                    string sql =
+                        $"SELECT tpf.id, tpf.id_produto, tpf.id_fornecedor, tf.nome AS nome_fornecedor " +
+                        $"FROM produtofornecedor tpf " +
+                        $"INNER JOIN Fornecedor tf ON tf.id = tpf.id_fornecedor " +
+                        $"WHERE tpf.id_produto = @id_produto;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
@@ -175,26 +128,15 @@ namespace bailinho_senior_system.repositories
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            int idxId = reader.GetOrdinal("id");
-                            int idxNomeFornecedor = reader.GetOrdinal("nome_fornecedor");
-                            int idxIdProduto = reader.GetOrdinal("id_produto");
-                            int idxIdFornecedor = reader.GetOrdinal("id_fornecedor");
-
                             while (reader.Read())
                             {
-                                var pf = new ProdutoFornecedor();
+                                var pf = new ProdutoFornecedor(
+                                    reader.GetInt32("id"),
+                                    reader.GetInt32("id_produto"),
+                                    reader.GetInt32("id_fornecedor")
+                                );
 
-                                if (!reader.IsDBNull(idxId))
-                                    pf.Id = reader.GetInt32(idxId);
-
-                                if (!reader.IsDBNull(idxNomeFornecedor))
-                                    pf.NomeFornecedor = reader.GetString(idxNomeFornecedor);
-
-                                if (!reader.IsDBNull(idxIdFornecedor))
-                                    pf.IdFornecedor = reader.GetInt32(idxIdFornecedor);
-
-                                if (!reader.IsDBNull(idxIdProduto))
-                                    pf.IdProduto = reader.GetInt32(idxIdProduto);
+                                pf.NomeFornecedor = reader.GetString("nome_fornecedor");
 
                                 fornecedores.Add(pf);
                             }
@@ -211,7 +153,6 @@ namespace bailinho_senior_system.repositories
             return fornecedores;
         }
 
-
         public void CreateProdutoFornecedor(ProdutoFornecedor p)
         {
             try
@@ -224,8 +165,9 @@ namespace bailinho_senior_system.repositories
 
                     if (count > 0) return;
 
-                    string sql =    $"INSERT INTO produtofornecedor (id_produto, id_fornecedor) " +
-                                    $"VALUES (@id_produto, @id_fornecedor);";
+                    string sql =
+                        $"INSERT INTO produtofornecedor (id_produto, id_fornecedor) " +
+                        $"VALUES (@id_produto, @id_fornecedor);";
 
                     using (MySqlCommand command = new MySqlCommand(sql, conn))
                     {
@@ -248,15 +190,16 @@ namespace bailinho_senior_system.repositories
             using (MySqlConnection conn = new MySqlConnection(DatabaseConfig.ConnectionString))
             {
                 conn.Open();
-                string selectSql = $"SELECT COUNT(*) FROM produtofornecedor " +
-                   $"WHERE id_produto = @id_produto AND id_fornecedor = @id_fornecedor;";
+                string selectSql =
+                    $"SELECT COUNT(*) FROM produtofornecedor " +
+                    $"WHERE id_produto = @id_produto AND id_fornecedor = @id_fornecedor;";
+
                 using (MySqlCommand command = new MySqlCommand(selectSql, conn))
                 {
                     command.Parameters.AddWithValue("@id_produto", id_produto);
                     command.Parameters.AddWithValue("@id_fornecedor", id_fornecedor);
 
                     long count = (long)command.ExecuteScalar();
-
                     return count;
                 }
             }
@@ -285,29 +228,29 @@ namespace bailinho_senior_system.repositories
 
                             if (count > 0) continue;
 
-                            string insertSql = $"INSERT INTO produtofornecedor (id_produto, id_fornecedor) " +
-                                                $"VALUES (@id_produto, @id_fornecedor);";
+                            string insertSql =
+                                $"INSERT INTO produtofornecedor (id_produto, id_fornecedor) " +
+                                $"VALUES (@id_produto, @id_fornecedor);";
+
                             using (MySqlCommand command = new MySqlCommand(insertSql, conn))
                             {
                                 command.Parameters.AddWithValue("@id_produto", item.IdProduto);
                                 command.Parameters.AddWithValue("@id_fornecedor", item.IdFornecedor);
+
                                 command.ExecuteNonQuery();
                             }
                         }
 
-                        // Processa itens apagados se fornecido
                         if (apagados != null)
                         {
                             foreach (var item in apagados)
                             {
                                 if (item.Id > 0)
-                                {
                                     DeleteProdutoFornecedor(item.Id);
-                                }
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         string rollbackSql = $"ROLLBACK TO SAVEPOINT sp_before_insert";
                         using (MySqlCommand command = new MySqlCommand(rollbackSql, conn))
@@ -316,7 +259,6 @@ namespace bailinho_senior_system.repositories
                         }
                         throw;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -334,13 +276,12 @@ namespace bailinho_senior_system.repositories
                 {
                     conn.Open();
 
-                    string sql =    $"DELETE FROM produtofornecedor " +
-                                    $"WHERE id = @id;";
+                    string sql =
+                        $"DELETE FROM produtofornecedor WHERE id = @id;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, conn))
                     {
                         command.Parameters.AddWithValue("@id", id_produtofornecedor);
-
                         command.ExecuteNonQuery();
                     }
                 }
@@ -360,13 +301,12 @@ namespace bailinho_senior_system.repositories
                 {
                     conn.Open();
 
-                    string sql =    $"DELETE FROM produtofornecedor " +
-                                    $"WHERE id_fornecedor=@id_fornecedor;";
+                    string sql =
+                        $"DELETE FROM produtofornecedor WHERE id_fornecedor = @id_fornecedor;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, conn))
                     {
                         command.Parameters.AddWithValue("@id_fornecedor", id_fornecedor);
-
                         command.ExecuteNonQuery();
                     }
                 }

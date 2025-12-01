@@ -2,7 +2,6 @@
 using bailinho_senior_system.repositories;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -15,16 +14,12 @@ namespace bailinho_senior_system.views
     {
         private enum ViewState { Listing, Editing, Creating }
 
-        // --- Variáveis de Estado da View ---
         private List<Categoria> categorias = new List<Categoria>();
         private int currentIndex = 0;
         private ViewState state;
         private Categoria editItem = null;
 
-        // --- Repositórios ---
         private CategoriaRepository categoriaRepository = new CategoriaRepository();
-
-        // --- Inicialização e Setup ---
 
         public CategoriasView()
         {
@@ -44,6 +39,7 @@ namespace bailinho_senior_system.views
 
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
+            // Evita sair do cadastro durante edição/criação
             if (state == ViewState.Editing || state == ViewState.Creating)
             {
                 if (e.TabPage.Name != "tabPageCadastro")
@@ -66,11 +62,8 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Configuração e Leitura de Dados ---
-
         private void ConfigurarDataGridView(DataGridView dgv)
         {
-            // Configurações visuais e de comportamento
             dgv.AutoGenerateColumns = false;
             dgv.ReadOnly = true;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -78,26 +71,22 @@ namespace bailinho_senior_system.views
             dgv.MultiSelect = false;
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Estilos visuais
             dgv.EnableHeadersVisualStyles = false;
-            dgv.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
-            dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.White;
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230);
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            dgv.DefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(173, 216, 230);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv.ColumnHeadersHeight = 30;
             dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
 
-            // Limpa colunas para redefinição programática
             dgv.Columns.Clear();
 
-            // Adição e Mapeamento das Colunas
             dgv.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Id",
                 DataPropertyName = "Id",
                 Name = "Id",
-                Visible = false,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             });
 
@@ -112,25 +101,21 @@ namespace bailinho_senior_system.views
                 HeaderText = "Descrição",
                 DataPropertyName = "Descricao",
             });
-
-            // REMOVIDA A COLUNA EXTRA: O modo Fill é aplicado ao DGV inteiro,
-            // garantindo que Nome e Descrição compartilhem o espaço restante.
         }
 
         private void ReadCategorias()
         {
             try
             {
-                // Carrega todas as categorias do repositório
-                this.categorias = new CategoriaRepository().GetCategorias();
+                categorias = categoriaRepository.GetCategorias();
 
-                // Vincula a lista de objetos diretamente ao DataGridView
                 listTable.DataSource = null;
-                listTable.DataSource = this.categorias;
+                listTable.DataSource = categorias;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar categorias: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao carregar categorias: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -161,8 +146,6 @@ namespace bailinho_senior_system.views
             return errors;
         }
 
-        // --- Navegação e Estado da View ---
-
         private void SetState(ViewState newState)
         {
             state = newState;
@@ -170,16 +153,14 @@ namespace bailinho_senior_system.views
             bool creating = state == ViewState.Creating;
             bool editing = state == ViewState.Editing;
             bool listing = state == ViewState.Listing;
-            bool creatingOrEditing = creating || editing;
 
+            bool creatingOrEditing = creating || editing;
             int count = categorias.Count;
 
+            // Quando criando/editando, troca automaticamente para a aba de cadastro
             if (creatingOrEditing)
-            {
                 SwitchToTabByName("tabPageCadastro");
-            }
 
-            // Habilita/Desabilita Botões CRUD e Navegação
             deleteBtn.Enabled = count > 0 && listing;
             editBtn.Enabled = count > 0 && listing;
             newBtn.Enabled = listing;
@@ -193,15 +174,11 @@ namespace bailinho_senior_system.views
             firstBtn.Enabled = count > 0 && listing && currentIndex > 0;
             previousBtn.Enabled = count > 0 && listing && currentIndex > 0;
 
-            // ReadOnly dos Campos
             nomeBox.ReadOnly = listing;
             descricaoBox.ReadOnly = listing;
 
-
             if (count == 0 || creating)
-            {
                 CleanupFields();
-            }
             else if (listing && currentIndex >= 0)
             {
                 PopulateCategoria(categorias[currentIndex]);
@@ -211,8 +188,7 @@ namespace bailinho_senior_system.views
 
         private void SwitchToTabByName(string tabName)
         {
-            if (string.IsNullOrEmpty(tabName)) return;
-            // Assumindo um TabControl nomeado 'tabControl'
+            // Localiza a aba pelo nome — útil para alternar programaticamente
             var page = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
             if (page != null) tabControl.SelectedTab = page;
         }
@@ -232,6 +208,8 @@ namespace bailinho_senior_system.views
             if (listTable.DataSource is List<Categoria> listaExibida)
             {
                 Categoria itemAtual = categorias[currentIndex];
+
+                // Procura o índice correto na lista exibida (caso esteja filtrada)
                 int indexNaListaExibida = listaExibida.FindIndex(c => c.Id == itemAtual.Id);
 
                 if (indexNaListaExibida != -1)
@@ -242,38 +220,33 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Manipuladores de Eventos de Navegação ---
-
         private void firstBtn_Click(object sender, EventArgs e)
         {
-            if (currentIndex > 0) currentIndex = 0;
-            ReadCategorias(); // Recarrega lista completa
+            currentIndex = 0;
+            ReadCategorias();
             SetState(ViewState.Listing);
         }
 
         private void previousBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex > 0) currentIndex--;
-            ReadCategorias(); // Recarrega lista completa
+            ReadCategorias();
             SetState(ViewState.Listing);
         }
 
         private void nextBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex < categorias.Count - 1) currentIndex++;
-            ReadCategorias(); // Recarrega lista completa
+            ReadCategorias();
             SetState(ViewState.Listing);
         }
 
         private void lastBtn_Click(object sender, EventArgs e)
         {
-            if (currentIndex < categorias.Count - 1) currentIndex = categorias.Count - 1;
-            ReadCategorias(); // Recarrega lista completa
+            currentIndex = categorias.Count - 1;
+            ReadCategorias();
             SetState(ViewState.Listing);
         }
-
-
-        // --- Eventos CRUD ---
 
         private void newBtn_Click(object sender, EventArgs e)
         {
@@ -294,7 +267,6 @@ namespace bailinho_senior_system.views
             SetState(ViewState.Editing);
         }
 
-
         private void saveBtn_Click(object sender, EventArgs e)
         {
             if (editItem == null) return;
@@ -302,17 +274,15 @@ namespace bailinho_senior_system.views
             List<string> errors = ValidateForm();
             if (errors.Count > 0)
             {
-                MessageBox.Show(string.Join("\n", errors), "Erros de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(string.Join("\n", errors),
+                    "Erros de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                CategoriaRepository categoriaRepository = new CategoriaRepository();
-
                 editItem.Nome = nomeBox.Text.Trim();
                 editItem.Descricao = descricaoBox.Text.Trim();
-
 
                 if (state == ViewState.Creating)
                 {
@@ -326,13 +296,15 @@ namespace bailinho_senior_system.views
                     ReadCategorias();
                 }
 
-
                 SetState(ViewState.Listing);
-                MessageBox.Show("Categoria salva com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                MessageBox.Show("Categoria salva com sucesso!",
+                    "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao salvar categoria: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao salvar categoria: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -350,7 +322,7 @@ namespace bailinho_senior_system.views
 
             try
             {
-                new CategoriaRepository().DeleteCategoria(categorias[currentIndex].Id);
+                categoriaRepository.DeleteCategoria(categorias[currentIndex].Id);
 
                 ReadCategorias();
 
@@ -366,19 +338,20 @@ namespace bailinho_senior_system.views
                 editItem = null;
                 SetState(ViewState.Listing);
 
-                MessageBox.Show("Categoria excluída com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Categoria excluída com sucesso!",
+                    "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (MySqlException mysex) when (mysex.Number == 1451)
             {
-                MessageBox.Show("Não foi possível excluir a Categoria, pois ela possui produtos vinculados.", "Erro de Chave Estrangeira", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Não foi possível excluir a Categoria, pois ela possui produtos vinculados.",
+                    "Erro de Chave Estrangeira", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao excluir categoria: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao excluir categoria: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        // --- Eventos de Busca e Saída ---
 
         private void exitBtn_Click(object sender, EventArgs e)
         {
@@ -392,12 +365,13 @@ namespace bailinho_senior_system.views
 
                 if (result == DialogResult.Cancel) return;
             }
-            this.Close();
+
+            Close();
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
         {
-            ReadCategorias(); // Garante que a lista completa esteja vinculada
+            ReadCategorias();
             SwitchToTabByName("tabPageLista");
             searchBox.Focus();
         }
@@ -407,6 +381,7 @@ namespace bailinho_senior_system.views
             string searchTerm = searchBox.Text.Trim().ToLower();
             List<Categoria> filteredCategorias;
 
+            // Busca dinâmica: aceita ID, Nome ou Descrição
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 filteredCategorias = categorias.Where(c =>
@@ -434,7 +409,8 @@ namespace bailinho_senior_system.views
             {
                 currentIndex = -1;
                 CleanupFields();
-                MessageBox.Show("Nenhuma categoria encontrada.", "Busca", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Nenhuma categoria encontrada.",
+                    "Busca", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             SetState(ViewState.Listing);
@@ -449,6 +425,7 @@ namespace bailinho_senior_system.views
 
             if (categoriaSelecionada != null)
             {
+                // Reencontra o índice na lista original — importante quando filtrado
                 int novoIndex = categorias.FindIndex(c => c.Id == categoriaSelecionada.Id);
 
                 if (novoIndex != -1)

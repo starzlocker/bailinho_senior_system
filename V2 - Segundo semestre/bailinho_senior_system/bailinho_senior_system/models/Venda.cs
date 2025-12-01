@@ -6,9 +6,21 @@ using System.Threading.Tasks;
 
 namespace bailinho_senior_system.models
 {
-    public class Venda // CLASSE TORNADA PÚBLICA
+    public class Venda
     {
         public Venda() { }
+        public Venda(int id, decimal valor_total, string forma_pagamento,
+                     int id_cliente, int id_evento, DateTime data_venda, string nome_cliente, string nome_evento)
+        {
+            Id = id;
+            ValorTotal = valor_total;
+            FormaPagamento = forma_pagamento;
+            IdCliente = id_cliente;
+            IdEvento = id_evento;
+            DataVenda = data_venda;
+            NomeCliente = nome_cliente;
+            NomeEvento = nome_evento;
+        }
 
         private int id;
         public int Id
@@ -34,6 +46,8 @@ namespace bailinho_senior_system.models
             }
         }
 
+        private List<string> pagamentosAceitos = new List<string> { "Pix", "Crédito", "Débito", "Dinheiro" };
+
         private string forma_pagamento;
         public string FormaPagamento
         {
@@ -43,8 +57,9 @@ namespace bailinho_senior_system.models
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Forma de pagamento não pode ser vazia.");
 
-                // Opcional: Adicionar validação de lista de valores permitidos (Pix, Crédito, etc.)
-
+                if (!pagamentosAceitos.Contains(value))
+                    throw new ArgumentException("Forma de pagamento inválida.");        
+          
                 forma_pagamento = value;
             }
         }
@@ -73,7 +88,16 @@ namespace bailinho_senior_system.models
             }
         }
 
-        // Propriedades de Lookup
+        private DateTime data_venda;
+        public DateTime DataVenda
+        {
+            get { return data_venda; }
+            set
+            {
+                data_venda = value;
+            }
+        }
+
         public string NomeCliente { get; set; }
         public string NomeEvento { get; set; }
     }

@@ -110,7 +110,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="models\Cliente.cs" />
     <Compile Include="config\DatabaseConfig.cs" />
     <Compile Include="models\Cliente.cs" />
     <Compile Include="models\Endereco.cs" />

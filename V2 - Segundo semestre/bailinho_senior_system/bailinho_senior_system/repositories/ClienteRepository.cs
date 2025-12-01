@@ -26,15 +26,14 @@ namespace bailinho_senior_system.repositories
                     {
                         while (reader.Read())
                         {
-                            clientes.Add(new Cliente
-                            {
-                                Id = reader.GetInt32("id"),
-                                Cpf = reader.GetString("cpf"),
-                                Genero = reader.GetChar("genero"),
-                                DtNascimento = reader.GetDateTime("dt_nascimento"),
-                                Nome = reader.GetString("nome"),
-                                Telefone = reader.GetString("telefone")
-                            });
+                            clientes.Add(new Cliente(
+                                reader.GetInt32("id"),
+                                reader.GetString("nome"),
+                                reader.GetDateTime("dt_nascimento"),
+                                reader.GetChar("genero"),
+                                reader.GetString("cpf"),
+                                reader.GetString("telefone")
+                            ));
                         }
                     }
                 }
@@ -60,19 +59,19 @@ namespace bailinho_senior_system.repositories
                     using (MySqlCommand command = new MySqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@id", id);
+
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                cliente = new Cliente
-                                {
-                                    Id = reader.GetInt32("id"),
-                                    Cpf = reader.GetString("cpf"),
-                                    Genero = reader.GetChar("genero"),
-                                    DtNascimento = reader.GetDateTime("dt_nascimento"),
-                                    Nome = reader.GetString("nome"),
-                                    Telefone = reader.GetString("telefone")
-                                };
+                                cliente = new Cliente(
+                                    reader.GetInt32("id"),
+                                    reader.GetString("nome"),
+                                    reader.GetDateTime("dt_nascimento"),
+                                    reader.GetChar("genero"),
+                                    reader.GetString("cpf"),
+                                    reader.GetString("telefone")
+                                );
                             }
                         }
                     }
@@ -84,6 +83,7 @@ namespace bailinho_senior_system.repositories
             }
             return cliente;
         }
+
 
         public void CreateCliente(Cliente cliente)
         {
@@ -160,7 +160,6 @@ namespace bailinho_senior_system.repositories
                 using (MySqlConnection connection = new MySqlConnection(ConnectionString))
                 {
                     connection.Open();
-                    // NOTE: A exclusão pode falhar se houver FKs (Venda) associadas.
                     string sql = "DELETE FROM Cliente WHERE id = @id;";
 
                     using (MySqlCommand command = new MySqlCommand(sql, connection))

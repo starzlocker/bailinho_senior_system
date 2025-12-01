@@ -15,25 +15,22 @@ namespace bailinho_senior_system.views
 
     public partial class VendasView : Form
     {
-        // --- Variáveis de Estado da Venda ---
         private List<Venda> vendas = new List<Venda>();
         private BindingList<ProdutoVenda> itensVenda = new BindingList<ProdutoVenda>();
         private List<Produto> produtosDisponiveis = new List<Produto>();
+        private List<Evento> eventosDisponiveis = new List<Evento>(); // Adicionado para facilitar a busca da data
 
         private Venda editVenda = null;
 
         private int currentIndex = 0;
         private ViewState state;
 
-        // --- Repositórios ---
         private VendaRepository vendaRepository = new VendaRepository();
         private ClienteRepository clienteRepository = new ClienteRepository();
         private EventoRepository eventoRepository = new EventoRepository();
         private ProdutoRepository produtoRepository = new ProdutoRepository();
         private ProdutoVendaRepository produtoVendaRepository = new ProdutoVendaRepository();
 
-
-        // --- Inicialização e Setup ---
 
         public VendasView()
         {
@@ -80,11 +77,8 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Configuração e Dados ---
-
         private void ConfigurarListTable(DataGridView dgv)
         {
-            // Configuração da grade principal (listTable)
             dgv.EnableHeadersVisualStyles = false;
             dgv.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
             dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.White;
@@ -144,7 +138,7 @@ namespace bailinho_senior_system.views
 
         private void ConfigurarDgvItensVendidos()
         {
-            // Configurações visuais e de comportamento para a grade de itens
+            // Configurações visuais e de comportamento
             dgvItensVendidos.AutoGenerateColumns = false;
             dgvItensVendidos.ReadOnly = false;
             dgvItensVendidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -160,7 +154,7 @@ namespace bailinho_senior_system.views
 
             dgvItensVendidos.Columns.Clear();
 
-            // 1. Coluna de Ação (Remover)
+            // Coluna de Ação (Remover)
             dgvItensVendidos.Columns.Add(new DataGridViewButtonColumn()
             {
                 HeaderText = "Remover",
@@ -172,7 +166,6 @@ namespace bailinho_senior_system.views
                 ReadOnly = false
             });
 
-            // 2. Coluna ID do Produto (Oculta)
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "IdProduto",
@@ -182,7 +175,6 @@ namespace bailinho_senior_system.views
                 ReadOnly = true
             });
 
-            // 3. Coluna Nome do Produto
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "NomeProduto",
@@ -191,7 +183,6 @@ namespace bailinho_senior_system.views
                 ReadOnly = true
             });
 
-            // 4. Coluna Preço Unitário
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "PrecoUnitario",
@@ -201,7 +192,6 @@ namespace bailinho_senior_system.views
                 ReadOnly = true
             });
 
-            // 5. Coluna Quantidade (EDITÁVEL)
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "Quantidade",
@@ -211,7 +201,6 @@ namespace bailinho_senior_system.views
                 ReadOnly = false
             });
 
-            // 6. Coluna Valor Total da Linha (Calculado)
             dgvItensVendidos.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "Valor",
@@ -233,9 +222,10 @@ namespace bailinho_senior_system.views
                 cbClientes.SelectedIndex = -1;
 
                 // Carregar Eventos (cbEventos)
+                this.eventosDisponiveis = eventoRepository.GetEventos(); // Armazena a lista
                 cbEventos.DisplayMember = "Nome";
                 cbEventos.ValueMember = "Id";
-                cbEventos.DataSource = eventoRepository.GetEventos();
+                cbEventos.DataSource = this.eventosDisponiveis;
                 cbEventos.SelectedIndex = -1;
 
                 // Carregar Produtos (comboBox1)
@@ -278,10 +268,10 @@ namespace bailinho_senior_system.views
 
         private void PopulateVenda(Venda venda)
         {
-            // Popula os ComboBoxes de cabeçalho
             cbClientes.SelectedValue = venda.IdCliente;
             cbEventos.SelectedValue = venda.IdEvento;
             cbPagamentos.SelectedItem = venda.FormaPagamento;
+            dtDataVenda.Value = venda.DataVenda;
 
             // Carrega os itens da venda (apenas para Edição/Visualização)
             itensVenda.Clear();
@@ -297,13 +287,14 @@ namespace bailinho_senior_system.views
             cbPagamentos.SelectedIndex = -1;
             itensVenda.Clear();
             txtTotal.Text = 0.ToString("C");
+            dtDataVenda.Value = DateTime.Now;
         }
 
         private void CalcularValorTotal()
         {
             decimal total = itensVenda.Sum(i => i.Valor);
 
-            // Atualiza o Label/TextBox que exibe o total
+            // Atualiza o total
             txtTotal.Text = total.ToString("C");
 
             if (editVenda != null)
@@ -325,6 +316,11 @@ namespace bailinho_senior_system.views
             return produtosDisponiveis.FirstOrDefault(p => p.Id == produtoId);
         }
 
+        private Evento GetEventoById(int eventoId)
+        {
+            return eventosDisponiveis.FirstOrDefault(e => e.Id == eventoId);
+        }
+
         private List<string> ValidateVenda()
         {
             List<string> errors = new List<string>();
@@ -337,7 +333,25 @@ namespace bailinho_senior_system.views
             return errors;
         }
 
-        // --- Navegação e Estado da View ---
+        private void cbEventos_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            // Este evento só deve disparar se estivermos em modo de criação/edição
+            if (state == ViewState.Listing) return;
+
+            if (cbEventos.SelectedValue is int idEvento)
+            {
+                Evento eventoSelecionado = GetEventoById(idEvento);
+                if (eventoSelecionado != null)
+                {
+                    // Sincroniza a data da venda com a data do evento
+                    dtDataVenda.Value = eventoSelecionado.Data;
+                    if (editVenda != null)
+                    {
+                        editVenda.DataVenda = eventoSelecionado.Data;
+                    }
+                }
+            }
+        }
 
         private void SwitchToTabByName(string tabName)
         {
@@ -354,21 +368,22 @@ namespace bailinho_senior_system.views
             bool listing = state == ViewState.Listing;
             int count = vendas.Count;
 
-            // --- 1. CONTROLE DE NAVEGAÇÃO E CRUD (TOOLBAR) ---
+            // Navegação
             firstBtn.Enabled = listing && currentIndex > 0;
             previousBtn.Enabled = listing && currentIndex > 0;
             nextBtn.Enabled = listing && currentIndex < count - 1;
             lastBtn.Enabled = listing && currentIndex < count - 1;
 
+            // CRUD
             newBtn.Enabled = listing;
             editBtn.Enabled = listing && count > 0;
             deleteBtn.Enabled = listing && count > 0;
             searchBtn.Enabled = listing;
-
             saveBtn.Enabled = creatingOrEditing;
             cancelBtn.Enabled = creatingOrEditing;
 
-            // --- 2. CONTROLE DOS CAMPOS DE ENTRADA (ABA CADASTRO) ---
+
+            dtDataVenda.Enabled = false; // A data é definida pelo evento
 
             // ComboBoxes e Controles de Adição
             cbClientes.Enabled = creatingOrEditing;
@@ -379,10 +394,7 @@ namespace bailinho_senior_system.views
             btnAdicionar.Enabled = creatingOrEditing;
             btnRemover.Enabled = creatingOrEditing;
 
-            // txtTotal é ReadOnly
-            txtTotal.ReadOnly = true;
-
-            // --- 3. CONTROLE DA GRADE DE ITENS (dgvItensVendidos) ---
+            txtTotal.ReadOnly = true; //  Sempre somente leitura o total
 
             if (creatingOrEditing)
             {
@@ -395,13 +407,11 @@ namespace bailinho_senior_system.views
                 dgvItensVendidos.ClearSelection();
             }
 
-            // Habilita/Desabilita a Coluna de Botão de Remoção 'colRemover'
             if (dgvItensVendidos.Columns.Contains("colRemover"))
             {
                 dgvItensVendidos.Columns["colRemover"].Visible = creatingOrEditing;
             }
 
-            // --- 4. CARREGAMENTO/SELEÇÃO DE DADOS ---
             if (state == ViewState.Creating || count == 0)
             {
                 CleanupFields();
@@ -416,7 +426,7 @@ namespace bailinho_senior_system.views
 
         private void UpdateDataGridViewSelection()
         {
-            // Seleciona a venda atual no listTable e rola para visualização
+            // Seleciona a venda atual no dgv e rola para visualização
             if (listTable == null || vendas.Count == 0 || currentIndex < 0 || currentIndex >= vendas.Count)
             {
                 return;
@@ -425,18 +435,13 @@ namespace bailinho_senior_system.views
             Venda vendaAtual = vendas[currentIndex];
             List<Venda> listaExibida = listTable.DataSource as List<Venda>;
 
-            // Encontra o índice da venda atual na lista exibida (que pode ser filtrada)
             int indexNaListaExibida = listaExibida?.FindIndex(v => v.Id == vendaAtual.Id) ?? -1;
 
             if (indexNaListaExibida != -1)
             {
-                // Limpa seleções anteriores e força a seleção usando o BindingContext
+                // Limpa seleções anteriores e força a nova seleção
                 listTable.ClearSelection();
-
-                // Seleciona a linha pelo índice na lista exibida
                 listTable.Rows[indexNaListaExibida].Selected = true;
-
-                // Rola para a linha selecionada
                 listTable.FirstDisplayedScrollingRowIndex = indexNaListaExibida;
             }
             else
@@ -445,33 +450,28 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Eventos de Navegação e Lista ---
 
         private void firstBtn_Click(object sender, EventArgs e)
         {
-            if (currentIndex > 0) currentIndex = 0;
-            ReadVendas();
+            currentIndex = 0;
             SetState(ViewState.Listing);
         }
 
         private void previousBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex > 0) currentIndex--;
-            ReadVendas();
             SetState(ViewState.Listing);
         }
 
         private void nextBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex < vendas.Count - 1) currentIndex++;
-            ReadVendas();
             SetState(ViewState.Listing);
         }
 
         private void lastBtn_Click(object sender, EventArgs e)
         {
-            if (currentIndex < vendas.Count - 1) currentIndex = vendas.Count - 1;
-            ReadVendas();
+            currentIndex = vendas.Count - 1;
             SetState(ViewState.Listing);
         }
 
@@ -484,13 +484,14 @@ namespace bailinho_senior_system.views
 
             if (vendaSelecionada != null)
             {
+                // Encontra o índice na lista de vendas
                 int novoIndex = vendas.FindIndex(v => v.Id == vendaSelecionada.Id);
 
                 if (novoIndex != -1)
                 {
                     currentIndex = novoIndex;
                 }
-                SetState(ViewState.Listing);
+                SetState(ViewState.Listing); // Atualiza a exibição da venda selecionada
             }
         }
 
@@ -507,7 +508,6 @@ namespace bailinho_senior_system.views
                                  System.Globalization.CultureInfo.InvariantCulture,
                                  out totalBusca))
             {
-                // Tenta ajustar o valor total se a entrada parecer um inteiro formatado como moeda (ex: 1200 -> 12.00)
                 if (totalBusca > 100 && !searchTerm.Contains(","))
                 {
                     totalBusca /= 100;
@@ -517,24 +517,16 @@ namespace bailinho_senior_system.views
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                // NOVO: Limpa o termo de busca de símbolos e pontuações para a comparação do Valor Total
                 string cleanSearchTerm = searchTerm.Replace("r$", "").Replace(" ", "").Replace(",", "").Replace(".", "");
 
+                // Busca por ID (se for numérico) OU por Nome de Cliente/Nome de Evento/Forma de Pagamento/Valor Total
                 filteredVendas = vendas.Where(venda =>
                     // 1. Busca por ID (Igualdade Exata)
                     (int.TryParse(searchTerm, out int id) && venda.Id == id) ||
-                    // 2. Busca por Nome de Cliente (Substring)
                     (venda.NomeCliente != null && venda.NomeCliente.ToLower().Contains(searchTerm)) ||
-                    // 3. Busca por Nome de Evento (Substring)
                     (venda.NomeEvento != null && venda.NomeEvento.ToLower().Contains(searchTerm)) ||
-                    // 4. Busca por Forma de Pagamento (Substring)
                     (venda.FormaPagamento != null && venda.FormaPagamento.ToLower().Contains(searchTerm)) ||
-
-                    // 5. Busca por Valor Total (Igualdade Exata) - Se a conversão foi bem-sucedida
                     (totalBusca >= 0 && venda.ValorTotal == totalBusca) ||
-
-                    // 6. Busca por Valor Total (Substring) - Robusta
-                    // Converte o valor para string neutra (ex: "307.00" -> "307"), remove o ponto, e verifica a substring.
                     venda.ValorTotal.ToString(
                         "0.##", // Omite zeros finais (R$ 307,00 -> "307"; R$ 12,50 -> "12.5")
                         System.Globalization.CultureInfo.InvariantCulture
@@ -548,7 +540,6 @@ namespace bailinho_senior_system.views
                 filteredVendas = vendas;
             }
 
-            // Atualiza o DataGridView com a lista filtrada
             listTable.DataSource = null;
             listTable.DataSource = filteredVendas;
 
@@ -556,10 +547,7 @@ namespace bailinho_senior_system.views
             if (filteredVendas.Count > 0)
             {
                 int idPrimeiroItem = filteredVendas[0].Id;
-                // O currentIndex deve refletir a posição do item na lista COMPLETA (vendas)
                 currentIndex = vendas.FindIndex(venda => venda.Id == idPrimeiroItem);
-
-                // Popula com a venda encontrada na lista completa
                 PopulateVenda(vendas[currentIndex]);
             }
             else
@@ -572,7 +560,6 @@ namespace bailinho_senior_system.views
             SetState(ViewState.Listing);
         }
 
-        // --- Eventos CRUD ---
 
         private void newBtn_Click(object sender, EventArgs e)
         {
@@ -604,7 +591,6 @@ namespace bailinho_senior_system.views
 
             try
             {
-                // 1. Validação final
                 List<string> errors = ValidateVenda();
                 if (errors.Count > 0)
                 {
@@ -612,13 +598,12 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
-                // 2. Coleta final de dados
                 editVenda.IdCliente = (int)cbClientes.SelectedValue;
                 editVenda.IdEvento = (int)cbEventos.SelectedValue;
                 editVenda.FormaPagamento = cbPagamentos.SelectedItem.ToString();
+
                 CalcularValorTotal(); // Último cálculo antes de salvar
 
-                // 3. Persistência Transacional (criação/atualização e ajuste de estoque)
                 if (state == ViewState.Creating)
                 {
                     vendaRepository.CreateVenda(editVenda, itensVenda.ToList());
@@ -630,7 +615,6 @@ namespace bailinho_senior_system.views
 
                 MessageBox.Show("Venda salva e estoque atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // 4. Resetar a View
                 ReadVendas();
                 currentIndex = vendas.FindIndex(v => v.Id == editVenda.Id); // Tenta focar no item salvo
                 if (currentIndex == -1) currentIndex = 0;
@@ -681,8 +665,6 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Eventos de Adição/Remoção de Itens da Venda (dgvItensVendidos) ---
-
         private void btnAdicionar_Click(object sender, EventArgs e)
         {
             Produto produto = GetProdutoSelecionado();
@@ -694,14 +676,12 @@ namespace bailinho_senior_system.views
                 return;
             }
 
-            // 1. Verificar Estoque (Validação Pessimista)
             if (produto.QtdEstoque < quantidade)
             {
                 MessageBox.Show($"Estoque insuficiente. Disponível: {produto.QtdEstoque}", "Erro de Estoque", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // 2. Criar Item de Venda Temporário
             ProdutoVenda novoItem = new ProdutoVenda
             {
                 IdProduto = produto.Id,
@@ -711,26 +691,24 @@ namespace bailinho_senior_system.views
                 Valor = quantidade * produto.Preco
             };
 
-            // 3. Adicionar/Atualizar na Lista
             var itemExistente = itensVenda.FirstOrDefault(i => i.IdProduto == produto.Id);
             if (itemExistente != null)
             {
                 itemExistente.Quantidade += quantidade;
                 itemExistente.Valor = itemExistente.Quantidade * produto.Preco;
-                itensVenda.ResetBindings(); // Força a atualização da BindingList/grade
+                itensVenda.ResetBindings(); // Força a atualização
             }
             else
             {
                 itensVenda.Add(novoItem);
             }
 
-            // 4. Atualizar Estoque (Em Memória - para não vender em excesso na mesma sessão)
+            // Atualizar Estoque (Em Memória - para não vender em excesso na mesma sessão)
             produto.QtdEstoque -= quantidade;
 
-            // 5. Atualizar UI
             CalcularValorTotal();
             numQuantidade.Value = 0;
-            comboBox1.SelectedIndex = -1; // Limpa a seleção do produto
+            comboBox1.SelectedIndex = -1;
         }
 
         private void btnRemover_Click(object sender, EventArgs e)
@@ -758,14 +736,14 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
-                // 1. Reverter Estoque (Memória - ADICIONAR DE VOLTA)
+                // Reverter Estoque (Memória - ADICIONAR DE VOLTA)
                 Produto produtoOriginal = GetProdutoById(itemExistente.IdProduto);
                 if (produtoOriginal != null)
                 {
                     produtoOriginal.QtdEstoque += quantidadeParaRemover;
                 }
 
-                // 2. Reduz a quantidade na venda
+                // Reduz a quantidade na venda
                 itemExistente.Quantidade -= quantidadeParaRemover;
 
                 if (itemExistente.Quantidade > 0)
@@ -780,7 +758,7 @@ namespace bailinho_senior_system.views
                     itensVenda.Remove(itemExistente);
                 }
 
-                // 3. Forçar Recálculo total da venda
+                // Forçar Recálculo total da venda
                 CalcularValorTotal();
 
                 MessageBox.Show($"{quantidadeParaRemover} unidades de {produto.Nome} removidas.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -805,7 +783,7 @@ namespace bailinho_senior_system.views
 
                 if (result == DialogResult.Yes)
                 {
-                    // 1. Reverter Estoque (Memória)
+                    // Reverter Estoque (Memória)
                     Produto produtoOriginal = GetProdutoById(itemParaRemover.IdProduto);
                     if (produtoOriginal != null)
                     {
@@ -813,10 +791,10 @@ namespace bailinho_senior_system.views
                         produtoOriginal.QtdEstoque += itemParaRemover.Quantidade;
                     }
 
-                    // 2. Remover APENAS da BindingList (MEMÓRIA)
+                    // Remover APENAS da BindingList (MEMÓRIA)
                     itensVenda.Remove(itemParaRemover);
 
-                    // 3. Forçar Recálculo
+                    // Forçar Recálculo
                     CalcularValorTotal();
                 }
             }
@@ -856,7 +834,7 @@ namespace bailinho_senior_system.views
 
                     int diferenca = novaQuantidade - quantidadeAntiga; // Quanto foi aumentado (+) ou diminuído (-)
 
-                    // Validação de Estoque (Se a diferença for positiva)
+                    // Validação de Estoque pra compras
                     if (diferenca > 0 && produtoOriginal.QtdEstoque < diferenca)
                     {
                         MessageBox.Show($"Estoque insuficiente para aumentar. Disponível: {produtoOriginal.QtdEstoque}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -867,14 +845,13 @@ namespace bailinho_senior_system.views
                         return;
                     }
 
-                    // 1. Atualiza Estoque em Memória
+                    // Atualiza Estoque em Memória
                     produtoOriginal.QtdEstoque -= diferenca;
 
-                    // 2. Atualiza o objeto ProdutoVenda
+                    // Atualiza o objeto ProdutoVenda
                     item.Quantidade = novaQuantidade;
                     item.Valor = novaQuantidade * item.PrecoUnitario;
 
-                    // 3. Atualiza a UI
                     itensVenda.ResetBindings();
                     CalcularValorTotal();
                 }
@@ -889,8 +866,6 @@ namespace bailinho_senior_system.views
                 }
             }
         }
-
-        // --- Eventos de Busca e Saída ---
 
         private void searchBtn_Click(object sender, EventArgs e)
         {
