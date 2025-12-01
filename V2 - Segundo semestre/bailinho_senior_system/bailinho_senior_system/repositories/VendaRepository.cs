@@ -25,8 +25,8 @@ namespace bailinho_senior_system.repositories
                 try
                 {
                     string sqlVenda =
-                        "INSERT INTO Venda (valor_total, forma_pagamento, id_cliente, id_evento) " +
-                        "VALUES (@valor_total, @forma_pagamento, @id_cliente, @id_evento); " +
+                        "INSERT INTO Venda (valor_total, forma_pagamento, id_cliente, id_evento, data_venda) " +
+                        "VALUES (@valor_total, @forma_pagamento, @id_cliente, @id_evento, @data_venda); " +
                         "SELECT LAST_INSERT_ID();";
 
                     using (MySqlCommand cmdVenda = new MySqlCommand(sqlVenda, connection, transaction))
@@ -34,6 +34,7 @@ namespace bailinho_senior_system.repositories
                         cmdVenda.Parameters.AddWithValue("@valor_total", venda.ValorTotal);
                         cmdVenda.Parameters.AddWithValue("@forma_pagamento", venda.FormaPagamento);
                         cmdVenda.Parameters.AddWithValue("@id_cliente", venda.IdCliente);
+                        cmdVenda.Parameters.AddWithValue("@data_venda", venda.DataVenda);
                         cmdVenda.Parameters.AddWithValue("@id_evento", venda.IdEvento);
 
                         object result = cmdVenda.ExecuteScalar();
