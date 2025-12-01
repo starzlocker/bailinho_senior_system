@@ -31,14 +31,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VendasView));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageCadastro = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnRemover = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numQuantidade = new System.Windows.Forms.NumericUpDown();
+            this.btnAdicionar = new System.Windows.Forms.Button();
             this.txtTotal = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.btnAdicionar = new System.Windows.Forms.Button();
-            this.numQuantidade = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.dgvItensVendidos = new System.Windows.Forms.DataGridView();
             this.cbEventos = new System.Windows.Forms.ComboBox();
             this.cbPagamentos = new System.Windows.Forms.ComboBox();
@@ -48,8 +49,7 @@
             this.cbClientes = new System.Windows.Forms.ComboBox();
             this.tabPageLista = new System.Windows.Forms.TabPage();
             this.listTable = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
+            this.btnBuscar = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.tsBotoes = new System.Windows.Forms.ToolStrip();
             this.firstBtn = new System.Windows.Forms.ToolStripButton();
@@ -67,8 +67,11 @@
             this.cancelBtn = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.exitBtn = new System.Windows.Forms.ToolStripButton();
+            this.dtDataVenda = new System.Windows.Forms.DateTimePicker();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageCadastro.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numQuantidade)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItensVendidos)).BeginInit();
             this.tabPageLista.SuspendLayout();
@@ -88,22 +91,20 @@
             this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1132, 371);
+            this.tabControl.Size = new System.Drawing.Size(1132, 412);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 30;
             this.tabControl.Tag = "";
+            this.tabControl.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Selecting);
             // 
             // tabPageCadastro
             // 
             this.tabPageCadastro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
-            this.tabPageCadastro.Controls.Add(this.btnRemover);
+            this.tabPageCadastro.Controls.Add(this.dtDataVenda);
+            this.tabPageCadastro.Controls.Add(this.label7);
+            this.tabPageCadastro.Controls.Add(this.groupBox1);
             this.tabPageCadastro.Controls.Add(this.txtTotal);
             this.tabPageCadastro.Controls.Add(this.label6);
-            this.tabPageCadastro.Controls.Add(this.btnAdicionar);
-            this.tabPageCadastro.Controls.Add(this.numQuantidade);
-            this.tabPageCadastro.Controls.Add(this.label4);
-            this.tabPageCadastro.Controls.Add(this.label3);
-            this.tabPageCadastro.Controls.Add(this.comboBox1);
             this.tabPageCadastro.Controls.Add(this.dgvItensVendidos);
             this.tabPageCadastro.Controls.Add(this.cbEventos);
             this.tabPageCadastro.Controls.Add(this.cbPagamentos);
@@ -116,120 +117,146 @@
             this.tabPageCadastro.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageCadastro.Name = "tabPageCadastro";
             this.tabPageCadastro.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageCadastro.Size = new System.Drawing.Size(1124, 333);
+            this.tabPageCadastro.Size = new System.Drawing.Size(1124, 374);
             this.tabPageCadastro.TabIndex = 0;
             this.tabPageCadastro.Text = "Cadastro";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.btnRemover);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.numQuantidade);
+            this.groupBox1.Controls.Add(this.btnAdicionar);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(19, 136);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(386, 147);
+            this.groupBox1.TabIndex = 36;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Gerencie o carrinho de produtos";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(114, 32);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(257, 26);
+            this.comboBox1.TabIndex = 28;
+            // 
             // btnRemover
             // 
-            this.btnRemover.Location = new System.Drawing.Point(305, 165);
+            this.btnRemover.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRemover.Location = new System.Drawing.Point(219, 103);
             this.btnRemover.Name = "btnRemover";
             this.btnRemover.Size = new System.Drawing.Size(99, 28);
             this.btnRemover.TabIndex = 35;
             this.btnRemover.Text = "Remover";
             this.btnRemover.UseVisualStyleBackColor = true;
+            this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
             // 
-            // txtTotal
+            // label3
             // 
-            this.txtTotal.Enabled = false;
-            this.txtTotal.Location = new System.Drawing.Point(148, 211);
-            this.txtTotal.Name = "txtTotal";
-            this.txtTotal.Size = new System.Drawing.Size(256, 26);
-            this.txtTotal.TabIndex = 34;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(14, 35);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(69, 18);
+            this.label3.TabIndex = 29;
+            this.label3.Text = "Produtos";
             // 
-            // label6
+            // label4
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(14, 214);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(107, 18);
-            this.label6.TabIndex = 33;
-            this.label6.Text = "Total a pagar";
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(14, 70);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 18);
+            this.label4.TabIndex = 30;
+            this.label4.Text = "Quantidade";
+            // 
+            // numQuantidade
+            // 
+            this.numQuantidade.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numQuantidade.Location = new System.Drawing.Point(114, 67);
+            this.numQuantidade.Name = "numQuantidade";
+            this.numQuantidade.Size = new System.Drawing.Size(67, 24);
+            this.numQuantidade.TabIndex = 31;
             // 
             // btnAdicionar
             // 
-            this.btnAdicionar.Location = new System.Drawing.Point(190, 165);
+            this.btnAdicionar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdicionar.Location = new System.Drawing.Point(114, 103);
             this.btnAdicionar.Name = "btnAdicionar";
             this.btnAdicionar.Size = new System.Drawing.Size(99, 28);
             this.btnAdicionar.TabIndex = 32;
             this.btnAdicionar.Text = "Adicionar";
             this.btnAdicionar.UseVisualStyleBackColor = true;
+            this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click);
             // 
-            // numQuantidade
+            // txtTotal
             // 
-            this.numQuantidade.Location = new System.Drawing.Point(107, 167);
-            this.numQuantidade.Name = "numQuantidade";
-            this.numQuantidade.Size = new System.Drawing.Size(67, 26);
-            this.numQuantidade.TabIndex = 31;
+            this.txtTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTotal.Location = new System.Drawing.Point(192, 325);
+            this.txtTotal.Name = "txtTotal";
+            this.txtTotal.Size = new System.Drawing.Size(214, 24);
+            this.txtTotal.TabIndex = 34;
             // 
-            // label4
+            // label6
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(14, 175);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(93, 18);
-            this.label4.TabIndex = 30;
-            this.label4.Text = "Quantidade";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(14, 126);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 18);
-            this.label3.TabIndex = 29;
-            this.label3.Text = "Produtos";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(105, 122);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(299, 28);
-            this.comboBox1.TabIndex = 28;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(16, 328);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(94, 18);
+            this.label6.TabIndex = 33;
+            this.label6.Text = "Total a pagar";
             // 
             // dgvItensVendidos
             // 
             this.dgvItensVendidos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItensVendidos.Location = new System.Drawing.Point(420, 20);
             this.dgvItensVendidos.Name = "dgvItensVendidos";
-            this.dgvItensVendidos.Size = new System.Drawing.Size(669, 293);
+            this.dgvItensVendidos.Size = new System.Drawing.Size(669, 331);
             this.dgvItensVendidos.TabIndex = 27;
+            this.dgvItensVendidos.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvItensVendidos_CellBeginEdit);
             this.dgvItensVendidos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItensVendidos_CellContentClick);
             this.dgvItensVendidos.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItensVendidos_CellEndEdit);
             // 
             // cbEventos
             // 
+            this.cbEventos.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbEventos.FormattingEnabled = true;
-            this.cbEventos.Location = new System.Drawing.Point(105, 68);
+            this.cbEventos.Location = new System.Drawing.Point(105, 54);
             this.cbEventos.Margin = new System.Windows.Forms.Padding(4);
             this.cbEventos.Name = "cbEventos";
-            this.cbEventos.Size = new System.Drawing.Size(299, 28);
+            this.cbEventos.Size = new System.Drawing.Size(299, 26);
             this.cbEventos.TabIndex = 21;
+            this.cbEventos.SelectedIndexChanged += new System.EventHandler(this.cbEventos_SelectedIndexChanged_1);
             // 
             // cbPagamentos
             // 
+            this.cbPagamentos.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbPagamentos.FormattingEnabled = true;
-            this.cbPagamentos.Location = new System.Drawing.Point(190, 257);
+            this.cbPagamentos.Location = new System.Drawing.Point(192, 290);
             this.cbPagamentos.Margin = new System.Windows.Forms.Padding(4);
             this.cbPagamentos.Name = "cbPagamentos";
-            this.cbPagamentos.Size = new System.Drawing.Size(214, 28);
+            this.cbPagamentos.Size = new System.Drawing.Size(214, 26);
             this.cbPagamentos.TabIndex = 26;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(14, 72);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(16, 57);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 18);
+            this.label1.Size = new System.Drawing.Size(54, 18);
             this.label1.TabIndex = 22;
             this.label1.Text = "Evento";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -237,11 +264,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(16, 24);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 18);
+            this.label2.Size = new System.Drawing.Size(53, 18);
             this.label2.TabIndex = 19;
             this.label2.Text = "Cliente";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -249,29 +276,29 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(14, 261);
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(16, 294);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(168, 18);
+            this.label5.Size = new System.Drawing.Size(150, 18);
             this.label5.TabIndex = 24;
             this.label5.Text = "Forma de pagamento";
             // 
             // cbClientes
             // 
+            this.cbClientes.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbClientes.FormattingEnabled = true;
             this.cbClientes.Location = new System.Drawing.Point(105, 20);
             this.cbClientes.Margin = new System.Windows.Forms.Padding(4);
             this.cbClientes.Name = "cbClientes";
-            this.cbClientes.Size = new System.Drawing.Size(299, 28);
+            this.cbClientes.Size = new System.Drawing.Size(299, 26);
             this.cbClientes.TabIndex = 20;
             // 
             // tabPageLista
             // 
             this.tabPageLista.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
             this.tabPageLista.Controls.Add(this.listTable);
-            this.tabPageLista.Controls.Add(this.button1);
-            this.tabPageLista.Controls.Add(this.label8);
+            this.tabPageLista.Controls.Add(this.btnBuscar);
             this.tabPageLista.Controls.Add(this.searchBox);
             this.tabPageLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabPageLista.Location = new System.Drawing.Point(4, 34);
@@ -293,7 +320,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.listTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.listTable.Location = new System.Drawing.Point(10, 59);
+            this.listTable.Location = new System.Drawing.Point(7, 39);
             this.listTable.MultiSelect = false;
             this.listTable.Name = "listTable";
             this.listTable.ReadOnly = true;
@@ -301,28 +328,21 @@
             this.listTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.listTable.Size = new System.Drawing.Size(1107, 267);
             this.listTable.TabIndex = 18;
+            this.listTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listTable_CellClick);
             // 
-            // button1
+            // btnBuscar
             // 
-            this.button1.Location = new System.Drawing.Point(602, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(67, 26);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "OK";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 4);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(153, 20);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "Buscar (nome ou Id)";
+            this.btnBuscar.Location = new System.Drawing.Point(599, 7);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(67, 26);
+            this.btnBuscar.TabIndex = 17;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.makeSearch_Click);
             // 
             // searchBox
             // 
-            this.searchBox.Location = new System.Drawing.Point(10, 27);
+            this.searchBox.Location = new System.Drawing.Point(7, 7);
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(585, 26);
             this.searchBox.TabIndex = 16;
@@ -364,7 +384,7 @@
             this.firstBtn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.firstBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.firstBtn.ToolTipText = "Vai ao primeiro registro";
-            this.firstBtn.Click += new System.EventHandler(this.firstBtn_Click_1);
+            this.firstBtn.Click += new System.EventHandler(this.firstBtn_Click);
             // 
             // previousBtn
             // 
@@ -516,12 +536,35 @@
             this.exitBtn.ToolTipText = "Termina a execução do programa e salva no disco todos os dados";
             this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
             // 
+            // dtDataVenda
+            // 
+            this.dtDataVenda.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.dtDataVenda.Enabled = false;
+            this.dtDataVenda.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtDataVenda.Location = new System.Drawing.Point(105, 91);
+            this.dtDataVenda.Name = "dtDataVenda";
+            this.dtDataVenda.Size = new System.Drawing.Size(300, 24);
+            this.dtDataVenda.TabIndex = 42;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(17, 91);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(39, 18);
+            this.label7.TabIndex = 41;
+            this.label7.Text = "Data";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // VendasView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
-            this.ClientSize = new System.Drawing.Size(1161, 466);
+            this.ClientSize = new System.Drawing.Size(1161, 511);
             this.Controls.Add(this.tsBotoes);
             this.Controls.Add(this.tabControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -530,9 +573,13 @@
             this.Name = "VendasView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Vendas";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VendasView_FormClosing);
+            this.Load += new System.EventHandler(this.VendasView_Load);
             this.tabControl.ResumeLayout(false);
             this.tabPageCadastro.ResumeLayout(false);
             this.tabPageCadastro.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numQuantidade)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItensVendidos)).EndInit();
             this.tabPageLista.ResumeLayout(false);
@@ -550,8 +597,7 @@
         private System.Windows.Forms.TabPage tabPageCadastro;
         private System.Windows.Forms.TabPage tabPageLista;
         internal System.Windows.Forms.DataGridView listTable;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.ToolStrip tsBotoes;
         private System.Windows.Forms.ToolStripButton firstBtn;
@@ -584,5 +630,8 @@
         private System.Windows.Forms.TextBox txtTotal;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnRemover;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DateTimePicker dtDataVenda;
+        private System.Windows.Forms.Label label7;
     }
 }

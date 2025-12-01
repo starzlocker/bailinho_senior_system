@@ -27,17 +27,19 @@ namespace bailinho_senior_system.repositories
                     {
                         while (reader.Read())
                         {
-                            var endereco = new Endereco
-                            {
-                                Id = reader.GetInt32("id"),
-                                Cep = reader.GetString("cep"),
-                                Logradouro = reader.GetString("logradouro"),
-                                Bairro = reader.GetString("bairro"),
-                                Cidade = reader.GetString("cidade"),
-                                Numero = reader.GetString("numero"),
-                                Estado = reader.GetString("estado"),
-                                Complemento = reader.IsDBNull(reader.GetOrdinal("complemento")) ? null : reader.GetString("complemento")
-                            };
+                            Endereco endereco = new Endereco(
+                                reader.GetInt32("id"),
+                                reader.GetString("cep"),
+                                reader.GetString("logradouro"),
+                                reader.GetString("bairro"),
+                                reader.GetString("cidade"),
+                                reader.GetString("numero"),
+                                reader.GetString("estado"),
+                                reader.IsDBNull(reader.GetOrdinal("complemento"))
+                                    ? null
+                                    : reader.GetString("complemento")
+                            );
+
                             enderecos.Add(endereco);
                         }
                     }
@@ -70,17 +72,18 @@ namespace bailinho_senior_system.repositories
                         {
                             if (reader.Read())
                             {
-                                endereco = new Endereco
-                                {
-                                    Id = reader.GetInt32("id"),
-                                    Cep = reader.GetString("cep"),
-                                    Logradouro = reader.GetString("logradouro"),
-                                    Bairro = reader.GetString("bairro"),
-                                    Cidade = reader.GetString("cidade"),
-                                    Numero = reader.GetString("numero"),
-                                    Estado = reader.GetString("estado"),
-                                    Complemento = reader.IsDBNull(reader.GetOrdinal("complemento")) ? null : reader.GetString("complemento")
-                                };
+                                endereco = new Endereco(
+                                    reader.GetInt32("id"),
+                                    reader.GetString("cep"),
+                                    reader.GetString("logradouro"),
+                                    reader.GetString("bairro"),
+                                    reader.GetString("cidade"),
+                                    reader.GetString("numero"),
+                                    reader.GetString("estado"),
+                                    reader.IsDBNull(reader.GetOrdinal("complemento"))
+                                        ? null
+                                        : reader.GetString("complemento")
+                                );
                             }
                         }
                     }

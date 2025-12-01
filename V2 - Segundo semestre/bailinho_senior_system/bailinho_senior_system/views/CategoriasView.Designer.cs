@@ -40,7 +40,6 @@
             this.tabPageLista = new System.Windows.Forms.TabPage();
             this.listTable = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.tsBotoes = new System.Windows.Forms.ToolStrip();
             this.firstBtn = new System.Windows.Forms.ToolStripButton();
@@ -78,7 +77,7 @@
             this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(853, 230);
+            this.tabControl.Size = new System.Drawing.Size(853, 428);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 26;
             this.tabControl.Tag = "";
@@ -92,17 +91,18 @@
             this.tabPageCadastro.Controls.Add(this.nomeBox);
             this.tabPageCadastro.Controls.Add(this.idBox);
             this.tabPageCadastro.Controls.Add(this.descricaoBox);
-            this.tabPageCadastro.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabPageCadastro.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPageCadastro.Location = new System.Drawing.Point(4, 34);
             this.tabPageCadastro.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageCadastro.Name = "tabPageCadastro";
             this.tabPageCadastro.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageCadastro.Size = new System.Drawing.Size(845, 192);
+            this.tabPageCadastro.Size = new System.Drawing.Size(845, 390);
             this.tabPageCadastro.TabIndex = 0;
             this.tabPageCadastro.Text = "Cadastro";
             // 
             // label3
             // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(404, 16);
@@ -114,9 +114,10 @@
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(14, 72);
+            this.label2.Location = new System.Drawing.Point(28, 74);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 18);
@@ -126,8 +127,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Enabled = false;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(14, 25);
+            this.label1.Location = new System.Drawing.Point(28, 29);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(24, 18);
@@ -136,24 +138,29 @@
             // 
             // nomeBox
             // 
-            this.nomeBox.Location = new System.Drawing.Point(71, 68);
+            this.nomeBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nomeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nomeBox.Location = new System.Drawing.Point(85, 70);
             this.nomeBox.Margin = new System.Windows.Forms.Padding(4);
             this.nomeBox.Name = "nomeBox";
-            this.nomeBox.Size = new System.Drawing.Size(314, 26);
+            this.nomeBox.Size = new System.Drawing.Size(314, 24);
             this.nomeBox.TabIndex = 12;
             // 
             // idBox
             // 
             this.idBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.idBox.Location = new System.Drawing.Point(71, 22);
+            this.idBox.Enabled = false;
+            this.idBox.Location = new System.Drawing.Point(85, 26);
             this.idBox.Margin = new System.Windows.Forms.Padding(4);
             this.idBox.Name = "idBox";
             this.idBox.ReadOnly = true;
-            this.idBox.Size = new System.Drawing.Size(314, 26);
+            this.idBox.Size = new System.Drawing.Size(314, 24);
             this.idBox.TabIndex = 11;
             // 
             // descricaoBox
             // 
+            this.descricaoBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.descricaoBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.descricaoBox.Location = new System.Drawing.Point(407, 38);
             this.descricaoBox.Margin = new System.Windows.Forms.Padding(4);
             this.descricaoBox.Multiline = true;
@@ -166,14 +173,13 @@
             this.tabPageLista.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPageLista.Controls.Add(this.listTable);
             this.tabPageLista.Controls.Add(this.button1);
-            this.tabPageLista.Controls.Add(this.label8);
             this.tabPageLista.Controls.Add(this.searchBox);
             this.tabPageLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabPageLista.Location = new System.Drawing.Point(4, 34);
             this.tabPageLista.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageLista.Name = "tabPageLista";
             this.tabPageLista.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPageLista.Size = new System.Drawing.Size(845, 192);
+            this.tabPageLista.Size = new System.Drawing.Size(845, 390);
             this.tabPageLista.TabIndex = 1;
             this.tabPageLista.Text = "Lista";
             // 
@@ -188,38 +194,29 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.listTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.listTable.Location = new System.Drawing.Point(10, 59);
+            this.listTable.Location = new System.Drawing.Point(7, 40);
             this.listTable.MultiSelect = false;
             this.listTable.Name = "listTable";
             this.listTable.ReadOnly = true;
             this.listTable.RowHeadersVisible = false;
             this.listTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.listTable.Size = new System.Drawing.Size(831, 177);
+            this.listTable.Size = new System.Drawing.Size(831, 375);
             this.listTable.TabIndex = 18;
-            this.listTable.SelectionChanged += new System.EventHandler(this.listTable_SelectionChanged);
+            this.listTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listTable_CellClick);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(602, 27);
+            this.button1.Location = new System.Drawing.Point(599, 8);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(67, 26);
             this.button1.TabIndex = 17;
-            this.button1.Text = "OK";
+            this.button1.Text = "Buscar";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 4);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(153, 20);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "Buscar (nome ou Id)";
+            this.button1.Click += new System.EventHandler(this.makeSearch_Click);
             // 
             // searchBox
             // 
-            this.searchBox.Location = new System.Drawing.Point(10, 27);
+            this.searchBox.Location = new System.Drawing.Point(7, 8);
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(585, 26);
             this.searchBox.TabIndex = 16;
@@ -418,7 +415,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(210)))), ((int)(((byte)(221)))));
-            this.ClientSize = new System.Drawing.Size(884, 361);
+            this.ClientSize = new System.Drawing.Size(884, 559);
             this.Controls.Add(this.tsBotoes);
             this.Controls.Add(this.tabControl);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -447,7 +444,6 @@
         private System.Windows.Forms.TabPage tabPageLista;
         internal System.Windows.Forms.DataGridView listTable;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.ToolStrip tsBotoes;
         private System.Windows.Forms.ToolStripButton firstBtn;

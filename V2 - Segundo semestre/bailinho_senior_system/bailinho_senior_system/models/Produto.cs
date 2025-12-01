@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +8,15 @@ namespace bailinho_senior_system.models
 {
     public class Produto
     {
+        public Produto() { }
+        public Produto(string Nome, string Descricao, int QtdEstoque, decimal Preco)
+        {
+            this.Nome = Nome;
+            this.Descricao = Descricao;
+            this.QtdEstoque = QtdEstoque;
+            this.Preco = Preco;
+        }
+
         private int id;
         public int Id
         {
@@ -17,11 +24,11 @@ namespace bailinho_senior_system.models
             set
             {
                 if (value < 0)
-                    throw new ArgumentException("Id cannot be negative", nameof(value));
-
+                    throw new ArgumentException("Id não pode ser negativo.", nameof(value));
                 id = value;
             }
         }
+
         private string nome;
         public string Nome
         {
@@ -29,7 +36,8 @@ namespace bailinho_senior_system.models
             set
             {
                 string validacao = ValidadorHelper.VerificarVazio(value, "Nome");
-                if (validacao != null) throw new ArgumentException(validacao);
+                if (validacao != null) 
+                    throw new ArgumentException(validacao);
 
                 if (value.Length > 150)
                     throw new ArgumentException("O nome do produto não pode conter mais que 150 caracteres");
@@ -45,7 +53,8 @@ namespace bailinho_senior_system.models
             set
             {
                 string validacao = ValidadorHelper.VerificarVazio(value, "Descrição");
-                if (validacao != null) throw new ArgumentException(validacao);
+                if (validacao != null) 
+                    throw new ArgumentException(validacao);
 
                 if (value.Length > 150)
                     throw new ArgumentException("A descrição do produto não pode conter mais que 150 caracteres");
@@ -86,48 +95,30 @@ namespace bailinho_senior_system.models
         public int IdCategoria
         {
             get { return id_categoria; }
-            set { id_categoria = value; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Id não pode ser negativo.", nameof(value));
+                id_categoria = value;
+            }
         }
 
         private string categoria;
         public string Categoria
         {
             get { return categoria; }
-            set { categoria = value; }
-        }
-
-        private int id_fornecedor;
-        public int IdFornecedor
-        {
-            get { return id_fornecedor; }
-            set
-            {
-                id_fornecedor = value;
-            }
-        }
-
-        private string fornecedor;
-        public string Fornecedor
-        {
-            get { return fornecedor; }
             set 
             {
-                fornecedor = value;
+                string validacao = ValidadorHelper.VerificarVazio(value, "Nome");
+                if (validacao != null)
+                    throw new ArgumentException(validacao); 
+                
+                categoria = value;
             }
         }
 
-        public Produto() { }
-        public Produto(
-            string Nome,
-            string Descricao,
-            int QtdEstoque,
-            decimal Preco
-        )
-        {
-            this.Nome = Nome;
-            this.Descricao = Descricao;
-            this.QtdEstoque = QtdEstoque;
-            this.Preco = Preco;
-        }
+        public List<ProdutoFornecedor> Fornecedores { get; set; } = new List<ProdutoFornecedor>();
+
+        public List<ProdutoFornecedor> FornecedoresApagados { get; set; } = new List<ProdutoFornecedor>();
     }
 }

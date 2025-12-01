@@ -1,14 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bailinho_senior_system.models
 {
     public class Evento
     {
         public Evento() { }
+        public Evento(int id, string nome, string descricao, DateTime data, TimeSpan hora, 
+                        decimal valor_entrada, int id_endereco, Endereco endereco)
+        {
+            Id = id;
+            Nome = nome;
+            Descricao = descricao;
+            Data = data;
+            Hora = hora;
+            ValorEntrada = valor_entrada;
+            IdEndereco = id_endereco;
+            Endereco = endereco;
+            EnderecoCompleto = endereco.EnderecoCompleto;
+        }
 
         private int id;
         public int Id
@@ -28,8 +37,10 @@ namespace bailinho_senior_system.models
             get { return nome; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Nome não pode estar vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Nome");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
 
                 if (value.Length > 150)
                     throw new ArgumentException("O nome do evento não pode conter mais que 150 caracteres");
@@ -103,28 +114,7 @@ namespace bailinho_senior_system.models
             }
         }
 
-        public string EnderecoLogradouro { get; set; }
-        public string EnderecoNumero { get; set; }
-        public string EnderecoBairro { get; set; }
-        public string EnderecoCidade { get; set; }
-        public string EnderecoEstado { get; set; }
-        public string EnderecoCep { get; set; }
-        public string EnderecoComplemento { get; set; }
-
-        public string EnderecoCompleto
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(EnderecoLogradouro))
-                {
-                    return "Endereço Não Informado";
-                }
-
-                // Padrão de endereço brasileiro: Rua, Número - Bairro, Cidade/Estado, CEP
-                string complementoStr = string.IsNullOrWhiteSpace(EnderecoComplemento) ? "" : $" ({EnderecoComplemento})";
-
-                return $"{EnderecoLogradouro}, {EnderecoNumero}{complementoStr} - {EnderecoBairro}, {EnderecoCidade}/{EnderecoEstado} - CEP: {EnderecoCep}";
-            }
-        }
+        public Endereco Endereco { get; set; }
+        public string EnderecoCompleto { get; set; }
     }
 }

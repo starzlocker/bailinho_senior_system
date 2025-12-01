@@ -20,7 +20,6 @@ namespace bailinho_senior_system
 
         CategoriasView frmCategorias;
         FornecedoresView frmFornecedores;
-
         RelatoriosView frmRelatorios;
 
         public FrmHome()
@@ -35,7 +34,6 @@ namespace bailinho_senior_system
                 frmProdutos = new ProdutosView();
                 frmProdutos.Show();
             }
-
         }
 
         private void btnEventos_Click(object sender, EventArgs e)
@@ -173,7 +171,24 @@ namespace bailinho_senior_system
             this.btnVendas_Click(sender, e);
         }
 
-        private void btnRelatorio_Click(object sender, EventArgs e)
+        private void pbRelatorio_Click(object sender, EventArgs e)
+        {
+            this.btnRelatorios_Click(sender, e);
+        }
+
+        private void lbTituloRelatorio_Click(object sender, EventArgs e)
+        {
+            this.btnRelatorios_Click(sender, e);
+
+        }
+
+        private void lbDescricaoRelatorio_Click(object sender, EventArgs e)
+        {
+            this.btnRelatorios_Click(sender, e);
+
+        }
+
+        private void btnRelatorios_Click(object sender, EventArgs e)
         {
             if (frmRelatorios == null || frmRelatorios.IsDisposed)
             {

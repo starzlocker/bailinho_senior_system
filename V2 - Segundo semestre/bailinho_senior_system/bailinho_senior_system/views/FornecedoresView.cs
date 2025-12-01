@@ -1,25 +1,28 @@
 ﻿using bailinho_senior_system.models;
 using bailinho_senior_system.repositories;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace bailinho_senior_system.views
 {
     public partial class FornecedoresView : Form
     {
-        List<Fornecedor> fornecedores = new List<Fornecedor>();
-        int currentIndex = 0;
-
         private enum ViewState { Listing, Editing, Creating }
+
+        private List<Fornecedor> fornecedores = new List<Fornecedor>();
+        private int currentIndex = 0;
         private ViewState state;
         private Fornecedor editItem = null;
+
+        private FornecedorRepository fornecedorRepository = new FornecedorRepository();
+        private ProdutoRepository produtoRepository = new ProdutoRepository();
+        private ProdutoFornecedorRepository produtoFornecedorRepository = new ProdutoFornecedorRepository();
 
         public FornecedoresView()
         {
@@ -28,147 +31,230 @@ namespace bailinho_senior_system.views
 
         private void FornecedoresView_Load(object sender, EventArgs e)
         {
-            tabControl.Selecting += tabControl_Selecting;
+            ConfigurarDataGridView(listTable);
+            ConfigurarListProdutosView(listProdutos);
 
-            currentIndex = 0;
-            ReadProdutos();
             ReadFornecedores();
+            ReadProdutos();
+
             if (fornecedores.Count > 0)
                 PopulateFornecedor(fornecedores[currentIndex]);
 
             SetState(ViewState.Listing);
         }
 
-        private List<string> ValidateForm()
+        private void tabControl_Selecting_1(object sender, TabControlCancelEventArgs e)
         {
-            List<string> errors = new List<string>();
+            if (state == ViewState.Editing || state == ViewState.Creating)
+            {
+                if (e.TabPage.Name != "tabPageCadastro")
+                {
+                    var result = MessageBox.Show(
+                        "Se você sair, suas alterações serão perdidas. Deseja continuar?",
+                        "Confirmar",
+                        MessageBoxButtons.OKCancel,
+                        MessageBoxIcon.Warning);
 
-            if (nomeBox.Text.Length == 0) errors.Add("Nome não pode estar vazio!");
-            else if (nomeBox.Text.Length > 150) errors.Add("Nome deve ter até 150 caracteres.");
+                    if (result == DialogResult.Cancel)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
 
-            if (cnpjBox.Text.Length == 0) errors.Add("CNPJ não pode estar vazio!");
-            else if (cnpjBox.Text.Length > 14) errors.Add("CPNJ deve ter no máximo 14 dígitos!");
-
-            if (emailBox.Text.Length == 0) errors.Add("E-mail não pode estar vazio!");
-            else if (emailBox.Text.Length > 150) errors.Add("E-mail deve ter até 150 caracteres.");
-
-            if (telefoneBox.Text.Length == 0) errors.Add("Telefone não pode estar vazio!");
-
-            return errors;
+                    editItem = null;
+                    SetState(ViewState.Listing);
+                }
+            }
         }
 
-        private void SetState(ViewState newState)
+        private void FornecedoresView_FormClosing(object sender, FormClosingEventArgs e)
         {
-            state = newState;
-
-            var creating = state == ViewState.Creating;
-            var editing = state == ViewState.Editing;
-            var listing = state == ViewState.Listing;
-
-
-            string curTab = tabControl.SelectedTab?.Name ?? "";
-
-            if (creating || editing)
+            if (state == ViewState.Editing || state == ViewState.Creating)
             {
-                SwitchToTabByName("tabPageCadastro");
+                var result = MessageBox.Show(
+                    "Se você sair, suas alterações serão perdidas. Deseja continuar?",
+                    "Confirmar",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+                if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
             }
+        }
 
+        private void ConfigurarDataGridView(DataGridView dgv)
+        {
+            // Configurações visuais e de comportamento (listTable - Fornecedores)
+            dgv.AutoGenerateColumns = false;
+            dgv.ReadOnly = true;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.AllowUserToAddRows = false;
+            dgv.MultiSelect = false;
 
-            deleteBtn.Enabled = fornecedores.Count > 0 && listing;
-            editBtn.Enabled = fornecedores.Count > 0 && listing;
-            newBtn.Enabled = listing;
-            searchBtn.Enabled = fornecedores.Count > 0 && listing;
+            // Estilos visuais
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgv.ColumnHeadersHeight = 30;
+            dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
+            dgv.Columns.Clear();
 
-            saveBtn.Enabled = editing || creating;
-            cancelBtn.Enabled = editing || creating;
-
-            nextBtn.Enabled = fornecedores.Count > 0 && listing && currentIndex < fornecedores.Count - 1;
-            lastBtn.Enabled = fornecedores.Count > 0 && listing && currentIndex < fornecedores.Count - 1;
-            firstBtn.Enabled = fornecedores.Count > 0 && listing && currentIndex > 0;
-            previousBtn.Enabled = fornecedores.Count > 0 && listing && currentIndex > 0;
-
-            nomeBox.ReadOnly = listing;
-            cnpjBox.ReadOnly = listing;
-            emailBox.ReadOnly = listing;
-            telefoneBox.ReadOnly = listing;
-            produtoBox.Enabled = !listing;
-            addProdutoBtn.Enabled = !listing;
-            removeProdutoBtn.Enabled = !listing;
-
-
-            if (fornecedores.Count == 0 || creating)
+            // Adição e Mapeamento das Colunas
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
             {
-                CleanupFields();
-            }
-            else if (listing)
-            {
-                PopulateFornecedor(fornecedores[currentIndex]);
-            }
+                HeaderText = "ID",
+                DataPropertyName = "Id",
+                Name = "Id",
+                Visible = false,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
 
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "Nome",
+                DataPropertyName = "Nome",
+            });
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "CNPJ",
+                DataPropertyName = "Cnpj",
+            });
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "E-mail",
+                DataPropertyName = "Email",
+            });
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "Telefone",
+                DataPropertyName = "Telefone",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
+        }
+
+        private void ConfigurarListProdutosView(DataGridView dgv)
+        {
+            // Configurações visuais e de comportamento (listProdutos - Produtos do Fornecedor)
+            dgv.AutoGenerateColumns = false;
+            dgv.ReadOnly = true;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.AllowUserToAddRows = false;
+            dgv.MultiSelect = false;
+
+            // Estilos visuais
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230);
+            dgv.ColumnHeadersHeight = 30;
+            dgv.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
+            dgv.Columns.Clear();
+
+            // Coluna de Ação (Remover)
+            dgv.Columns.Add(new DataGridViewButtonColumn()
+            {
+                HeaderText = "Remover",
+                Text = "X",
+                UseColumnTextForButtonValue = true,
+                Name = "colRemoverItem",
+                Width = 70,
+                Resizable = DataGridViewTriState.False,
+                ReadOnly = false
+            });
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "ID Prod.",
+                DataPropertyName = "IdProduto",
+                Name = "IdProduto",
+                Visible = true,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "ID",
+                DataPropertyName = "Id",
+                Name = "Id",
+                Visible = false
+            });
+
+            dgv.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                HeaderText = "Produto",
+                DataPropertyName = "NomeProduto",
+                Name = "NomeProduto",
+                ReadOnly = true,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
         }
 
         private void ReadFornecedores()
         {
             try
             {
-                DataTable dataTable = new DataTable();
-
-                dataTable.Columns.Add("Id");
-                dataTable.Columns.Add("Nome");
-                dataTable.Columns.Add("CNPJ");
-                dataTable.Columns.Add("E-mail");
-                dataTable.Columns.Add("Telefone");
-
-                FornecedorRepository fornecedorRepository = new FornecedorRepository();
+                // Carrega todos os fornecedores
                 this.fornecedores = fornecedorRepository.GetFornecedores();
-                foreach (Fornecedor f in fornecedores)
-                {
-                    var row = dataTable.NewRow();
-
-                    row["Id"] = f.Id;
-                    row["Nome"] = f.Nome;
-                    row["CNPJ"] = f.Cnpj;
-                    row["E-mail"] = f.Email;
-                    row["Telefone"] = f.Telefone;
-
-                    dataTable.Rows.Add(row);
-                }
-
-                listTable.SelectionChanged -= listTable_SelectionChanged;
-                listTable.DataSource = dataTable;
-                listTable.SelectionChanged += listTable_SelectionChanged;
-
+                listTable.DataSource = null;
+                listTable.DataSource = this.fornecedores;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao buscar fornecedores: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
-
         }
 
-        private void previousBtn_Click(object sender, EventArgs e)
+        private void ReadProdutos()
         {
-            if (currentIndex > 0) currentIndex--;
-            SetState(ViewState.Listing);
+            try
+            {
+                var produtos = produtoRepository.GetProdutos();
+
+                if (produtos.Count == 0) { return; }
+
+                produtoBox.DisplayMember = "Nome";
+                produtoBox.ValueMember = "Id";
+                produtoBox.DataSource = produtos;
+                produtoBox.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao buscar produtos: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void nextBtn_Click(object sender, EventArgs e)
+        private void ReadProdutosFornecedor(Fornecedor fornecedor)
         {
-            if (currentIndex < fornecedores.Count - 1) currentIndex++;
-            SetState(ViewState.Listing);
-        }
+            try
+            {
+                // Busca produtos vinculados ao fornecedor
+                var produtosPorFornecedor = produtoFornecedorRepository.GetProdutosPorFornecedor(fornecedor.Id);
 
-        private void firstBtn_Click(object sender, EventArgs e)
-        {
-            if (currentIndex > 0) currentIndex = 0;
-            SetState(ViewState.Listing);
-        }
+                // Limpa e repopula a lista de produtos fornecidos
+                fornecedor.Produtos.Clear();
+                foreach (var p in produtosPorFornecedor)
+                {
+                    // Apenas adiciona se o item não estiver marcado para ser apagado (durante edição)
+                    if (fornecedor.ProdutosApagados == null || !fornecedor.ProdutosApagados.Any(pa => pa.IdProduto == p.IdProduto))
+                    {
+                        fornecedor.Produtos.Add(p);
+                    }
+                }
 
-        private void lastBtn_Click(object sender, EventArgs e)
-        {
-            if (currentIndex < fornecedores.Count - 1) currentIndex = fornecedores.Count - 1;
-            SetState(ViewState.Listing);
+                listProdutos.DataSource = null;
+                listProdutos.DataSource = fornecedor.Produtos;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao buscar produtos do fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void PopulateFornecedor(Fornecedor fornecedor)
@@ -179,6 +265,7 @@ namespace bailinho_senior_system.views
             emailBox.Text = fornecedor.Email ?? "";
             telefoneBox.Text = fornecedor.Telefone ?? "";
 
+            // Recarrega a grade de produtos fornecidos
             ReadProdutosFornecedor(fornecedor);
         }
 
@@ -192,6 +279,164 @@ namespace bailinho_senior_system.views
             produtoBox.SelectedValue = -1;
             listProdutos.DataSource = null;
 
+            // Limpa produtos apagados em memória, caso tenha sido cancelado um delete
+            if (editItem != null)
+            {
+                editItem.ProdutosApagados.Clear();
+            }
+        }
+
+        private List<string> ValidateForm()
+        {
+            List<string> errors = new List<string>();
+
+            if (nomeBox.Text.Length == 0) errors.Add("Nome não pode estar vazio!");
+            else if (nomeBox.Text.Length > 150) errors.Add("Nome deve ter até 150 caracteres.");
+
+            if (cnpjBox.Text.Length == 0) errors.Add("CNPJ não pode estar vazio!");
+            else if (cnpjBox.Text.Length > 14) errors.Add("CPNJ deve ter no máximo 14 dígitos.");
+
+            if (emailBox.Text.Length == 0) errors.Add("E-mail não pode estar vazio!");
+            else if (emailBox.Text.Length > 150) errors.Add("E-mail deve ter até 150 caracteres.");
+
+            if (telefoneBox.Text.Length == 0) errors.Add("Telefone não pode estar vazio!");
+
+            return errors;
+        }
+
+        private void SetState(ViewState newState)
+        {
+            state = newState;
+
+            bool creating = state == ViewState.Creating;
+            bool editing = state == ViewState.Editing;
+            bool listing = state == ViewState.Listing;
+            bool creatingOrEditing = creating || editing;
+
+            int count = fornecedores.Count;
+
+            if (creatingOrEditing)
+            {
+                SwitchToTabByName("tabPageCadastro");
+            }
+
+            // CRUD
+            deleteBtn.Enabled = count > 0 && listing;
+            editBtn.Enabled = count > 0 && listing;
+            newBtn.Enabled = listing;
+            searchBtn.Enabled = listing;
+            saveBtn.Enabled = creatingOrEditing;
+            cancelBtn.Enabled = creatingOrEditing;
+
+            // Navegação
+            nextBtn.Enabled = listing && currentIndex < count - 1;
+            lastBtn.Enabled = listing && currentIndex < count - 1;
+            firstBtn.Enabled = listing && currentIndex > 0;
+            previousBtn.Enabled = listing && currentIndex > 0;
+
+            // ReadOnly dos Campos
+            nomeBox.ReadOnly = listing;
+            cnpjBox.ReadOnly = listing;
+            emailBox.ReadOnly = listing;
+            telefoneBox.ReadOnly = listing;
+
+            // Desabilita controle de inclusão de produtos em modo de listagem
+            produtoBox.Enabled = !listing;
+            addProdutoBtn.Enabled = !listing;
+
+            if (count == 0 || creating)
+            {
+                CleanupFields();
+            }
+            else if (listing && currentIndex >= 0)
+            {
+                PopulateFornecedor(fornecedores[currentIndex]);
+                UpdateDataGridViewSelection();
+            }
+
+            // Controle de visibilidade do botão 'X' (Remover Item)
+            if (listProdutos.Columns.Contains("colRemoverItem"))
+            {
+                listProdutos.Columns["colRemoverItem"].Visible = creatingOrEditing;
+            }
+        }
+
+        private void SwitchToTabByName(string tabName)
+        {
+            if (string.IsNullOrEmpty(tabName)) return;
+            var page = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
+            if (page != null) tabControl.SelectedTab = page;
+        }
+
+        private void UpdateDataGridViewSelection()
+        {
+            // Seleciona o fornecedor atual e rola para visualização
+            if (listTable == null || fornecedores.Count == 0 || currentIndex < 0 || currentIndex >= fornecedores.Count)
+            {
+                listTable.ClearSelection();
+                return;
+            }
+
+            // Sincroniza a seleção visual
+            if (listTable.DataSource is List<Fornecedor> listaExibida)
+            {
+                Fornecedor itemAtual = fornecedores[currentIndex];
+                int indexNaListaExibida = listaExibida.FindIndex(f => f.Id == itemAtual.Id);
+
+                if (indexNaListaExibida != -1)
+                {
+                    listTable.ClearSelection(); // Limpa seleções anteriores
+                    listTable.Rows[indexNaListaExibida].Selected = true;
+                    listTable.FirstDisplayedScrollingRowIndex = indexNaListaExibida;
+                }
+            }
+        }
+
+        private void firstBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex > 0) currentIndex = 0;
+            ReadFornecedores();
+            SetState(ViewState.Listing);
+        }
+
+        private void previousBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex > 0) currentIndex--;
+            ReadFornecedores();
+            SetState(ViewState.Listing);
+        }
+
+        private void nextBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex < fornecedores.Count - 1) currentIndex++;
+            ReadFornecedores();
+            SetState(ViewState.Listing);
+        }
+
+        private void lastBtn_Click(object sender, EventArgs e)
+        {
+            if (currentIndex < fornecedores.Count - 1) currentIndex = fornecedores.Count - 1;
+            ReadFornecedores();
+            SetState(ViewState.Listing);
+        }
+
+        private void listTable_CellClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= listTable.Rows.Count) return;
+            if (state != ViewState.Listing) return;
+
+            Fornecedor fornecedorSelecionado = listTable.Rows[e.RowIndex].DataBoundItem as Fornecedor;
+
+            if (fornecedorSelecionado != null)
+            {
+                int novoIndex = fornecedores.FindIndex(f => f.Id == fornecedorSelecionado.Id);
+
+                if (novoIndex != -1)
+                {
+                    currentIndex = novoIndex;
+                }
+                SetState(ViewState.Listing);
+            }
         }
 
         private void newBtn_Click(object sender, EventArgs e)
@@ -208,32 +453,26 @@ namespace bailinho_senior_system.views
 
         private void editBtn_Click(object sender, EventArgs e)
         {
+            if (fornecedores.Count == 0) return;
             editItem = fornecedores[currentIndex];
+
             editItem.ProdutosApagados.Clear();
             SetState(ViewState.Editing);
         }
 
-
         private void saveBtn_Click(object sender, EventArgs e)
         {
+            if (editItem == null) return;
+
+            List<string> errors = ValidateForm();
+            if (errors.Count > 0)
+            {
+                MessageBox.Show(string.Join("\n", errors), "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             try
             {
-                if (editItem == null)
-                {
-                    MessageBox.Show("Nenhum fornecedor selecionado para salvar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                List<string> errors = ValidateForm();
-                if (errors.Count > 0)
-                {
-                    MessageBox.Show(string.Join("\n", errors), "Erros", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                FornecedorRepository fornecedorRepository = new FornecedorRepository();
-                ProdutoFornecedorRepository produtoFornecedorRepository = new ProdutoFornecedorRepository();
-
                 try
                 {
                     editItem.Nome = nomeBox.Text.Trim();
@@ -247,58 +486,29 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
-
                 if (state == ViewState.Creating)
                 {
-                    try
-                    {
-                        fornecedorRepository.CreateFornecedor(editItem);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Erro ao criar fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    fornecedorRepository.CreateFornecedor(editItem);
 
-                    try
+                    // Vincula produtos após a criação do fornecedor
+                    foreach (ProdutoFornecedor p in editItem.Produtos)
                     {
+                        p.IdFornecedor = editItem.Id;
+                    }
+                    produtoFornecedorRepository.CreateFromListProdutoFornecedor(editItem.Produtos);
 
-                        foreach (ProdutoFornecedor p in editItem.Produtos)
-                        {
-                            p.IdFornecedor = editItem.Id; 
-                        }
-                        produtoFornecedorRepository.CreateFromListProdutoFornecedor(editItem.Produtos);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Erro ao vincular produtos ao fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
                     ReadFornecedores();
                     currentIndex = fornecedores.Count - 1;
                 }
                 else if (state == ViewState.Editing)
                 {
-                    try
-                    {
-                        fornecedorRepository.UpdateFornecedor(editItem);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Erro ao atualizar fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    fornecedorRepository.UpdateFornecedor(editItem);
 
-                    try
-                    {
-                        produtoFornecedorRepository.CreateFromListProdutoFornecedor(editItem.Produtos, editItem.ProdutosApagados);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Erro ao vincular produtos ao fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    // Cria/Atualiza/Exclui produtos vinculados
+                    produtoFornecedorRepository.CreateFromListProdutoFornecedor(editItem.Produtos, editItem.ProdutosApagados);
+
                     ReadFornecedores();
                 }
-
 
                 SetState(ViewState.Listing);
                 MessageBox.Show("Fornecedor salvo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -306,19 +516,14 @@ namespace bailinho_senior_system.views
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao salvar: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
-
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                if (fornecedores.Count == 0)
-                {
-                    return;
-                }
+                if (fornecedores.Count == 0) return;
 
                 var result = MessageBox.Show(
                     $"Tem certeza que deseja excluir a o fornecedor '{fornecedores[currentIndex].Nome}'?",
@@ -326,23 +531,21 @@ namespace bailinho_senior_system.views
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning);
 
-                if (result == DialogResult.No)
-                    return;
+                if (result == DialogResult.No) return;
 
-                FornecedorRepository fornecedorRepository = new FornecedorRepository();
-                ProdutoFornecedorRepository produtoFornecedorRepository = new ProdutoFornecedorRepository();
+                Fornecedor fornecedorParaExcluir = fornecedores[currentIndex];
 
-                produtoFornecedorRepository.DeleteAllProdutoFornecedor(fornecedores[currentIndex].Id);
-                fornecedorRepository.DeleteFornecedor(fornecedores[currentIndex].Id);
+                // 1. Exclui os vínculos de produtos primeiro
+                produtoFornecedorRepository.DeleteAllProdutoFornecedor(fornecedorParaExcluir.Id);
+
+                // 2. Exclui o Fornecedor
+                fornecedorRepository.DeleteFornecedor(fornecedorParaExcluir.Id);
 
                 ReadFornecedores();
 
                 if (fornecedores.Count > 0)
                 {
-                    if (currentIndex >= fornecedores.Count)
-                    {
-                        currentIndex = fornecedores.Count - 1;
-                    }
+                    currentIndex = Math.Max(0, currentIndex - 1);
                 }
                 else
                 {
@@ -354,12 +557,14 @@ namespace bailinho_senior_system.views
 
                 MessageBox.Show("Fornecedor excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            catch (MySqlException mysex) when (mysex.Number == 1451)
+            {
+                MessageBox.Show("Não foi possível excluir o Fornecedor, pois ele possui referências em outras tabelas.", "Erro de Chave Estrangeira", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao apagar fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
-
         }
 
         private void exitBtn_Click(object sender, EventArgs e)
@@ -372,135 +577,65 @@ namespace bailinho_senior_system.views
                     MessageBoxButtons.OKCancel,
                     MessageBoxIcon.Warning);
 
-                if (result == DialogResult.Cancel)
-                    return; // usuário cancelou — volta para o formulário
+                if (result == DialogResult.Cancel) return;
             }
             this.Close();
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
         {
+            ReadFornecedores();
             SwitchToTabByName("tabPageLista");
             searchBox.Focus();
         }
 
-        private void SwitchToTabByName(string tabName)
+        private void makeSearch_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(tabName)) return;
-            var page = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
-            if (page != null) tabControl.SelectedTab = page;
-        }
+            // Implementa a lógica de busca
+            string searchTerm = searchBox.Text.Trim().ToLower();
+            List<Fornecedor> filteredFornecedores;
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            List<Fornecedor> fornecedoresEncontrados = fornecedores;
-            if (searchBox.Text.Trim().Length > 0)
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                string searchStr = searchBox.Text.Trim().ToLower();
-
-                if (int.TryParse(searchStr, out int id))
-                {
-                    fornecedoresEncontrados = fornecedores.FindAll(f => f.Id == id);
-                }
-                else
-                {
-                    fornecedoresEncontrados = fornecedores.FindAll(f => f.Nome.ToLower().Contains(searchStr));
-                }
+                // Filtra a lista de fornecedores por ID (se for numérico) OU por Nome/CNPJ/E-mail
+                filteredFornecedores = fornecedores.Where(f =>
+                    (int.TryParse(searchTerm, out int id) && f.Id == id) ||
+                    (f.Nome.ToLower().Contains(searchTerm)) ||
+                    (f.Cnpj != null && f.Cnpj.Contains(searchTerm)) ||
+                    (f.Email != null && f.Email.ToLower().Contains(searchTerm))
+                ).ToList();
             }
-            if (fornecedoresEncontrados.Count > 0)
-                currentIndex = fornecedores.FindIndex(f => f.Id == fornecedoresEncontrados[0].Id);
-            listTable.SelectionChanged -= listTable_SelectionChanged;
+            else
+            {
+                // Se a busca estiver vazia, retorna a lista completa
+                filteredFornecedores = fornecedores;
+            }
 
-            listTable.DataSource = fornecedoresEncontrados;
-            listTable.SelectionChanged += listTable_SelectionChanged;
+            listTable.DataSource = null;
+            listTable.DataSource = filteredFornecedores;
+
+            if (filteredFornecedores.Count > 0)
+            {
+                // Sincroniza o currentIndex com o primeiro item encontrado na lista original
+                currentIndex = fornecedores.FindIndex(f => f.Id == filteredFornecedores[0].Id);
+                PopulateFornecedor(filteredFornecedores[0]);
+            }
+            else
+            {
+                currentIndex = -1;
+                CleanupFields();
+                MessageBox.Show("Nenhum fornecedor encontrado.", "Busca", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
             SetState(ViewState.Listing);
-        }
-
-        private void ReadProdutos()
-        {
-            try
-            {
-                ProdutoRepository repo = new ProdutoRepository();
-
-
-                var produtos = repo.GetProdutos();
-
-
-                if (produtos.Count == 0) { return; }
-
-                produtoBox.DisplayMember = "Nome";
-                produtoBox.ValueMember = "Id";
-                produtoBox.DataSource = produtos;
-                produtoBox.SelectedIndex = -1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao buscar produtos: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-        }
-
-        private void ReadProdutosFornecedor(Fornecedor fornecedor)
-        {
-            try
-            {
-                DataTable dataTable = new DataTable();
-
-                dataTable.Columns.Add("Id");
-                dataTable.Columns.Add("IdProduto");
-                dataTable.Columns.Add("Nome");
-
-                ProdutoFornecedorRepository repo = new ProdutoFornecedorRepository();
-
-                var produtosPorFornecedor = repo.GetProdutosPorFornecedor(fornecedor.Id);
-
-                foreach (ProdutoFornecedor p in produtosPorFornecedor)
-                {
-                    fornecedor.Produtos.Add(p);
-                    var row = dataTable.NewRow();
-                    row["Id"] = p.Id;
-                    row["IdProduto"] = p.IdProduto;
-                    row["Nome"] = p.NomeProduto;
-                    dataTable.Rows.Add(row);
-                }
-
-                listProdutos.DataSource = dataTable;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao buscar produtos do fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-        }
-
-        private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-
-            if (state != ViewState.Listing && tabControl.SelectedTab.Name != "tabPageCadastro")
-            {
-                var result = MessageBox.Show(
-                    "Se você sair, suas alterações serão perdidas. Deseja continuar?",
-                    "Confirmar",
-                    MessageBoxButtons.OKCancel,
-                    MessageBoxIcon.Warning);
-
-                if (result == DialogResult.Cancel)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-
-                editItem = null;
-                SetState(ViewState.Listing);
-            }
-
         }
 
         private void addProdutoBtn_Click(object sender, EventArgs e)
         {
             try
             {
+                if (editItem == null) return;
+
                 if (produtoBox.SelectedValue == null)
                 {
                     MessageBox.Show("Selecione um produto para adicionar.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -515,6 +650,7 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
+                // Cria novo ProdutoFornecedor em memória
                 ProdutoFornecedor p = new ProdutoFornecedor();
                 p.IdProduto = idProdutoSelecionado;
                 p.NomeProduto = produtoBox.Text;
@@ -522,84 +658,67 @@ namespace bailinho_senior_system.views
 
                 editItem.Produtos.Add(p);
 
-                DataTable dt = listProdutos.DataSource as DataTable;
-                if (dt == null)
-                {
-                    dt = new DataTable();
-                    dt.Columns.Add("Id");
-                    dt.Columns.Add("IdProduto");
-                    dt.Columns.Add("Nome");
-                }
-
-                // Adiciona a nova linha ao DataTable
-                var row = dt.NewRow();
-                row["Id"] = 0;
-                row["IdProduto"] = p.IdProduto;
-                row["Nome"] = p.NomeProduto;
-                dt.Rows.Add(row);
-
-                listProdutos.DataSource = dt;
-
-                // Limpa a seleção do combobox
+                // Atualiza o dgv de produtos fornecidos
+                listProdutos.DataSource = null;
+                listProdutos.DataSource = editItem.Produtos;
                 produtoBox.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao vincular produto com fornecedor: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Erro ao vincular produto: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void listTable_SelectionChanged(object sender, EventArgs e)
-        {
-                var cur = this.listTable.CurrentRow;
-                if (cur != null)
-                    currentIndex = cur.Index;
 
-                SetState(ViewState.Listing);
-            }
-
-        private void removeProdutoBtn_Click(object sender, EventArgs e)
+        private void removeProdutoBtn(object sender, EventArgs e)
         {
             try
             {
-                var cur = listProdutos.CurrentRow;
-                if (cur == null)
+                if (listProdutos.CurrentRow == null || editItem == null || editItem.Produtos.Count == 0)
                 {
                     MessageBox.Show("Selecione um produto para remover.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                int produtoId = int.Parse(cur.Cells["IdProduto"].Value.ToString());
+                var itemSelecionado = listProdutos.CurrentRow.DataBoundItem as ProdutoFornecedor;
+                if (itemSelecionado == null) return;
 
-                // Confirma a remoção
                 var result = MessageBox.Show(
-                    $"Tem certeza que deseja desvincular o produto '{cur.Cells["Nome"].Value}'?",
+                    $"Tem certeza que deseja desvincular o produto '{itemSelecionado.NomeProduto}'?",
                     "Confirmar Remoção",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result == DialogResult.No)
-                    return;
+                if (result == DialogResult.No) return;
+
+                // Se o item tem ID > 0, ele já está no banco e deve ser marcado para exclusão
+                if (itemSelecionado.Id > 0)
+                {
+                    editItem.ProdutosApagados.Add(itemSelecionado);
+                }
 
                 // Remove da lista interna
-                var produtoToRemove = editItem.Produtos.FirstOrDefault(pf => pf.IdProduto == produtoId);
-                if (produtoToRemove != null)
-                {
-                    editItem.Produtos.Remove(produtoToRemove);
-                    editItem.ProdutosApagados.Add(produtoToRemove);
-                }
-
-                // Remove do DataTable
-                DataTable dt = listProdutos.DataSource as DataTable;
-                if (dt != null)
-                {
-                    dt.Rows.RemoveAt(cur.Index);
-
-                    listProdutos.DataSource = dt;
-                }
+                editItem.Produtos.Remove(itemSelecionado);
+                listProdutos.DataSource = null;
+                listProdutos.DataSource = editItem.Produtos;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao remover vínculo do produto: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void listProdutos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verifica se o clique foi na coluna de botão "Remover"
+            if (e.RowIndex >= 0 && listProdutos.Columns[e.ColumnIndex].Name == "colRemoverItem")
+            {
+                // Verifica se o modo não é Listagem (permitindo ação apenas em edição/criação)
+                if (state != ViewState.Listing && e.RowIndex < listProdutos.Rows.Count)
+                {
+                    // Garante que a linha clicada seja a linha atual
+                    listProdutos.Rows[e.RowIndex].Selected = true;
+                    removeProdutoBtn(sender, EventArgs.Empty);
+                }
             }
         }
     }

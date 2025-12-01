@@ -44,13 +44,11 @@
             this.nomeBox = new System.Windows.Forms.TextBox();
             this.idBox = new System.Windows.Forms.TextBox();
             this.cnpjBox = new System.Windows.Forms.TextBox();
-            this.removeProdutoBtn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.listProdutos = new System.Windows.Forms.DataGridView();
             this.tabPageLista = new System.Windows.Forms.TabPage();
             this.listTable = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.tsBotoes = new System.Windows.Forms.ToolStrip();
             this.firstBtn = new System.Windows.Forms.ToolStripButton();
@@ -92,6 +90,7 @@
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 27;
             this.tabControl.Tag = "";
+            this.tabControl.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Selecting_1);
             // 
             // tabPageCadastro
             // 
@@ -109,7 +108,6 @@
             this.tabPageCadastro.Controls.Add(this.nomeBox);
             this.tabPageCadastro.Controls.Add(this.idBox);
             this.tabPageCadastro.Controls.Add(this.cnpjBox);
-            this.tabPageCadastro.Controls.Add(this.removeProdutoBtn);
             this.tabPageCadastro.Controls.Add(this.label6);
             this.tabPageCadastro.Controls.Add(this.listProdutos);
             this.tabPageCadastro.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -123,20 +121,22 @@
             // 
             // produtoBox
             // 
+            this.produtoBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.produtoBox.FormattingEnabled = true;
             this.produtoBox.Location = new System.Drawing.Point(517, 89);
             this.produtoBox.Margin = new System.Windows.Forms.Padding(4);
             this.produtoBox.Name = "produtoBox";
-            this.produtoBox.Size = new System.Drawing.Size(240, 28);
+            this.produtoBox.Size = new System.Drawing.Size(240, 26);
             this.produtoBox.TabIndex = 25;
             // 
             // addProdutoBtn
             // 
-            this.addProdutoBtn.Location = new System.Drawing.Point(771, 9);
+            this.addProdutoBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addProdutoBtn.Location = new System.Drawing.Point(517, 124);
             this.addProdutoBtn.Name = "addProdutoBtn";
-            this.addProdutoBtn.Size = new System.Drawing.Size(109, 108);
+            this.addProdutoBtn.Size = new System.Drawing.Size(240, 26);
             this.addProdutoBtn.TabIndex = 24;
-            this.addProdutoBtn.Text = "Adicionar";
+            this.addProdutoBtn.Text = "Adicionar Produto";
             this.addProdutoBtn.UseVisualStyleBackColor = true;
             this.addProdutoBtn.Click += new System.EventHandler(this.addProdutoBtn_Click);
             // 
@@ -175,10 +175,11 @@
             // 
             // emailBox
             // 
+            this.emailBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailBox.Location = new System.Drawing.Point(517, 49);
             this.emailBox.Margin = new System.Windows.Forms.Padding(4);
             this.emailBox.Name = "emailBox";
-            this.emailBox.Size = new System.Drawing.Size(240, 26);
+            this.emailBox.Size = new System.Drawing.Size(240, 24);
             this.emailBox.TabIndex = 11;
             // 
             // label2
@@ -216,47 +217,41 @@
             // 
             // telefoneBox
             // 
+            this.telefoneBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.telefoneBox.Location = new System.Drawing.Point(87, 89);
             this.telefoneBox.Margin = new System.Windows.Forms.Padding(4);
             this.telefoneBox.Name = "telefoneBox";
-            this.telefoneBox.Size = new System.Drawing.Size(343, 26);
+            this.telefoneBox.Size = new System.Drawing.Size(343, 24);
             this.telefoneBox.TabIndex = 2;
             // 
             // nomeBox
             // 
+            this.nomeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nomeBox.Location = new System.Drawing.Point(87, 49);
             this.nomeBox.Margin = new System.Windows.Forms.Padding(4);
             this.nomeBox.Name = "nomeBox";
-            this.nomeBox.Size = new System.Drawing.Size(343, 26);
+            this.nomeBox.Size = new System.Drawing.Size(343, 24);
             this.nomeBox.TabIndex = 28;
             // 
             // idBox
             // 
             this.idBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.idBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.idBox.Location = new System.Drawing.Point(87, 9);
             this.idBox.Margin = new System.Windows.Forms.Padding(4);
             this.idBox.Name = "idBox";
             this.idBox.ReadOnly = true;
-            this.idBox.Size = new System.Drawing.Size(343, 26);
+            this.idBox.Size = new System.Drawing.Size(343, 24);
             this.idBox.TabIndex = 27;
             // 
             // cnpjBox
             // 
+            this.cnpjBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cnpjBox.Location = new System.Drawing.Point(517, 8);
             this.cnpjBox.Margin = new System.Windows.Forms.Padding(4);
             this.cnpjBox.Name = "cnpjBox";
-            this.cnpjBox.Size = new System.Drawing.Size(240, 26);
+            this.cnpjBox.Size = new System.Drawing.Size(240, 24);
             this.cnpjBox.TabIndex = 29;
-            // 
-            // removeProdutoBtn
-            // 
-            this.removeProdutoBtn.Location = new System.Drawing.Point(740, 367);
-            this.removeProdutoBtn.Name = "removeProdutoBtn";
-            this.removeProdutoBtn.Size = new System.Drawing.Size(109, 28);
-            this.removeProdutoBtn.TabIndex = 26;
-            this.removeProdutoBtn.Text = "Remover";
-            this.removeProdutoBtn.UseVisualStyleBackColor = true;
-            this.removeProdutoBtn.Click += new System.EventHandler(this.removeProdutoBtn_Click);
             // 
             // label6
             // 
@@ -286,13 +281,13 @@
             this.listProdutos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.listProdutos.Size = new System.Drawing.Size(830, 197);
             this.listProdutos.TabIndex = 22;
+            this.listProdutos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listProdutos_CellContentClick);
             // 
             // tabPageLista
             // 
             this.tabPageLista.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPageLista.Controls.Add(this.listTable);
             this.tabPageLista.Controls.Add(this.button1);
-            this.tabPageLista.Controls.Add(this.label8);
             this.tabPageLista.Controls.Add(this.searchBox);
             this.tabPageLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.tabPageLista.Location = new System.Drawing.Point(4, 34);
@@ -309,43 +304,31 @@
             this.listTable.AllowUserToDeleteRows = false;
             this.listTable.AllowUserToResizeColumns = false;
             this.listTable.AllowUserToResizeRows = false;
-            this.listTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.listTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.listTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.listTable.Location = new System.Drawing.Point(10, 59);
+            this.listTable.Location = new System.Drawing.Point(7, 39);
             this.listTable.MultiSelect = false;
             this.listTable.Name = "listTable";
             this.listTable.ReadOnly = true;
             this.listTable.RowHeadersVisible = false;
             this.listTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.listTable.Size = new System.Drawing.Size(833, 442);
+            this.listTable.Size = new System.Drawing.Size(873, 357);
             this.listTable.TabIndex = 18;
-            this.listTable.SelectionChanged += new System.EventHandler(this.listTable_SelectionChanged);
+            this.listTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.listTable_CellClick_1);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(601, 27);
+            this.button1.Location = new System.Drawing.Point(598, 7);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(67, 26);
             this.button1.TabIndex = 17;
-            this.button1.Text = "OK";
+            this.button1.Text = "Buscar";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 4);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(153, 20);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "Buscar (nome ou Id)";
+            this.button1.Click += new System.EventHandler(this.makeSearch_Click);
             // 
             // searchBox
             // 
-            this.searchBox.Location = new System.Drawing.Point(10, 27);
+            this.searchBox.Location = new System.Drawing.Point(7, 7);
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(585, 26);
             this.searchBox.TabIndex = 16;
@@ -554,6 +537,7 @@
             this.Name = "FornecedoresView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fornecedores";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FornecedoresView_FormClosing);
             this.Load += new System.EventHandler(this.FornecedoresView_Load);
             this.tabControl.ResumeLayout(false);
             this.tabPageCadastro.ResumeLayout(false);
@@ -574,8 +558,7 @@
         private System.Windows.Forms.TabPage tabPageCadastro;
         private System.Windows.Forms.TabPage tabPageLista;
         internal System.Windows.Forms.DataGridView listTable;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button makeSearch;
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox emailBox;
@@ -586,7 +569,6 @@
         private System.Windows.Forms.Label produtolabel;
         private System.Windows.Forms.Label label6;
         internal System.Windows.Forms.DataGridView listProdutos;
-        private System.Windows.Forms.Button removeProdutoBtn;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
@@ -609,5 +591,6 @@
         private System.Windows.Forms.ToolStripButton deleteBtn;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton exitBtn;
+        private System.Windows.Forms.Button button1; // makeSearch alias
     }
 }

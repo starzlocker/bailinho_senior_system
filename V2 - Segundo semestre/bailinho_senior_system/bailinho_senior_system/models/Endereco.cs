@@ -1,14 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bailinho_senior_system.models
 {
     public class Endereco
     {
         public Endereco() { }
+        public Endereco(int id, string cep, string logradouro,string bairro,
+                        string cidade, string numero, string estado, string complemento)
+        {
+            Id = id;
+            Cep = cep;
+            Logradouro = logradouro;
+            Bairro = bairro;
+            Cidade = cidade;
+            Numero = numero;
+            Estado = estado;
+            Complemento = complemento;
+        }
 
         private int id;
         public int Id
@@ -28,8 +36,11 @@ namespace bailinho_senior_system.models
             get { return cep; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("CEP não pode ser vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "CEP");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
+
                 if (value.Length != 8)
                     throw new ArgumentException("CEP deve ter 8 caracteres.");
 
@@ -43,8 +54,11 @@ namespace bailinho_senior_system.models
             get { return logradouro; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Logradouro não pode ser vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Logradouro");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
+
                 if (value.Length > 150)
                     throw new ArgumentException("Logradouro deve ter no máximo 150 caracteres.");
 
@@ -58,8 +72,10 @@ namespace bailinho_senior_system.models
             get { return bairro; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Bairro não pode ser vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Bairro");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
                 if (value.Length > 100)
                     throw new ArgumentException("Bairro deve ter no máximo 100 caracteres.");
 
@@ -73,8 +89,10 @@ namespace bailinho_senior_system.models
             get { return cidade; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Cidade não pode ser vazia.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Cidade");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
                 if (value.Length > 100)
                     throw new ArgumentException("Cidade deve ter no máximo 100 caracteres.");
 
@@ -88,8 +106,10 @@ namespace bailinho_senior_system.models
             get { return numero; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Número não pode ser vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Número");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
                 if (value.Length > 10)
                     throw new ArgumentException("Número deve ter no máximo 10 caracteres.");
 
@@ -103,8 +123,10 @@ namespace bailinho_senior_system.models
             get { return estado; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Estado não pode ser vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Estado (UF)");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
                 if (value.Length != 2)
                     throw new ArgumentException("Estado deve ter 2 caracteres (UF).");
 
@@ -122,6 +144,21 @@ namespace bailinho_senior_system.models
                     throw new ArgumentException("Complemento deve ter no máximo 100 caracteres.");
 
                 this.complemento = value;
+            }
+        }
+
+        public string EnderecoCompleto
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(logradouro))
+                {
+                    return "Endereço Não Informado";
+                }
+
+                string complementoStr = string.IsNullOrWhiteSpace(complemento) ? "" : $" ({complemento})";
+
+                return $"{logradouro}, {numero}{complementoStr} - {bairro}, {cidade}/{estado} - CEP: {cep}";
             }
         }
     }

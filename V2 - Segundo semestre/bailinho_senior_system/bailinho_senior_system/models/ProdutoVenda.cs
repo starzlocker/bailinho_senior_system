@@ -1,14 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bailinho_senior_system.models
 {
-    public class ProdutoVenda // CLASSE TORNADA PÚBLICA
+    public class ProdutoVenda
     {
-        // Chave primária (PK) adicionada para refletir o esquema SQL CREATE TABLE
+        public ProdutoVenda() { }
+        public ProdutoVenda(int id, int idProduto, int idVenda, int quantidade, 
+                                decimal valor, string nomeProduto, decimal precoUnitario)
+        {
+            Id = id;
+            IdProduto = idProduto;
+            IdVenda = idVenda;
+            Quantidade = quantidade;
+            Valor = valor;
+            NomeProduto = nomeProduto;
+            PrecoUnitario = precoUnitario;
+        }
+
         private int id;
         public int Id
         {
@@ -29,6 +37,7 @@ namespace bailinho_senior_system.models
             {
                 if (value <= 0)
                     throw new ArgumentException("ID do produto deve ser válido.");
+
                 id_produto = value;
             }
         }
@@ -39,7 +48,9 @@ namespace bailinho_senior_system.models
             get { return id_venda; }
             set
             {
-                // O valor pode ser 0 inicialmente, antes de a Venda ser salva.
+                if (value <= 0)
+                    throw new ArgumentException("ID do produto deve ser válido.");
+                    
                 id_venda = value;
             }
         }
@@ -62,17 +73,14 @@ namespace bailinho_senior_system.models
             get { return valor; }
             set
             {
-                // Valor aqui representa o subtotal da linha (quantidade * preco_unitario)
                 if (value < 0)
-                    throw new ArgumentException("Valor da linha não pode ser negativo.");
+                    throw new ArgumentException("Valor não pode ser negativo.");
+
                 valor = value;
             }
         }
 
-        // Propriedades de Lookup (Para uso na View e Relatórios)
         public string NomeProduto { get; set; }
-        public decimal PrecoUnitario { get; set; } // O preço unitário no momento da venda
-
-        public ProdutoVenda() { }
+        public decimal PrecoUnitario { get; set; }
     }
 }

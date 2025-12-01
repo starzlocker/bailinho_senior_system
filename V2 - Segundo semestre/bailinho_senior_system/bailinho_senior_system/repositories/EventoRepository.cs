@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using MySql.Data.MySqlClient;
+﻿using bailinho_senior_system.config;
 using bailinho_senior_system.models;
-using bailinho_senior_system.config;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace bailinho_senior_system.repositories
 {
@@ -20,7 +20,6 @@ namespace bailinho_senior_system.repositories
                 {
                     connection.Open();
 
-                    // Dentro de EventoRepository.cs, método GetEventos()
                     string sql = @"
                         SELECT 
                             te.id, te.nome, te.descricao, te.data, te.hora, te.valor_entrada, 
@@ -43,24 +42,27 @@ namespace bailinho_senior_system.repositories
                     {
                         while (reader.Read())
                         {
-                            var evento = new Evento
-                            {
-                                Id = reader.GetInt32("id"),
-                                Nome = reader.GetString("nome"),
-                                Descricao = reader.IsDBNull(reader.GetOrdinal("descricao")) ? null : reader.GetString("descricao"),
-                                Data = reader.GetDateTime("data"),
-                                Hora = reader.GetTimeSpan("hora"),
-                                ValorEntrada = reader.GetDecimal("valor_entrada"),
-                                IdEndereco = reader.GetInt32("id_endereco"),
+                            int IdEndereco = reader.GetInt32("id_endereco");
+                            string Cep = reader.GetString("EnderecoCep");
+                            string Logradouro = reader.GetString("EnderecoLogradouro");
+                            string Bairro = reader.GetString("EnderecoBairro");
+                            string Cidade = reader.GetString("EnderecoCidade");
+                            string Numero = reader.GetString("EnderecoNumero");
+                            string Estado = reader.GetString("EnderecoEstado");
+                            string Complemento = reader.IsDBNull(reader.GetOrdinal("EnderecoComplemento"))
+                                ? null : reader.GetString("EnderecoComplemento");
 
-                                EnderecoCep = reader.GetString("EnderecoCep"),
-                                EnderecoLogradouro = reader.GetString("EnderecoLogradouro"),
-                                EnderecoBairro = reader.GetString("EnderecoBairro"),
-                                EnderecoCidade = reader.GetString("EnderecoCidade"),
-                                EnderecoNumero = reader.GetString("EnderecoNumero"),
-                                EnderecoEstado = reader.GetString("EnderecoEstado"),
-                                EnderecoComplemento = reader.IsDBNull(reader.GetOrdinal("EnderecoComplemento")) ? null : reader.GetString("EnderecoComplemento")
-                            };
+                            Endereco endereco = new Endereco(IdEndereco, Cep, Logradouro, Bairro, Cidade, Numero, Estado, Complemento);
+
+                            int Id = reader.GetInt32("id");
+                            string Nome = reader.GetString("nome");
+                            string Descricao = reader.IsDBNull(reader.GetOrdinal("descricao")) ? null : reader.GetString("descricao");
+                            DateTime Data = reader.GetDateTime("data");
+                            TimeSpan Hora = reader.GetTimeSpan("hora");
+                            decimal ValorEntrada = reader.GetDecimal("valor_entrada");
+
+                            Evento evento = new Evento(Id, Nome, Descricao, Data, Hora, ValorEntrada, IdEndereco, endereco);
+                           
                             eventos.Add(evento);
                         }
                     }
@@ -108,23 +110,26 @@ namespace bailinho_senior_system.repositories
                         {
                             if (reader.Read())
                             {
-                                evento = new Evento();
-                                
-                                evento.Id = reader.GetInt32("id");
-                                evento.Nome = reader.GetString("nome");
-                                evento.Descricao = reader.IsDBNull(reader.GetOrdinal("descricao")) ? null : reader.GetString("descricao");
-                                evento.Data = reader.GetDateTime("data");
-                                evento.Hora = reader.GetTimeSpan("hora");
-                                evento.ValorEntrada = reader.GetDecimal("valor_entrada");
-                                evento.IdEndereco = reader.GetInt32("id_endereco");
-                                
-                                evento.EnderecoCep = reader.GetString("EnderecoCep");
-                                evento.EnderecoLogradouro = reader.GetString("EnderecoLogradouro");
-                                evento.EnderecoBairro = reader.GetString("EnderecoBairro");
-                                evento.EnderecoCidade = reader.GetString("EnderecoCidade");
-                                evento.EnderecoNumero = reader.GetString("EnderecoNumero");
-                                evento.EnderecoEstado = reader.GetString("EnderecoEstado");
-                                evento.EnderecoComplemento = reader.IsDBNull(reader.GetOrdinal("EnderecoComplemento")) ? null : reader.GetString("EnderecoComplemento");
+                                int IdEndereco = reader.GetInt32("id_endereco");
+                                string Cep = reader.GetString("EnderecoCep");
+                                string Logradouro = reader.GetString("EnderecoLogradouro");
+                                string Bairro = reader.GetString("EnderecoBairro");
+                                string Cidade = reader.GetString("EnderecoCidade");
+                                string Numero = reader.GetString("EnderecoNumero");
+                                string Estado = reader.GetString("EnderecoEstado");
+                                string Complemento = reader.IsDBNull(reader.GetOrdinal("EnderecoComplemento"))
+                                    ? null : reader.GetString("EnderecoComplemento");
+
+                                Endereco endereco = new Endereco(IdEndereco, Cep, Logradouro, Bairro, Cidade, Numero, Estado, Complemento);
+
+                                int Id = reader.GetInt32("id");
+                                string Nome = reader.GetString("nome");
+                                string Descricao = reader.IsDBNull(reader.GetOrdinal("descricao")) ? null : reader.GetString("descricao");
+                                DateTime Data = reader.GetDateTime("data");
+                                TimeSpan Hora = reader.GetTimeSpan("hora");
+                                decimal ValorEntrada = reader.GetDecimal("valor_entrada");
+
+                                evento = new Evento(Id, Nome, Descricao, Data, Hora, ValorEntrada, IdEndereco, endereco);
                             }
                         }
                     }
@@ -135,6 +140,7 @@ namespace bailinho_senior_system.repositories
                 Console.Write(ex.ToString());
                 throw;
             }
+
             return evento;
         }
 

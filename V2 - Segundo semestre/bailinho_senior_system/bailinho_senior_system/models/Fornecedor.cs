@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace bailinho_senior_system.models
 {
@@ -16,8 +14,8 @@ namespace bailinho_senior_system.models
         private List<ProdutoFornecedor> produtos;
         private List<ProdutoFornecedor> produtos_apagados;
 
-        public Fornecedor() 
-        { 
+        public Fornecedor()
+        {
             produtos = new List<ProdutoFornecedor>();
             produtos_apagados = new List<ProdutoFornecedor>();
         }
@@ -42,7 +40,12 @@ namespace bailinho_senior_system.models
         public int Id
         {
             get { return id; }
-            set { id = value; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Id não pode ser negativo.", nameof(value));
+                id = value;
+            }
         }
 
         public string Cnpj
@@ -51,7 +54,9 @@ namespace bailinho_senior_system.models
             set
             {
                 string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "CNPJ");
-                if (validacaoDeVazio != null) throw new ArgumentException(validacaoDeVazio);
+
+                if (validacaoDeVazio != null) 
+                    throw new ArgumentException(validacaoDeVazio);
 
                 string cnpjNumeros = new string(value.Where(char.IsDigit).ToArray());
 
@@ -59,9 +64,9 @@ namespace bailinho_senior_system.models
                     throw new ArgumentException("O CNPJ deve conter exatamente 14 dígitos.");
 
                 if (!CnpjValido(cnpjNumeros))
-                    throw new ArgumentException("O CNPJ informado é inválido.");
+                    throw new ArgumentException("O CNPJ informado é inválido. " + cnpjNumeros);
 
-                cnpj = value;
+                cnpj = cnpjNumeros;
             }
         }
 
@@ -71,7 +76,8 @@ namespace bailinho_senior_system.models
             set
             {
                 string validacao = ValidadorHelper.VerificarVazio(value, "Nome");
-                if (validacao != null) throw new ArgumentException(validacao);
+                if (validacao != null)
+                    throw new ArgumentException(validacao);
 
                 if (value.Length > 150)
                     throw new ArgumentException("O nome do fornecedor não pode conter mais que 150 caracteres");
@@ -87,7 +93,8 @@ namespace bailinho_senior_system.models
 
             {
                 string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Email");
-                if (validacaoDeVazio != null) throw new ArgumentException(validacaoDeVazio);
+                if (validacaoDeVazio != null) 
+                    throw new ArgumentException(validacaoDeVazio);
 
                 if (value.Length > 150)
                     throw new ArgumentException("O email não pode conter mais que 150 caracteres");
@@ -104,8 +111,10 @@ namespace bailinho_senior_system.models
             get { return telefone; }
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("O campo 'Telefone' não pode estar vazio.");
+                string validacaoDeVazio = ValidadorHelper.VerificarVazio(value, "Telefone");
+
+                if (validacaoDeVazio != null)
+                    throw new ArgumentException(validacaoDeVazio);
 
                 string numeros = new string(value.Where(char.IsDigit).ToArray());
                 if (numeros.Length != 10 && numeros.Length != 11)
@@ -127,7 +136,6 @@ namespace bailinho_senior_system.models
             set { produtos_apagados = value; }
         }
 
-
         private static bool CnpjValido(string cnpj)
         {
             if (cnpj.Distinct().Count() == 1) return false;
@@ -137,24 +145,29 @@ namespace bailinho_senior_system.models
 
             string tempCnpj = cnpj.Substring(0, 12);
             int soma = 0;
+            int resto;
+            int digito1;
+            int digito2;
 
             for (int i = 0; i < 12; i++)
-                soma += int.Parse(tempCnpj[i].ToString()) * multiplicador1[i];
+                soma += (int.Parse(tempCnpj[i].ToString()) * multiplicador1[i]);
 
-            int resto = soma % 11;
-            int digito1 = resto < 2 ? 0 : 11 - resto;
+            resto = soma % 11;
+            digito1 = resto < 2 ? 0 : 11 - resto;
 
             tempCnpj += digito1;
             soma = 0;
 
             for (int i = 0; i < 13; i++)
-                soma += int.Parse(tempCnpj[i].ToString()) * multiplicador2[i];
+                soma += (int.Parse(tempCnpj[i].ToString()) * multiplicador2[i]);
 
             resto = soma % 11;
-            int digito2 = resto < 2 ? 0 : 11 - resto;
+            digito2 = resto < 2 ? 0 : 11 - resto;
 
-            string cnpjCalculado = tempCnpj + digito2;
-            return cnpj.EndsWith(cnpjCalculado.Substring(12));
+            string digitosVerificadoresOriginais = cnpj.Substring(12, 2);
+            string digitosVerificadoresCalculados = digito1.ToString() + digito2.ToString();
+
+            return digitosVerificadoresOriginais == digitosVerificadoresCalculados;
         }
     }
 }

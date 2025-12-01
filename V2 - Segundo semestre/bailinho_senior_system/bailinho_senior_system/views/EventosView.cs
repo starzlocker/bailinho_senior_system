@@ -11,31 +11,28 @@ namespace bailinho_senior_system.views
 {
     public partial class EventosView : Form
     {
-        // --- Variáveis de Estado da View ---
+        private enum ViewState { Listing, Editing, Creating }
+
         private List<Evento> eventos = new List<Evento>();
         private int currentIndex = 0;
         private ViewState state;
         private Evento editItem = null;
-        private Endereco editEndereco = null; // Objeto Endereço sendo editado/criado
+        private Endereco editEndereco = null;
 
-        // --- Repositórios ---
         private EventoRepository eventoRepository = new EventoRepository();
         private EnderecoRepository enderecoRepository = new EnderecoRepository();
-
-
-        // --- Construtor e Eventos de Inicialização ---
 
         public EventosView()
         {
             InitializeComponent();
             this.Load += EventosView_Load;
             this.tabControl.Selecting += tabControl_Selecting;
-            // Adicione a vinculação dos eventos de lista (se tiver)
-            // this.listTable.SelectionChanged += listTable_SelectionChanged; 
+            this.listTable.CellClick += listTable_CellClick;
         }
 
         private void EventosView_Load(object sender, EventArgs e)
         {
+            ConfigurarDataGridView();
             ReadEventos();
 
             if (eventos.Count > 0)
@@ -48,7 +45,6 @@ namespace bailinho_senior_system.views
         {
             if (state == ViewState.Editing || state == ViewState.Creating)
             {
-
                 if (e.TabPage.Name != "tabPageCadastro")
                 {
                     var result = MessageBox.Show(
@@ -70,120 +66,93 @@ namespace bailinho_senior_system.views
             }
         }
 
-        // --- Configuração e Leitura de Dados ---
 
         private void ConfigurarDataGridView()
         {
-            listTable.Columns.Clear();
+            // Configurações visuais e de comportamento
             listTable.AutoGenerateColumns = false;
             listTable.ReadOnly = true;
             listTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             listTable.AllowUserToAddRows = false;
             listTable.MultiSelect = false;
-            listTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
-            // --- Configurações de Aparência (Cores e Estilo) ---
+            // Estilos visuais
             listTable.EnableHeadersVisualStyles = false;
             listTable.DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
             listTable.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.White;
-            listTable.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230); // Azul claro
+            listTable.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(173, 216, 230);
             listTable.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             listTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             listTable.ColumnHeadersHeight = 30;
-
-            // Estilo do corpo
             listTable.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
 
-            // --- Adição e Formatação das Colunas ---
+            // Adição e Mapeamento das Colunas
+            listTable.Columns.Clear();
 
-            // 0. ID
             listTable.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "ID",
                 DataPropertyName = "Id",
                 Name = "Id",
-                Width = 45,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
             });
 
-            // 1. Nome do Evento
             listTable.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Evento",
                 DataPropertyName = "Nome",
-                Width = 150,
-                Resizable = DataGridViewTriState.False
+                Name = "colNomeEvento",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
             });
 
-            // 2. Data
             listTable.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Data",
                 DataPropertyName = "Data",
-                Width = 100,
-                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
                 DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" }
             });
 
-            // 3. Hora
             listTable.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Hora",
                 DataPropertyName = "Hora",
-                Width = 60,
-                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
                 DefaultCellStyle = new DataGridViewCellStyle { Format = @"hh\:mm" }
             });
 
-            // 4. Valor da Entrada (Moeda)
             listTable.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Entrada",
                 DataPropertyName = "ValorEntrada",
-                Width = 90,
-                Resizable = DataGridViewTriState.False,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells,
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
-                    Format = "C", // Formato de moeda local
+                    Format = "C",
                     Alignment = DataGridViewContentAlignment.MiddleRight
                 }
             });
 
-            // 5. Endereço COMPLETO (Usa o Fill para ocupar o restante do espaço)
             listTable.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Endereço",
                 DataPropertyName = "EnderecoCompleto",
-                Name = "colEnderecoCompleto" // Nome de referência para o Fill
+                Name = "colEnderecoCompleto",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             });
 
-            // Garante que a coluna Endereço Completo ocupe o restante do espaço
-            listTable.Columns["colEnderecoCompleto"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            listTable.Columns["colNomeEvento"].FillWeight = 50;
+            listTable.Columns["colEnderecoCompleto"].FillWeight = 50;
         }
 
         private void ReadEventos()
         {
             try
             {
+                // Carrega todos os eventos
                 this.eventos = eventoRepository.GetEventos();
-
-                ConfigurarDataGridView();
-
-                listTable.DataSource = null; // Limpa a fonte de dados anterior
-                listTable.DataSource = this.eventos; // Associa a nova lista
-
-                if (eventos.Count > 0)
-                {
-                    // Garante que o item atual é mantido selecionado, se possível
-                    if (currentIndex < eventos.Count)
-                    {
-                        listTable.Rows[currentIndex].Selected = true;
-                    }
-                    else
-                    {
-                        currentIndex = eventos.Count - 1;
-                        listTable.Rows[currentIndex].Selected = true;
-                    }
-                }
+                listTable.DataSource = null;
+                listTable.DataSource = this.eventos;
             }
             catch (Exception ex)
             {
@@ -195,7 +164,7 @@ namespace bailinho_senior_system.views
         {
             // Busca e popula o endereço associado
             Endereco endereco = enderecoRepository.GetEndereco(evento.IdEndereco);
-            editEndereco = endereco; // Mantém o objeto Endereço em memória
+            editEndereco = endereco;
 
             // Preenche campos do Evento
             idBox.Text = evento.Id.ToString();
@@ -205,26 +174,19 @@ namespace bailinho_senior_system.views
             timeBox.Text = evento.Hora.ToString(@"hh\:mm");
             valorEntradaBox.Value = evento.ValorEntrada;
 
-            // Preenche campos do Endereço (se encontrado)
-            if (endereco != null)
-            {
-                cepBox.Text = endereco.Cep ?? "";
-                logradouroBox.Text = endereco.Logradouro ?? "";
-                bairroBox.Text = endereco.Bairro ?? "";
-                cidadeBox.Text = endereco.Cidade ?? "";
-                numeroBox.Text = endereco.Numero ?? "";
-                estadoBox.Text = endereco.Estado ?? "";
-                complementoBox.Text = endereco.Complemento ?? "";
-            }
-            else
-            {
-                CleanupFields();
-            }
+            // Preenche campos do Endereço
+            cepBox.Text = endereco.Cep ?? "";
+            logradouroBox.Text = endereco.Logradouro ?? "";
+            bairroBox.Text = endereco.Bairro ?? "";
+            cidadeBox.Text = endereco.Cidade ?? "";
+            numeroBox.Text = endereco.Numero ?? "";
+            estadoBox.Text = endereco.Estado ?? "";
+            complementoBox.Text = endereco.Complemento ?? "";
         }
 
         private void CleanupFields()
         {
-            // Limpa campos do Evento
+            // Limpa todos os campos de evento
             idBox.Text = "";
             nomeBox.Text = "";
             descricaoBox.Text = "";
@@ -263,8 +225,10 @@ namespace bailinho_senior_system.views
             return errors;
         }
 
+
         private void SetState(ViewState newState)
         {
+            // Gerencia a visibilidade e habilitação dos botões e campos de entrada
             state = newState;
 
             bool creatingOrEditing = state == ViewState.Creating || state == ViewState.Editing;
@@ -277,7 +241,7 @@ namespace bailinho_senior_system.views
             nextBtn.Enabled = listing && currentIndex < count - 1;
             lastBtn.Enabled = listing && currentIndex < count - 1;
 
-            // Ações CRUD
+            // CRUD
             newBtn.Enabled = listing;
             editBtn.Enabled = listing && count > 0;
             deleteBtn.Enabled = listing && count > 0;
@@ -312,50 +276,105 @@ namespace bailinho_senior_system.views
             {
                 CleanupFields();
             }
-            else if (listing && count > 0)
+            else if (listing && count > 0 && currentIndex >= 0)
             {
                 PopulateFields(eventos[currentIndex]);
+                UpdateDataGridViewSelection();
             }
         }
 
         private void SwitchToTabByName(string tabName)
         {
-            if (string.IsNullOrEmpty(tabName)) return;
-            // Assumindo um TabControl nomeado 'tabControl'
+            // Muda para a aba especificada no TabControl
             var page = tabControl.TabPages.Cast<TabPage>().FirstOrDefault(t => t.Name == tabName);
             if (page != null) tabControl.SelectedTab = page;
         }
 
-        // --- MANIPULADORES DE EVENTOS (BOTÕES) ---
+        private void UpdateDataGridViewSelection()
+        {
+            // Seleciona o item atual no DataGridView e rola para visualização
+            if (listTable == null || eventos.Count == 0 || currentIndex < 0 || currentIndex >= eventos.Count)
+            {
+                return;
+            }
+
+            // Tenta encontrar o item pelo índice na lista atual do DGV
+            if (listTable.DataSource is List<Evento> listaExibida)
+            {
+                Evento eventoAtual = eventos[currentIndex];
+                int indexNaListaExibida = listaExibida.FindIndex(e => e.Id == eventoAtual.Id);
+
+                if (indexNaListaExibida != -1)
+                {
+                    // Limpa seleções anteriores e seleciona a nova linha
+                    listTable.ClearSelection();
+                    listTable.Rows[indexNaListaExibida].Selected = true;
+
+                    // Rola para a linha selecionada
+                    listTable.FirstDisplayedScrollingRowIndex = indexNaListaExibida;
+                }
+                else
+                {
+                    listTable.ClearSelection();
+                }
+            }
+        }
 
         private void firstBtn_Click(object sender, EventArgs e)
         {
-            if (currentIndex > 0) currentIndex = 0;
+            currentIndex = 0;
+            ReadEventos();
             SetState(ViewState.Listing);
         }
 
         private void previousBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex > 0) currentIndex--;
+            ReadEventos();
             SetState(ViewState.Listing);
         }
 
         private void nextBtn_Click(object sender, EventArgs e)
         {
             if (currentIndex < eventos.Count - 1) currentIndex++;
+            ReadEventos();
             SetState(ViewState.Listing);
         }
 
         private void lastBtn_Click(object sender, EventArgs e)
         {
-            if (currentIndex < eventos.Count - 1) currentIndex = eventos.Count - 1;
+            currentIndex = eventos.Count - 1;
+            ReadEventos();
             SetState(ViewState.Listing);
+        }
+
+        private void listTable_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Garante que o clique foi em uma linha de dados válida
+            if (e.RowIndex < 0 || e.RowIndex >= listTable.Rows.Count) return;
+
+            if (state != ViewState.Listing) return;
+
+            // Obtém o objeto Evento vinculado à linha clicada
+            Evento eventoSelecionado = listTable.Rows[e.RowIndex].DataBoundItem as Evento;
+
+            if (eventoSelecionado != null)
+            {
+                int novoIndex = eventos.FindIndex(c => c.Id == eventoSelecionado.Id);
+                if (novoIndex != -1)
+                {
+                    currentIndex = novoIndex;
+                }
+
+                // Atualiza o estado para refletir a nova seleção
+                SetState(ViewState.Listing);
+            }
         }
 
         private void newBtn_Click(object sender, EventArgs e)
         {
             editItem = new Evento();
-            editEndereco = new Endereco(); // Novo objeto Endereco
+            editEndereco = new Endereco();
             SetState(ViewState.Creating);
         }
 
@@ -364,7 +383,6 @@ namespace bailinho_senior_system.views
             if (eventos.Count == 0) return;
             editItem = eventos[currentIndex];
             SetState(ViewState.Editing);
-            // O objeto editEndereco será carregado/mantido no PopulateFields.
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
@@ -380,7 +398,6 @@ namespace bailinho_senior_system.views
 
             try
             {
-                // 1. Validação
                 List<string> errors = ValidateForm();
                 if (errors.Count > 0)
                 {
@@ -388,7 +405,6 @@ namespace bailinho_senior_system.views
                     return;
                 }
 
-                // 2. Coleta de Dados do Endereço
                 editEndereco.Cep = cepBox.Text.Trim();
                 editEndereco.Logradouro = logradouroBox.Text.Trim();
                 editEndereco.Bairro = bairroBox.Text.Trim();
@@ -397,7 +413,6 @@ namespace bailinho_senior_system.views
                 editEndereco.Estado = estadoBox.Text.Trim();
                 editEndereco.Complemento = complementoBox.Text.Trim();
 
-                // 3. Persistência (Criação/Atualização) do Endereço
                 if (editEndereco.Id == 0)
                 {
                     enderecoRepository.CreateEndereco(editEndereco);
@@ -407,13 +422,12 @@ namespace bailinho_senior_system.views
                     enderecoRepository.UpdateEndereco(editEndereco);
                 }
 
-                // 4. Coleta de Dados e Persistência do Evento
                 editItem.Nome = nomeBox.Text.Trim();
                 editItem.Descricao = descricaoBox.Text.Trim();
                 editItem.Data = dateBox.Value.Date;
                 editItem.Hora = TimeSpan.Parse(timeBox.Text.Trim());
                 editItem.ValorEntrada = valorEntradaBox.Value;
-                editItem.IdEndereco = editEndereco.Id; // Vincula o ID do Endereço salvo/atualizado
+                editItem.IdEndereco = editEndereco.Id;
 
                 if (state == ViewState.Creating)
                 {
@@ -427,11 +441,10 @@ namespace bailinho_senior_system.views
                     ReadEventos();
                 }
 
-                // 5. Finalização
                 editItem = null;
                 editEndereco = null;
                 SetState(ViewState.Listing);
-                MessageBox.Show("Evento e Endereço salvos com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Evento salvo com sucesso!", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (ArgumentException aex)
             {
@@ -439,7 +452,7 @@ namespace bailinho_senior_system.views
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao salvar o evento/endereço: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Erro ao salvar o evento: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -460,13 +473,9 @@ namespace bailinho_senior_system.views
                 int eventoIdParaExcluir = eventos[currentIndex].Id;
                 int enderecoIdParaExcluir = eventos[currentIndex].IdEndereco;
 
-                // 1. Exclui o Evento (primeiro, devido à FK Venda)
                 eventoRepository.DeleteEvento(eventoIdParaExcluir);
-
-                // 2. Exclui o Endereço
                 enderecoRepository.DeleteEndereco(enderecoIdParaExcluir);
 
-                // 3. Finaliza
                 ReadEventos();
 
                 if (eventos.Count > 0)
@@ -494,11 +503,10 @@ namespace bailinho_senior_system.views
             }
         }
 
+
         private void searchBtn_Click(object sender, EventArgs e)
         {
             SwitchToTabByName("tabPageLista");
-            // Assumindo que a caixa de busca se chama 'searchBox'
-            // searchBox.Focus();
         }
 
         private void exitBtn_Click(object sender, EventArgs e)
@@ -516,133 +524,44 @@ namespace bailinho_senior_system.views
             this.Close();
         }
 
-        // --- Eventos adicionais do Designer ---
-
         private void button1_Click(object sender, EventArgs e)
         {
-            // Este método implementa a lógica de busca/filtro.
-
-            // 1. Obtém o termo de busca (assumindo que o TextBox se chama searchBox)
+            // Lógica de busca/filtro
             string searchTerm = searchBox.Text.Trim().ToLower();
-            List<Evento> filteredEvents = eventos;
+            List<Evento> filteredEvents;
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                // 2. Tenta buscar por ID (se for numérico) ou por Nome
-                if (int.TryParse(searchTerm, out int id))
-                {
-                    // Busca por ID
-                    filteredEvents = eventos.Where(evento => evento.Id == id).ToList();
-                }
-                else
-                {
-                    // Busca por Nome (ou Descrição, se desejar)
-                    filteredEvents = eventos.Where(evento =>
-                        evento.Nome.ToLower().Contains(searchTerm) ||
-                        (evento.Descricao != null && evento.Descricao.ToLower().Contains(searchTerm))
-                    ).ToList();
-                }
+                // Busca por ID (se for numérico) OU por Nome/Descrição
+                filteredEvents = eventos.Where(evento =>
+                    (int.TryParse(searchTerm, out int id) && evento.Id == id) ||
+                    (evento.Nome.ToLower().Contains(searchTerm)) ||
+                    (evento.Descricao != null && evento.Descricao.ToLower().Contains(searchTerm))
+                ).ToList();
+            }
+            else
+            {
+                // Se a busca estiver vazia, retorna a lista completa
+                filteredEvents = eventos;
             }
 
-            // 3. Atualiza o DataGridView com a lista filtrada/original
             listTable.DataSource = null;
             listTable.DataSource = filteredEvents;
 
-            // 4. Atualiza o currentIndex e o estado com o primeiro item encontrado
+            // Atualiza o currentIndex e o estado com o primeiro item encontrado
             if (filteredEvents.Count > 0)
             {
-                // Encontra o índice na lista original para manter a navegação consistente
                 currentIndex = eventos.FindIndex(evento => evento.Id == filteredEvents[0].Id);
-                listTable.Rows[0].Selected = true;
                 PopulateFields(filteredEvents[0]);
             }
             else
             {
-                // Se nada for encontrado, limpamos a tela
                 currentIndex = -1;
                 CleanupFields();
                 MessageBox.Show("Nenhum evento encontrado.", "Busca", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             SetState(ViewState.Listing);
-        }
-
-        private void listTable_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Verifica se o evento foi disparado pela atualização de dados ou se não há linha atual
-            if (listTable.CurrentRow == null || listTable.CurrentRow.Index < 0) return;
-
-            // Ignora se estivermos nos modos de Edição/Criação, onde o foco deve permanecer nos campos
-            if (state != ViewState.Listing) return;
-
-            try
-            {
-                // 1. Obtém a linha atualmente selecionada no DGV filtrado
-                var currentRow = listTable.CurrentRow;
-
-                // Verifica se a lista de eventos está vazia antes de prosseguir
-                if (eventos.Count == 0) return;
-
-                // 2. Extrai o ID do evento da célula oculta 'Id'
-                // NOTA: É fundamental que a coluna 'Id' exista e seja oculta.
-                int selectedId = (int)currentRow.Cells["Id"].Value;
-
-                // 3. Encontra o índice correspondente na lista de eventos ORIGINAL (eventos)
-                int newIndex = eventos.FindIndex(evento => evento.Id == selectedId);
-
-                if (newIndex != -1)
-                {
-                    currentIndex = newIndex;
-                    // A chamada a SetState fará a dupla função:
-                    // a) Chamar PopulateFields(eventos[currentIndex]);
-                    // b) Atualizar o estado dos botões.
-                    SetState(ViewState.Listing);
-                }
-            }
-            catch (Exception)
-            {
-                // Geralmente ocorre durante a inicialização/re-vinculação da fonte de dados.
-                // É seguro ignorar neste contexto para não travar a UI.
-            }
-        }
-
-        private void listTable_SelectionChanged(object sender, EventArgs e)
-        {
-            // Verifica se o evento foi disparado pela atualização de dados ou se não há linha atual
-            if (listTable.CurrentRow == null || listTable.CurrentRow.Index < 0) return;
-
-            // Ignora se estivermos nos modos de Edição/Criação, onde o foco deve permanecer nos campos
-            if (state != ViewState.Listing) return;
-
-            try
-            {
-                // 1. Obtém a linha atualmente selecionada no DGV filtrado
-                var currentRow = listTable.CurrentRow;
-
-                // Verifica se a lista de eventos está vazia antes de prosseguir
-                if (eventos.Count == 0) return;
-
-                // 2. Extrai o ID do evento da célula oculta 'Id'
-                // NOTA: É fundamental que a coluna 'Id' exista e seja oculta.
-                int selectedId = (int)currentRow.Cells["Id"].Value;
-
-                // 3. Encontra o índice correspondente na lista de eventos ORIGINAL (eventos)
-                int newIndex = eventos.FindIndex(evento => evento.Id == selectedId);
-
-                if (newIndex != -1)
-                {
-                    currentIndex = newIndex;
-                    // A chamada a SetState fará a dupla função:
-                    // a) Chamar PopulateFields(eventos[currentIndex]);
-                    // b) Atualizar o estado dos botões.
-                    SetState(ViewState.Listing);
-                }
-            }
-            catch (Exception)
-            {
-                // Geralmente ocorre durante a inicialização/re-vinculação da fonte de dados.
-                // É seguro ignorar neste contexto para não travar a UI.
-            }
         }
     }
 }
